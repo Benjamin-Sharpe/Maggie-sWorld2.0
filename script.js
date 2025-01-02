@@ -1,81 +1,173 @@
-// script.js
+// ===========================
+// 1. Interactive Piano Tool
+// ===========================
 
-const OPENAI_API_KEY = 'sk-...GHIA'; // Your API key here
+// Expanded Notes Array for Piano
+const notes = [
+    'C3', 'C#3', 'D3', 'D#3', 'E3', 'F3', 'F#3',
+    'G3', 'G#3', 'A3', 'A#3', 'B3',
+    'C4', 'C#4', 'D4', 'D#4', 'E4', 'F4', 'F#4',
+    'G4', 'G#4', 'A4', 'A#4', 'B4',
+    'C5', 'C#5', 'D5', 'D#5', 'E5', 'F5', 'F#5',
+    'G5', 'G#5', 'A5', 'A#5', 'B5', 'C6'
+];
+const pianoContainer = document.getElementById('piano');
+const synth = new Tone.PolySynth(Tone.Synth).toDestination();
+let recordedNotes = [];
+let isRecording = false;
 
-// 1. Image Gallery & Collage Tool
-const uploader = document.getElementById('image-uploader');
-const galleryPreview = document.getElementById('gallery-preview');
-const canvas = document.getElementById('collage-canvas');
-const ctx = canvas.getContext('2d');
+// Generate Piano Keys
+notes.forEach((note) => {
+    const key = document.createElement('div');
+    const isSharp = note.includes('#');
+    key.className = isSharp ? 'black-key' : 'white-key';
+    key.textContent = note;
+    key.dataset.note = note;
 
-uploader.addEventListener('change', () => {
-  galleryPreview.innerHTML = '';
-  const files = Array.from(uploader.files);
-
-  files.forEach((file) => {
-    const img = document.createElement('img');
-    img.src = URL.createObjectURL(file);
-    galleryPreview.appendChild(img);
-  });
+    // Play Note on Click
+    key.addEventListener('click', () => playNoteAndAnimate(note, key));
+    pianoContainer.appendChild(key);
 });
+
+// Play Note and Animate Key
+function playNoteAndAnimate(note, keyElement) {
+    synth.triggerAttackRelease(note, '8n');
+    keyElement.classList.add('pressed');
+    setTimeout(() => {
+        keyElement.classList.remove('pressed');
+    }, 150);
+
+    if (isRecording) {
+        recordedNotes.push({ note, time: Tone.now() });
+    }
+}
+
+// Record and Playback Buttons
+document.getElementById('record-btn').addEventListener('click', () => {
+    isRecording = !isRecording;
+    if (isRecording) {
+        recordedNotes = [];
+        alert('Recording started. Play some keys!');
+        document.getElementById('record-btn').textContent = 'Stop Recording';
+    } else {
+        alert('Recording stopped!');
+        document.getElementById('record-btn').textContent = 'Record';
+    }
+});
+
+document.getElementById('play-btn').addEventListener('click', () => {
+    if (recordedNotes.length === 0) {
+        alert('No notes recorded to play back!');
+        return;
+    }
+    const startTime = recordedNotes[0].time;
+    recordedNotes.forEach(({ note, time }) => {
+        const keyElement = document.querySelector(`[data-note="${note}"]`);
+        setTimeout(() => {
+            playNoteAndAnimate(note, keyElement);
+        }, (time - startTime) * 1000);
+    });
+});
+
+// ===========================
+// 2. Gallery Tool
+// ===========================
 
 document.getElementById('create-collage-btn').addEventListener('click', () => {
-  const images = galleryPreview.querySelectorAll('img');
-  canvas.width = 500;
-  canvas.height = 500;
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const fileInput = document.getElementById('file-input');
+    const galleryPreview = document.getElementById('gallery-preview');
+    galleryPreview.innerHTML = '';
 
-  images.forEach((img, i) => {
-    const x = (i % 2) * 250; // Arrange in a grid
-    const y = Math.floor(i / 2) * 250;
-    ctx.drawImage(img, x, y, 250, 250);
-  });
-
-  canvas.style.display = 'block';
+    Array.from(fileInput.files).forEach((file) => {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            const img = document.createElement('img');
+            img.src = event.target.result;
+            img.className = 'gallery-image';
+            galleryPreview.appendChild(img);
+        };
+        reader.readAsDataURL(file);
+    });
 });
 
-document.getElementById('set-background-btn').addEventListener('click', () => {
-  document.body.style.backgroundImage = `url(${canvas.toDataURL()})`;
+// ===========================
+// 3. AI Chat Tool
+// ===========================
+
+document.getElementById('send-btn').addEventListener('click', async () => {
+    const chatInput = document.getElementById('chat-input').value;
+    const chatOutput = document.getElementById('chat-output');
+
+    if (!chatInput) {
+        alert('Please type a message!');
+        return;
+    }
+
+    try {
+        const response = await fetch('https://api.openai.com/v1/completions', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                model: 'text-davinci-003',
+                prompt: chatInput,
+                max_tokens: 100,
+            }),
+        });
+
+        const data = await response.json();
+        const reply = data.choices[0]?.text.trim() || 'No response received.';
+        chatOutput.innerHTML = `<p>${reply}</p>`;
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Failed to communicate with AI. Please try again later.');
+    }
 });
 
-// 2. AI Chat Integration
-document.getElementById('send-chat-btn').addEventListener('click', async () => {
-  const input = document.getElementById('chat-input').value.trim();
-  const log = document.getElementById('chat-log');
-  log.innerHTML += `<div><strong>You:</strong> ${input}</div>`;
+// ===========================
+// 4. Job Search Tool
+// ===========================
 
-  const response = await fetch('https://api.openai.com/v1/completions', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${OPENAI_API_KEY}`,
-    },
-    body: JSON.stringify({
-      model: 'gpt-4',
-      prompt: input,
-      max_tokens: 150,
-    }),
-  });
+document.getElementById('search-jobs-btn').addEventListener('click', async () => {
+    const jobTitle = document.getElementById('job-title').value;
+    const jobLocation = document.getElementById('job-location').value;
+    const jobResults = document.getElementById('job-results');
 
-  const data = await response.json();
-  const reply = data.choices[0].text.trim();
-  log.innerHTML += `<div><strong>AI:</strong> ${reply}</div>`;
+    if (!jobTitle || !jobLocation) {
+        alert('Please enter both job title and location!');
+        return;
+    }
+
+    try {
+        const response = await fetch('https://api.zippia.com/jobs', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                title: jobTitle,
+                location: jobLocation,
+            }),
+        });
+
+        const data = await response.json();
+        jobResults.innerHTML = data.jobs
+            .slice(0, 5)
+            .map(
+                (job) =>
+                    `<div class="job-result"><h3>${job.title}</h3><p>${job.company} - ${job.location}</p></div>`
+            )
+            .join('');
+    } catch (error) {
+        console.error('Error:', error);
+        jobResults.innerHTML = '<p>Failed to fetch job results. Please try again later.</p>';
+    }
 });
 
-// 3. Job Search Integration (Zippia Example)
-document.getElementById('job-search-form').addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const title = document.getElementById('job-title').value;
-  const location = document.getElementById('location').value;
+// ============================
+// Helper: Placeholder Features
+// ============================
+console.log('All tools are active and ready!');
 
-  const response = await fetch('https://api.zippia.com/jobs', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ searchTitle: title, searchLocation: location }),
-  });
-
-  const jobs = await response.json();
-  document.getElementById('job-results').innerHTML = jobs.jobs
-    .map((job) => `<div>${job.jobTitle} at ${job.companyName}</div>`)
-    .join('');
-});
