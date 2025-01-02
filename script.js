@@ -2,29 +2,30 @@
 // 1. Interactive Piano Tool
 // ===========================
 
-// Expanded Notes Array for Piano
+// Piano Notes Array
 const notes = [
-    'C3', 'C#3', 'D3', 'D#3', 'E3', 'F3', 'F#3',
-    'G3', 'G#3', 'A3', 'A#3', 'B3',
-    'C4', 'C#4', 'D4', 'D#4', 'E4', 'F4', 'F#4',
-    'G4', 'G#4', 'A4', 'A#4', 'B4',
-    'C5', 'C#5', 'D5', 'D#5', 'E5', 'F5', 'F#5',
-    'G5', 'G#5', 'A5', 'A#5', 'B5', 'C6'
+    { note: 'C3', isSharp: false }, { note: 'C#3', isSharp: true }, { note: 'D3', isSharp: false }, { note: 'D#3', isSharp: true }, { note: 'E3', isSharp: false },
+    { note: 'F3', isSharp: false }, { note: 'F#3', isSharp: true }, { note: 'G3', isSharp: false }, { note: 'G#3', isSharp: true }, { note: 'A3', isSharp: false },
+    { note: 'A#3', isSharp: true }, { note: 'B3', isSharp: false },
+    { note: 'C4', isSharp: false }, { note: 'C#4', isSharp: true }, { note: 'D4', isSharp: false }, { note: 'D#4', isSharp: true }, { note: 'E4', isSharp: false },
+    { note: 'F4', isSharp: false }, { note: 'F#4', isSharp: true }, { note: 'G4', isSharp: false }, { note: 'G#4', isSharp: true }, { note: 'A4', isSharp: false },
+    { note: 'A#4', isSharp: true }, { note: 'B4', isSharp: false },
+    { note: 'C5', isSharp: false }, { note: 'C#5', isSharp: true }, { note: 'D5', isSharp: false }, { note: 'D#5', isSharp: true }, { note: 'E5', isSharp: false }
 ];
-const pianoContainer = document.getElementById('piano');
+
+// Create Synth for Piano Sounds
 const synth = new Tone.PolySynth(Tone.Synth).toDestination();
 let recordedNotes = [];
 let isRecording = false;
 
 // Generate Piano Keys
-notes.forEach((note) => {
+const pianoContainer = document.getElementById('piano');
+notes.forEach(({ note, isSharp }) => {
     const key = document.createElement('div');
-    const isSharp = note.includes('#');
     key.className = isSharp ? 'black-key' : 'white-key';
-    key.textContent = note;
     key.dataset.note = note;
 
-    // Play Note on Click
+    // Play Note and Animate
     key.addEventListener('click', () => playNoteAndAnimate(note, key));
     pianoContainer.appendChild(key);
 });
@@ -33,16 +34,14 @@ notes.forEach((note) => {
 function playNoteAndAnimate(note, keyElement) {
     synth.triggerAttackRelease(note, '8n');
     keyElement.classList.add('pressed');
-    setTimeout(() => {
-        keyElement.classList.remove('pressed');
-    }, 150);
+    setTimeout(() => keyElement.classList.remove('pressed'), 150);
 
     if (isRecording) {
         recordedNotes.push({ note, time: Tone.now() });
     }
 }
 
-// Record and Playback Buttons
+// Record and Playback
 document.getElementById('record-btn').addEventListener('click', () => {
     isRecording = !isRecording;
     if (isRecording) {
@@ -127,7 +126,7 @@ document.getElementById('send-btn').addEventListener('click', async () => {
 });
 
 // ===========================
-// 4. Job Search Tool
+// Job Search Tool
 // ===========================
 
 document.getElementById('search-jobs-btn').addEventListener('click', async () => {
@@ -135,6 +134,10 @@ document.getElementById('search-jobs-btn').addEventListener('click', async () =>
     const jobLocation = document.getElementById('job-location').value;
     const jobResults = document.getElementById('job-results');
 
+    // Clear previous results
+    jobResults.innerHTML = '';
+
+    // Validate inputs
     if (!jobTitle || !jobLocation) {
         alert('Please enter both job title and location!');
         return;
@@ -152,22 +155,29 @@ document.getElementById('search-jobs-btn').addEventListener('click', async () =>
             }),
         });
 
+        if (!response.ok) {
+            throw new Error(`HTTP Error: ${response.status}`);
+        }
+
         const data = await response.json();
-        jobResults.innerHTML = data.jobs
-            .slice(0, 5)
-            .map(
-                (job) =>
-                    `<div class="job-result"><h3>${job.title}</h3><p>${job.company} - ${job.location}</p></div>`
-            )
-            .join('');
+
+        if (data.jobs && data.jobs.length > 0) {
+            jobResults.innerHTML = data.jobs
+                .slice(0, 5) // Limit to top 5 results
+                .map(
+                    (job) =>
+                        `<div class="job-result">
+                            <h3>${job.title}</h3>
+                            <p>${job.company} - ${job.location}</p>
+                            <p><strong>Description:</strong> ${job.description || 'N/A'}</p>
+                        </div>`
+                )
+                .join('');
+        } else {
+            jobResults.innerHTML = '<p>No jobs found. Please try another search.</p>';
+        }
     } catch (error) {
-        console.error('Error:', error);
+        console.error('Error fetching job results:', error);
         jobResults.innerHTML = '<p>Failed to fetch job results. Please try again later.</p>';
     }
 });
-
-// ============================
-// Helper: Placeholder Features
-// ============================
-console.log('All tools are active and ready!');
-
