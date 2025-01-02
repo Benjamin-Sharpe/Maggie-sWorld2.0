@@ -42,15 +42,15 @@ section h2 {
     margin-bottom: 10px;
 }
 
-/* Piano Container */
+/* Piano Tool */
 #piano {
     display: flex;
-    justify-content: center;
-    align-items: flex-end;
     position: relative;
-    margin: 20px auto;
     max-width: 100%;
-    overflow-x: auto;
+    margin: 20px auto;
+    height: 250px;
+    background: #ddd;
+    border: 2px solid #333;
 }
 
 /* White Keys */
@@ -58,51 +58,47 @@ section h2 {
     background-color: white;
     border: 1px solid black;
     width: 50px;
-    height: 200px;
-    margin: 0 2px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    text-align: center;
-    line-height: 200px;
-    cursor: pointer;
+    height: 100%;
     position: relative;
+    z-index: 1;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
     transition: transform 0.1s ease;
 }
 
 .white-key.pressed {
-    transform: translateY(5px); /* Simulate key press */
-    background-color: #ffebcd; /* Highlight pressed key */
+    transform: translateY(5px);
+    background-color: #f0e68c; /* Highlight on press */
 }
 
 /* Black Keys */
 .black-key {
     background-color: black;
-    color: white;
     width: 35px;
-    height: 120px;
-    margin: 0 -17.5px;
-    z-index: 1;
-    cursor: pointer;
+    height: 150px;
     position: absolute;
+    z-index: 2;
+    cursor: pointer;
     transition: transform 0.1s ease;
+    margin-left: -17.5px; /* Center between white keys */
 }
 
 .black-key.pressed {
-    transform: translateY(5px); /* Simulate key press */
-    background-color: #696969; /* Highlight pressed key */
+    transform: translateY(5px);
+    background-color: #696969; /* Highlight on press */
 }
 
 /* Controls */
 #controls {
-    display: flex;
-    justify-content: center;
-    margin: 20px auto;
+    text-align: center;
+    margin: 20px;
 }
 
 #controls button {
-    background-color: #ffd700; /* Gold */
+    background-color: #ff69b4;
     border: none;
+    color: white;
     padding: 10px 20px;
-    font-size: 16px;
     cursor: pointer;
     margin: 0 10px;
     border-radius: 5px;
@@ -110,8 +106,7 @@ section h2 {
 }
 
 #controls button:hover {
-    background-color: #ff69b4; /* Pink */
-    color: white;
+    background-color: #ffd700;
 }
 
 /* Gallery Tool */
@@ -124,7 +119,7 @@ section h2 {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-/* AI Chat */
+/* AI Chat Tool */
 #chat-input {
     width: 100%;
     height: 100px;
@@ -149,14 +144,24 @@ section h2 {
     background-color: #ffd700; /* Gold */
 }
 
-/* Job Search */
+/* Job Search Results */
 #job-results .job-result {
-    margin: 10px 0;
-    padding: 10px;
+    background: #f9f9f9;
     border: 1px solid #ddd;
     border-radius: 5px;
-    background-color: #fafafa;
+    margin: 10px 0;
+    padding: 10px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+#job-results .job-result h3 {
+    margin: 0 0 5px;
+    color: #4b0082; /* Indigo */
+}
+
+#job-results .job-result p {
+    margin: 0 0 5px;
+    font-size: 0.9rem;
 }
 
 /* Social Links */
@@ -194,3 +199,4 @@ footer ul li a:hover {
     border-radius: 10px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
+
