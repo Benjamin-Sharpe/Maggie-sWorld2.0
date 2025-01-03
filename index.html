@@ -5,97 +5,57 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Maggie's World</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.min.js"></script>
-    <script defer src="script.js"></script>
 </head>
 <body>
+    <!-- Navigation Bar -->
     <header>
-        <h1>Maggie's World</h1>
-        <nav>
-            <ul class="quick-menu">
-                <li><a href="#piano-tool">Piano Tool</a></li>
-                <li><a href="#period-tracker">Period Tracker</a></li>
-                <li><a href="#ai-chat">AI Chat</a></li>
-                <li><a href="#job-finder">Job Finder</a></li>
-                <li><a href="#shortcuts">Apple Shortcuts</a></li>
+        <nav class="navbar">
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="piano.html">Interactive Piano</a></li>
+                <li><a href="gallery.html">Picture Editor/Collage</a></li>
+                <li><a href="job-search.html">Job Search</a></li>
+                <li><a href="ai-chat.html">AI Chat</a></li>
             </ul>
         </nav>
+        <h1>Welcome to Maggie's World</h1>
     </header>
+
+    <!-- Main Content -->
     <main>
-        <!-- Section: Piano Tool -->
-        <section id="piano-tool">
-            <h2>Interactive Piano</h2>
-            <p>Play the piano by clicking the keys below! Record your music and play it back in real-time.</p>
-            <div id="piano"></div>
-            <div id="controls">
-                <button id="record-btn">Record</button>
-                <button id="play-btn">Play</button>
-            </div>
-        </section>
-
-        <!-- Section: Random Images -->
+        <!-- Introduction Section -->
         <section>
-            <h2>Random Images</h2>
-            <p>Here are some beautiful pictures for you to enjoy:</p>
-            <div class="image-grid">
-                <img src="https://i.imgur.com/J21Ci9i.jpg" alt="Image 1">
-                <img src="https://i.imgur.com/xM6Bj0u.jpg" alt="Image 2">
-                <img src="https://i.imgur.com/NCBSrB1.jpg" alt="Image 3">
-                <img src="https://i.imgur.com/qmfaOzk.jpg" alt="Image 4">
-                <img src="https://i.imgur.com/Ws2KYMp.jpg" alt="Image 5">
-            </div>
-        </section>
-
-        <!-- Section: Period Tracker -->
-        <section id="period-tracker">
-            <h2>Period Tracker</h2>
-            <p>Keep track of your menstrual cycle and health. Simply enter your details below.</p>
-            <form>
-                <label for="last-period">Last Period Start Date:</label>
-                <input type="date" id="last-period">
-                <label for="cycle-length">Average Cycle Length (days):</label>
-                <input type="number" id="cycle-length" min="1">
-                <button type="button" id="track-period-btn">Track Period</button>
-            </form>
-            <div id="period-output"></div>
-        </section>
-
-        <!-- Section: AI Chat -->
-        <section id="ai-chat">
-            <h2>Chat with AI</h2>
-            <textarea id="chat-input" placeholder="Ask the AI anything"></textarea>
-            <button id="send-btn">Send</button>
-            <div id="chat-output"></div>
-        </section>
-
-        <!-- Section: Job Finder -->
-        <section id="job-finder">
-            <h2>Find a Job</h2>
-            <p>Search for jobs near you by entering a job title and location.</p>
-            <form>
-                <input type="text" id="job-title" placeholder="Job Title">
-                <input type="text" id="job-location" placeholder="Location">
-                <button type="button" id="search-jobs-btn">Search</button>
-            </form>
-            <div id="job-results"></div>
-        </section>
-
-        <!-- Section: Apple Shortcuts -->
-        <section id="shortcuts">
-            <h2>Apple Shortcuts</h2>
-            <p>Explore these handy shortcuts for your Apple device:</p>
-            <ul class="shortcut-links">
-                <li><a href="https://www.icloud.com/shortcuts/33fd3c48bea549fca5c4e7171beeb093?source=post_page-----37d3ec7814f3--------------------------------" target="_blank">Shortcut 1</a></li>
-                <li><a href="https://www.icloud.com/shortcuts/116a1dc1528c4cea916d31d450632a2e" target="_blank">Shortcut 2</a></li>
+            <h2>Explore Tools</h2>
+            <p>Welcome to Maggie's World! Click on the links in the navigation bar to explore:</p>
+            <ul class="tool-list">
+                <li><strong>Interactive Piano:</strong> Play, record, and enjoy music.</li>
+                <li><strong>Picture Editor/Collage Maker:</strong> Create and edit stunning collages.</li>
+                <li><strong>Job Search Tool:</strong> Find jobs tailored to your needs.</li>
+                <li><strong>AI Chat:</strong> Converse with an intelligent AI chatbot.</li>
             </ul>
         </section>
+
+        <!-- Featured Tool Section -->
+        <section>
+            <h2>Featured Tool: Interactive Piano</h2>
+            <p>Try out our interactive piano tool! Click below to get started:</p>
+            <a href="piano.html" class="button">Go to Piano</a>
+        </section>
+
+        <!-- About Section -->
+        <section>
+            <h2>About Maggie's World</h2>
+            <p>This platform offers a range of tools designed for creativity, productivity, and entertainment. Whether you're playing music, editing photos, or searching for jobs, Maggie's World has something for everyone!</p>
+        </section>
     </main>
+
+    <!-- Footer -->
     <footer>
-        <p>Follow me on:</p>
+        <p>© Maggie's World | Follow us on:</p>
         <ul class="social-links">
+            <li><a href="https://www.tiktok.com/@_maggieniemeyer_" target="_blank">TikTok</a></li>
             <li><a href="https://www.facebook.com/maggie.niemeyer.16" target="_blank">Facebook</a></li>
-            <li><a href="https://www.tiktok.com/@_maggieniemeyer__" target="_blank">TikTok</a></li>
-            <li><a href="https://www.dunkindonuts.com" target="_blank">Dunkin'</a></li>
+            <li><a href="https://www.youtube.com" target="_blank">YouTube</a></li>
         </ul>
     </footer>
 </body>
