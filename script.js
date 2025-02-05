@@ -1,7 +1,14 @@
 document.addEventListener('DOMContentLoaded', () => {
     const weightDropdown = document.getElementById('current-weight');
+    const goalDropdown = document.getElementById('goal-loss');
     const calorieGoalOutput = document.getElementById('calorie-goal');
     const resourcesOutput = document.getElementById('resources');
+
+    // Ensure all elements exist before running code
+    if (!weightDropdown || !goalDropdown || !calorieGoalOutput || !resourcesOutput) {
+        console.error("One or more elements are missing from the HTML.");
+        return;
+    }
 
     // Populate weight dropdown (1 to 800 lbs)
     for (let i = 1; i <= 800; i++) {
@@ -12,13 +19,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     document.getElementById('calculate').addEventListener('click', () => {
-        const currentWeight = parseInt(document.getElementById('current-weight').value);
-        const goalLoss = parseFloat(document.getElementById('goal-loss').value);
+        const currentWeight = parseInt(weightDropdown.value);
+        const goalLoss = parseFloat(goalDropdown.value);
+
+        if (!currentWeight || !goalLoss) {
+            alert("Please select a weight and a goal loss.");
+            return;
+        }
 
         // Calculate daily calorie goal using Mifflin-St Jeor Equation
-        const dailyCaloricIntake = 10 * currentWeight + 6.25 * (currentWeight * 2.54) - 5 * 25 - 161 - (goalLoss * 500);
+        const dailyCaloricIntake = Math.round(10 * currentWeight + 6.25 * (currentWeight * 2.54) - 5 * 25 - 161 - (goalLoss * 500));
 
-        calorieGoalOutput.innerHTML = `Your estimated daily intake to achieve your weight loss goal is <strong>${Math.round(dailyCaloricIntake)} kcal</strong>.`;
+        calorieGoalOutput.innerHTML = `<strong>${dailyCaloricIntake} kcal</strong> per day to meet your goal.`;
 
         // Science-backed resources
         const resources = [
