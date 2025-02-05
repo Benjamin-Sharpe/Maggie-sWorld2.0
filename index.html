@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Royal Wellness Planner</title>
+    <title>Luxury Wellness Planner</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
-        <h1>✨ Royal Wellness & Weight Loss Planner 👑</h1>
-        <p class="subtitle">A journey of grace, elegance, and transformation.</p>
+        <h1>🌟 Luxury Health & Weight Loss Tracker</h1>
+        <p class="subtitle">Optimize your wellness journey with structured tracking and elegance.</p>
 
         <form id="planner-form">
             <label for="current-weight">💖 Current Weight (lbs):</label>
@@ -20,6 +20,9 @@
                 <option value="0.5">0.5 lbs</option>
                 <option value="1">1 lb</option>
             </select>
+
+            <label for="calories">🔥 Daily Calorie Intake:</label>
+            <input type="number" id="calories" placeholder="Enter daily calorie goal" required>
 
             <label for="wake-time">🌅 Wake-Up Time:</label>
             <input type="time" id="wake-time" required>
@@ -39,16 +42,18 @@
             <label for="work-end">🌙 Work End Time:</label>
             <input type="time" id="work-end" required>
 
-            <button type="button" id="calculate">🌟 Generate My Royal Plan</button>
+            <button type="button" id="calculate">✨ Generate My Wellness Plan</button>
         </form>
 
         <div id="output">
-            <h2>👑 Your Royally Curated Weight Loss Plan</h2>
+            <h2>🌟 Your Custom Health Plan</h2>
             <p id="schedule"></p>
-            <h3>🍷 Majestic Meal Options</h3>
+            <h3>🍽️ Meal Plan Suggestions</h3>
             <p id="meals"></p>
-            <h3>💎 Hydration Elegance</h3>
+            <h3>💧 Hydration Plan</h3>
             <p id="water"></p>
+            <h3>🏋️ Exercise Plan</h3>
+            <p id="exercise"></p>
         </div>
     </div>
     <script src="script.js"></script>
