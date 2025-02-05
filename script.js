@@ -1,9 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
     const currentWeightDropdown = document.getElementById('current-weight');
-    const output = document.getElementById('output');
     const scheduleOutput = document.getElementById('schedule');
     const mealsOutput = document.getElementById('meals');
     const waterOutput = document.getElementById('water');
+    const exerciseOutput = document.getElementById('exercise');
 
     // Populate weight dropdown (1 to 800 lbs)
     for (let i = 1; i <= 800; i++) {
@@ -15,8 +15,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Handle form submission
     document.getElementById('calculate').addEventListener('click', () => {
-        const currentWeight = parseInt(document.getElementById('current-weight').value);
-        const goalLoss = parseFloat(document.getElementById('goal-loss').value);
         const wakeTime = document.getElementById('wake-time').value;
         const workStart = document.getElementById('work-start').value;
         const break1 = document.getElementById('break1').value;
@@ -24,43 +22,40 @@ document.addEventListener('DOMContentLoaded', () => {
         const break2 = document.getElementById('break2').value;
         const workEnd = document.getElementById('work-end').value;
 
-        // Caloric deficit calculation
-        const dailyCaloricDeficit = goalLoss * 500;
-
-        // Elegant exercise plan
-        const exercisePlan = `
-            🌟 Post-Work Session: A royal 30-minute indoor walk. 
-            💃 Alternatives: 3 sets of high knees (30 seconds), Jumping Jacks (3 sets x 1 min).
-            🧘 Elegant Wellness Tip: A short meditation before bed for stress relief.
-        `;
-
-        // Elegant meal suggestions
+        // Meal suggestions
         const mealOptions = `
-            🍓 **Breakfast:** Greek yogurt with honey & berries / Omelet with goat cheese.
-            🥗 **Lunch:** Grilled chicken with avocado salad / Smoked salmon & quinoa.
-            🥩 **Dinner:** Herb-crusted salmon with asparagus / Filet mignon with steamed veggies.
+            🍓 Breakfast: Oatmeal & berries / Greek yogurt / Scrambled eggs & avocado.
+            🥗 Lunch: Grilled chicken salad / Tuna wrap / Stir-fried tofu & quinoa.
+            🍲 Dinner: Baked salmon & asparagus / Lean beef stir-fry / Grilled shrimp & veggies.
         `;
 
-        // Hydration plan
+        // Hydration reminders
         const waterIntake = `
-            💎 **By Lunch:** Hopefully, you've had at least 2 bottles of water.
-            💎 **Total Daily Goal:** 8 bottles of water.
+            💧 Drink 2 bottles of water before lunch.
+            💧 Total daily goal: 8 bottles (16 oz each).
         `;
 
-        // Royal schedule breakdown
+        // Exercise plan
+        const exercisePlan = `
+            🏋️ 30 min post-work brisk walk or:
+            🔥 Jumping jacks (3 x 1 min)
+            🔥 High knees (3 x 30 sec)
+        `;
+
+        // Schedule breakdown
         const schedule = `
-            👑 **Wake-Up Time:** ${wakeTime}.
-            🏛️ **Work Start:** ${workStart}.
-            ☕ **First Break:** ${break1}.
-            🍽️ **Lunch:** ${lunchTime}.
-            🍵 **Second Break:** ${break2}.
-            🌙 **Work End:** ${workEnd}.
-            💃 **Workout & Wellness Time:** 30 minutes of movement after ${workEnd}.
+            🌅 Wake-Up: ${wakeTime}
+            🏛️ Work Start: ${workStart}
+            ☕ First Break: ${break1}
+            🍽️ Lunch: ${lunchTime}
+            🍵 Second Break: ${break2}
+            🌙 Work End: ${workEnd}
         `;
 
         // Display results
         scheduleOutput.innerHTML = schedule;
         mealsOutput.innerHTML = mealOptions;
         waterOutput.innerHTML = waterIntake;
+        exerciseOutput.innerHTML = exercisePlan;
     });
 });
