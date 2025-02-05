@@ -3,28 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Maggie's World</title>
+    <title>Royal Wellness Planner</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
-        <h1>Welcome to Maggie's World</h1>
-        <nav>
-            <ul>
-                <li><a href="piano.html">Piano Tool</a></li>
-                <li><a href="job-search.html">Job Search</a></li>
-                <li><a href="ai-chat.html">AI Chat</a></li>
-            </ul>
-        </nav>
-    </header>
-    <main>
-        <section>
-            <h2>Explore</h2>
-            <p>Choose a tool to get started!</p>
-        </section>
-    </main>
-    <footer>
-        <p>© Maggie's World 2025</p>
-    </footer>
+    <div class="container">
+        <h1>✨ Royal Wellness & Weight Loss Planner 👑</h1>
+        <p class="subtitle">A journey of grace, elegance, and transformation.</p>
+
+        <form id="planner-form">
+            <label for="current-weight">💖 Current Weight (lbs):</label>
+            <select id="current-weight"></select>
+
+            <label for="goal-loss">🎯 Goal Weight Loss Per Week:</label>
+            <select id="goal-loss">
+                <option value="0.5">0.5 lbs</option>
+                <option value="1">1 lb</option>
+            </select>
+
+            <label for="wake-time">🌅 Wake-Up Time:</label>
+            <input type="time" id="wake-time" required>
+
+            <label for="work-start">🏛️ Work Start Time:</label>
+            <input type="time" id="work-start" required>
+
+            <label for="break1">☕ First Break Time:</label>
+            <input type="time" id="break1" required>
+
+            <label for="lunch-time">🍽️ Lunch Time:</label>
+            <input type="time" id="lunch-time" required>
+
+            <label for="break2">🍵 Second Break Time:</label>
+            <input type="time" id="break2" required>
+
+            <label for="work-end">🌙 Work End Time:</label>
+            <input type="time" id="work-end" required>
+
+            <button type="button" id="calculate">🌟 Generate My Royal Plan</button>
+        </form>
+
+        <div id="output">
+            <h2>👑 Your Royally Curated Weight Loss Plan</h2>
+            <p id="schedule"></p>
+            <h3>🍷 Majestic Meal Options</h3>
+            <p id="meals"></p>
+            <h3>💎 Hydration Elegance</h3>
+            <p id="water"></p>
+        </div>
+    </div>
+    <script src="script.js"></script>
 </body>
 </html>
