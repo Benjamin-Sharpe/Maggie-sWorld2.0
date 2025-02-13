@@ -3,63 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Luxury Fitness Planner</title>
+    <title>Media Gallery</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <h1>👑 Luxury Fitness & Wellness Planner</h1>
-        <p class="subtitle">Your structured, science-backed journey to looking and feeling incredible.</p>
+    <h1>Dropbox Media Gallery</h1>
+    <div class="gallery" id="gallery"></div>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const mediaLinks = [
+                "https://www.dropbox.com/scl/fi/38dxuic1j6vbijwmo7j76/IMG_2510.HEIC?raw=1",
+                "https://www.dropbox.com/scl/fi/11umyjmb3x9rlw9k1qrtf/IMG_2508.HEIC?raw=1",
+                "https://www.dropbox.com/scl/fi/dvikaequtlemv4mev5bwx/IMG_2300_Original.JPG?raw=1",
+                "https://www.dropbox.com/scl/fi/w132vniajp5ppiw3245am/filtered-D1EC8BBA-F674-41F3-865F-5A846199492F.mp4?raw=1",
+                "https://www.dropbox.com/scl/fi/sphjbz4lyy1j2pgn079rs/EF618D1D-50DA-4C84-88D4-0B92A244CA00.jpg?raw=1"
+            ];
 
-        <form id="planner-form">
-            <label for="current-weight">💖 Current Weight (lbs):</label>
-            <select id="current-weight"></select>
+            const gallery = document.getElementById("gallery");
 
-            <label for="goal-loss">🎯 Goal Weight Loss Per Week:</label>
-            <select id="goal-loss">
-                <option value="0.5">0.5 lbs</option>
-                <option value="1">1 lb</option>
-            </select>
-
-            <label for="wake-time">🌅 Wake-Up Time:</label>
-            <input type="time" id="wake-time" required>
-
-            <label for="work-start">🏛️ Work Start Time:</label>
-            <input type="time" id="work-start" required>
-
-            <label for="break1">☕ First Break Time:</label>
-            <input type="time" id="break1" required>
-
-            <label for="lunch-time">🍽️ Lunch Time:</label>
-            <input type="time" id="lunch-time" required>
-
-            <label for="break2">🍵 Second Break Time:</label>
-            <input type="time" id="break2" required>
-
-            <label for="work-end">🌙 Work End Time:</label>
-            <input type="time" id="work-end" required>
-
-            <button type="button" id="calculate">✨ Generate My Custom Plan</button>
-        </form>
-
-        <div id="output">
-            <h2>🌟 Your Science-Backed Weight Loss Plan</h2>
-            <h3>🔥 Your Daily Caloric Goal:</h3>
-            <p id="calorie-goal"></p>
-
-            <h3>🍽️ Meal Plan Suggestions</h3>
-            <p id="meals"></p>
-
-            <h3>💧 Hydration Plan</h3>
-            <p id="water"></p>
-
-            <h3>🏋️ Exercise Plan</h3>
-            <p id="exercise"></p>
-
-            <h3>📚 Science-Backed Tips & Studies</h3>
-            <ul id="resources"></ul>
-        </div>
-    </div>
-    <script src="script.js"></script>
+            mediaLinks.forEach(link => {
+                const mediaElement = document.createElement(
+                    link.endsWith(".mp4") || link.endsWith(".mov") ? "video" : "img"
+                );
+                
+                if (mediaElement.tagName === "VIDEO") {
+                    mediaElement.controls = true;
+                    const source = document.createElement("source");
+                    source.src = link;
+                    source.type = "video/mp4";
+                    mediaElement.appendChild(source);
+                } else {
+                    mediaElement.src = link;
+                }
+                
+                mediaElement.classList.add("media-item");
+                gallery.appendChild(mediaElement);
+            });
+        });
+    </script>
 </body>
 </html>
