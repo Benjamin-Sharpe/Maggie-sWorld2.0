@@ -1,60 +1,31 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const weightDropdown = document.getElementById('current-weight');
-    const goalDropdown = document.getElementById('goal-loss');
-    const calorieGoalOutput = document.getElementById('calorie-goal');
-    const resourcesOutput = document.getElementById('resources');
+// script.js
+document.addEventListener("DOMContentLoaded", function () {
+    const mediaLinks = [
+        "https://www.dropbox.com/scl/fi/38dxuic1j6vbijwmo7j76/IMG_2510.HEIC?raw=1",
+        "https://www.dropbox.com/scl/fi/11umyjmb3x9rlw9k1qrtf/IMG_2508.HEIC?raw=1",
+        "https://www.dropbox.com/scl/fi/dvikaequtlemv4mev5bwx/IMG_2300_Original.JPG?raw=1",
+        "https://www.dropbox.com/scl/fi/w132vniajp5ppiw3245am/filtered-D1EC8BBA-F674-41F3-865F-5A846199492F.mp4?raw=1",
+        "https://www.dropbox.com/scl/fi/sphjbz4lyy1j2pgn079rs/EF618D1D-50DA-4C84-88D4-0B92A244CA00.jpg?raw=1"
+    ];
 
-    // Ensure all elements exist before running code
-    if (!weightDropdown || !goalDropdown || !calorieGoalOutput || !resourcesOutput) {
-        console.error("One or more elements are missing from the HTML.");
-        return;
-    }
+    const gallery = document.getElementById("gallery");
 
-    // Populate weight dropdown (1 to 800 lbs)
-    for (let i = 1; i <= 800; i++) {
-        const option = document.createElement('option');
-        option.value = i;
-        option.textContent = `${i} lbs`;
-        weightDropdown.appendChild(option);
-    }
+    mediaLinks.forEach(link => {
+        const mediaElement = document.createElement(
+            link.includes(".mp4") || link.includes(".mov") ? "video" : "img"
+        );
 
-    document.getElementById('calculate').addEventListener('click', () => {
-        const currentWeight = parseInt(weightDropdown.value);
-        const goalLoss = parseFloat(goalDropdown.value);
-
-        if (!currentWeight || !goalLoss) {
-            alert("Please select a weight and a goal loss.");
-            return;
+        if (mediaElement.tagName === "VIDEO") {
+            mediaElement.controls = true;
+            const source = document.createElement("source");
+            source.src = link;
+            source.type = "video/mp4";
+            mediaElement.appendChild(source);
+        } else {
+            mediaElement.src = link;
         }
 
-        // Calculate daily calorie goal using Mifflin-St Jeor Equation
-        const dailyCaloricIntake = Math.round(10 * currentWeight + 6.25 * (currentWeight * 2.54) - 5 * 25 - 161 - (goalLoss * 500));
-
-        calorieGoalOutput.innerHTML = `<strong>${dailyCaloricIntake} kcal</strong> per day to meet your goal.`;
-
-        // Science-backed resources
-        const resources = [
-            {
-                title: "The Role of Protein in Weight Loss",
-                link: "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4045293/",
-                summary: "High-protein diets help with satiety, metabolism, and fat loss."
-            },
-            {
-                title: "Impact of Sleep on Weight Loss",
-                link: "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3763921/",
-                summary: "Poor sleep increases cortisol and cravings, making weight loss harder."
-            },
-            {
-                title: "Gut Health & Weight Loss",
-                link: "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6448875/",
-                summary: "A diverse gut microbiome aids metabolism and reduces bloating."
-            }
-        ];
-
-        resourcesOutput.innerHTML = resources.map(res => `
-            <li>
-                <a href="${res.link}" target="_blank">${res.title}</a> - ${res.summary}
-            </li>
-        `).join('');
+        mediaElement.classList.add("media-item");
+        gallery.appendChild(mediaElement);
     });
 });
