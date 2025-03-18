@@ -5,7 +5,7 @@ body {
     font-family: 'Poppins', sans-serif;
     margin: 0;
     padding: 0;
-    background: url('images/SpiderDad.png') no-repeat center center fixed;
+    background: url('images/piderDad.png') no-repeat center center fixed;
     background-size: cover;
     color: #fff;
     text-align: center;
@@ -14,8 +14,7 @@ body {
 /* ✅ Navigation Menu */
 .navbar {
     width: 100%;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
+    background: rgba(0, 0, 0, 0.7);
     padding: 15px 0;
     position: fixed;
     top: 0;
@@ -47,9 +46,17 @@ body {
     text-shadow: 0px 0px 15px #ff4500;
 }
 
-/* ✅ Header Section */
+/* ✅ Header Section Fix */
 .header-container {
-    margin-top: 100px;
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    max-width: 900px;
+    padding: 30px;
+    background: rgba(0, 0, 0, 0.5); /* Soft backdrop for readability */
+    border-radius: 15px;
 }
 
 .main-title {
@@ -72,4 +79,21 @@ body {
     font-size: 18px;
     color: #ff4500;
     text-shadow: 0px 0px 15px #ff4500;
+}
+
+/* ✅ Responsive Fixes */
+@media screen and (max-width: 768px) {
+    .header-container {
+        width: 90%;
+        top: 65%;
+        padding: 20px;
+    }
+    
+    .main-title {
+        font-size: 36px;
+    }
+
+    .sub-title {
+        font-size: 20px;
+    }
 }
