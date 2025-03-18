@@ -25,12 +25,17 @@ function loadVideos() {
             let videoWrapper = document.createElement("div");
             videoWrapper.classList.add("video-wrapper");
 
-            // Detect YouTube or other video links
+            // Detect YouTube, Vimeo, or direct MP4
             if (url.includes("youtube.com") || url.includes("youtu.be")) {
                 let embedUrl = url.replace("watch?v=", "embed/");
                 videoWrapper.innerHTML = `<iframe src="${embedUrl}" allowfullscreen></iframe>`;
-            } else {
+            } else if (url.includes("vimeo.com")) {
+                let vimeoID = url.split("/").pop();
+                videoWrapper.innerHTML = `<iframe src="https://player.vimeo.com/video/${vimeoID}" allowfullscreen></iframe>`;
+            } else if (url.endsWith(".mp4")) {
                 videoWrapper.innerHTML = `<video controls><source src="${url}" type="video/mp4"></video>`;
+            } else {
+                videoWrapper.innerHTML = `<p style="color: red;">Invalid video format: ${url}</p>`;
             }
 
             // Add resize controls
