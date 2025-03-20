@@ -9,9 +9,26 @@
 <body>
 
     <h1>🎬 Welcome to the Ultimate Viewer Experience</h1>
-    <p>Select a video from your USB media library or enter a direct link.</p>
+    <p>Log in to access the USB share, or enter your own video URLs.</p>
 
-    <!-- ✅ Video Library Section (Manually Added Videos) -->
+    <!-- ✅ Router Login Form -->
+    <div class="login-container">
+        <input type="text" id="username" placeholder="Admin Username">
+        <input type="password" id="password" placeholder="Admin Password">
+        <button onclick="loginToRouter()">Login</button>
+    </div>
+
+    <!-- ✅ Video URL Input Boxes -->
+    <h2>📥 Enter Video URLs</h2>
+    <div class="url-inputs">
+        <input type="text" class="video-url" placeholder="Paste video URL here..." oninput="checkURLs()">
+        <input type="text" class="video-url" placeholder="Paste another video URL..." oninput="checkURLs()">
+        <input type="text" class="video-url" placeholder="Paste another video URL..." oninput="checkURLs()">
+        <input type="text" class="video-url" placeholder="Paste another video URL..." oninput="checkURLs()">
+    </div>
+    <button id="submitVideos" disabled onclick="loadVideos()">Initiate Ultimate Viewer Experience</button>
+
+    <!-- ✅ Video Library -->
     <h2>📁 Available Videos on USB Media Share</h2>
     <ul id="videoMenu"></ul>
 
