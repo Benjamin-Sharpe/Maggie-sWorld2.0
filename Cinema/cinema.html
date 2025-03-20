@@ -3,25 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cinema - USB Media Viewer</title>
+    <title>Cinema - Ultimate Viewer Experience</title>
     <link rel="stylesheet" href="cinema.css">
 </head>
 <body>
 
     <h1>🎬 Welcome to the Ultimate Viewer Experience</h1>
-    <p>Paste up to 4 video URLs below or choose from your USB media library.</p>
+    <p>Select a video from your USB media library or enter a direct link.</p>
 
-    <!-- ✅ Video Input Section -->
-    <div class="url-inputs">
-        <input type="text" class="video-url" placeholder="Paste video URL here..." oninput="checkURLs()">
-        <input type="text" class="video-url" placeholder="Paste another video URL..." oninput="checkURLs()">
-        <input type="text" class="video-url" placeholder="Paste another video URL..." oninput="checkURLs()">
-        <input type="text" class="video-url" placeholder="Paste another video URL..." oninput="checkURLs()">
-    </div>
-
-    <button id="submitVideos" disabled onclick="loadVideos()">Initiate Ultimate Viewer Experience</button>
-
-    <!-- ✅ Video Library Section (Fetched from USB Media Share) -->
+    <!-- ✅ Video Library Section (Manually Added Videos) -->
     <h2>📁 Available Videos on USB Media Share</h2>
     <ul id="videoMenu"></ul>
 
