@@ -2,22 +2,36 @@ document.addEventListener("DOMContentLoaded", function () {
     loadManualVideoList();
 });
 
+// ✅ Function to Load All Available Videos from Router Share
 function loadManualVideoList() {
     let videoMenu = document.getElementById("videoMenu");
 
-    // ✅ Use HTTP paths instead of SMB
     let videos = [
-        "http://192.168.0.1/g/AriaLeewFriends.mp4",
-        "http://192.168.0.1/g/BiggerThanWeTalkedAbout.mp4",
-        "http://192.168.0.1/g/Brickzilla.flv",
-        "http://192.168.0.1/g/Bunny1.mp4",
-        "http://192.168.0.1/g/BWC1.mp4",
-        "http://192.168.0.1/g/Comp1.mp4",
-        "http://192.168.0.1/g/Comp2.mp4",
-        "http://192.168.0.1/g/Comp3.mp4",
-        "http://192.168.0.1/g/TwitterCum.mp4",
-        "http://192.168.0.1/g/yeet.mp4",
-        "http://192.168.0.1/g/FlipFlibbgooner.mp4"
+        "http://192.168.0.1/Cinema/AriaLeewFriends.mp4",
+        "http://192.168.0.1/Cinema/Badquality.mp4",
+        "http://192.168.0.1/Cinema/BiggerThanWeTalkedAbout.mp4",
+        "http://192.168.0.1/Cinema/Brickzilla.flv",
+        "http://192.168.0.1/Cinema/Bunny1.mp4",
+        "http://192.168.0.1/Cinema/BWC1.mp4",
+        "http://192.168.0.1/Cinema/Comp1.mp4",
+        "http://192.168.0.1/Cinema/Comp2.mp4",
+        "http://192.168.0.1/Cinema/Comp3.mp4",
+        "http://192.168.0.1/Cinema/FlipFlibbgooner.mp4",
+        "http://192.168.0.1/Cinema/HusbandWatchingHisWifeFuckABigCock.mp4",
+        "http://192.168.0.1/Cinema/InterracialCompilation4.mp4",
+        "http://192.168.0.1/Cinema/LikeAVirgin.mp4",
+        "http://192.168.0.1/Cinema/meh.mp4",
+        "http://192.168.0.1/Cinema/PassionMusic.mp4",
+        "http://192.168.0.1/Cinema/pawgAmirahAdara_HD.mp4",
+        "http://192.168.0.1/Cinema/RealLifeWhiteGirlsOnlyWantBBC4.mp4",
+        "http://192.168.0.1/Cinema/ShelesthImwatch.mp4",
+        "http://192.168.0.1/Cinema/Strangercomesbackhomenewcouple.mp4",
+        "http://192.168.0.1/Cinema/TikTokBBCSplitscreenPMVMegaCompilation1.mp4",
+        "http://192.168.0.1/Cinema/tmpq4h58iwg.mp4",
+        "http://192.168.0.1/Cinema/tmpd2jim16f.mp4",
+        "http://192.168.0.1/Cinema/tmvy6vhulye.mp4",
+        "http://192.168.0.1/Cinema/TwitterCum.mp4",
+        "http://192.168.0.1/Cinema/yeet.mp4"
     ];
 
     videos.forEach(video => {
@@ -28,6 +42,7 @@ function loadManualVideoList() {
     });
 }
 
+// ✅ Add Video to Page when Clicked
 function addVideoToPage(videoPath) {
     let videoContainer = document.getElementById("videoContainer");
 
