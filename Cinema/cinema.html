@@ -9,8 +9,9 @@
 <body>
 
     <h1>🎬 Welcome to the Ultimate Viewer Experience</h1>
-    <p>Paste up to 4 video URLs below and watch them all on one screen.</p>
+    <p>Paste up to 4 video URLs below or choose from your USB media library.</p>
 
+    <!-- ✅ Video Input Section -->
     <div class="url-inputs">
         <input type="text" class="video-url" placeholder="Paste video URL here..." oninput="checkURLs()">
         <input type="text" class="video-url" placeholder="Paste another video URL..." oninput="checkURLs()">
@@ -20,6 +21,11 @@
 
     <button id="submitVideos" disabled onclick="loadVideos()">Initiate Ultimate Viewer Experience</button>
 
+    <!-- ✅ Video Library Section (Fetched from USB Media Share) -->
+    <h2>📁 Available Videos on USB Media Share</h2>
+    <ul id="videoMenu"></ul>
+
+    <!-- ✅ Video Display Grid -->
     <div id="videoContainer" class="video-grid"></div>
 
     <script src="cinema.js"></script>
