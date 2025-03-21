@@ -1,8 +1,21 @@
-document.addEventListener("DOMContentLoaded", function () {
-    loadManualVideoList();
-});
+// ✅ Function to Handle Login
+function loginToRouter() {
+    let username = document.getElementById("username").value;
+    let password = document.getElementById("password").value;
 
-// ✅ Function to Load All Available Videos from Router Share
+    // Debugging: Check login function is running
+    console.log("Attempting login with:", username);
+
+    // ✅ Replace with your actual router login process if required
+    if (username === "admin" && password === "Password123") {
+        alert("Login successful! Loading videos...");
+        loadManualVideoList();  // Load video list after login
+    } else {
+        alert("Invalid login. Try again.");
+    }
+}
+
+// ✅ Function to Load All Available Videos From Router Share
 function loadManualVideoList() {
     let videoMenu = document.getElementById("videoMenu");
 
@@ -34,15 +47,15 @@ function loadManualVideoList() {
         "http://192.168.0.1/Cinema/yeet.mp4"
     ];
 
-    videos.forEach(video => {
-        let videoName = video.split("/").pop(); // Extract filename
+        videos.forEach(video => {
+        let vidName = video.split("/").pop(); // Extract filename
         let listItem = document.createElement("li");
-        listItem.innerHTML = `<a href="#" onclick="addVideoToPage('${video}')">${videoName}</a>`;
+        listItem.innerHTML = `<a href="#" onclick="addVideoToPage('${video}')">${vidName}</a>`;
         videoMenu.appendChild(listItem);
     });
 }
 
-// ✅ Add Video to Page when Clicked
+// ✅ Function to Add Video to Page When Clicked
 function addVideoToPage(videoPath) {
     let videoContainer = document.getElementById("videoContainer");
 
