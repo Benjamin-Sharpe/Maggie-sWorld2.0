@@ -1,25 +1,18 @@
-// ✅ Function to Handle Login
 function loginToRouter() {
     let username = document.getElementById("username").value;
     let password = document.getElementById("password").value;
 
-    // Debugging: Check login function is running
-    console.log("Attempting login with:", username);
-
-    // ✅ Replace with your actual router login process if required
     if (username === "admin" && password === "Password123") {
-        alert("Login successful! Loading videos...");
-        loadManualVideoList();  // Load video list after login
+        alert("Login successful!");
+        document.getElementById("video-section").style.display = "block";
+        loadManualVideoList();
     } else {
-        alert("Invalid login. Try again.");
+        alert("Invalid login.");
     }
 }
 
-// ✅ Function to Load All Available Videos From Router Share
 function loadManualVideoList() {
-    let videoMenu = document.getElementById("videoMenu");
-
-    let videos = [
+    const videos = [
         "http://192.168.0.1/Cinema/AriaLeewFriends.mp4",
         "http://192.168.0.1/Cinema/Badquality.mp4",
         "http://192.168.0.1/Cinema/BiggerThanWeTalkedAbout.mp4",
@@ -47,27 +40,49 @@ function loadManualVideoList() {
         "http://192.168.0.1/Cinema/yeet.mp4"
     ];
 
-        videos.forEach(video => {
-        let vidName = video.split("/").pop(); // Extract filename
-        let listItem = document.createElement("li");
-        listItem.innerHTML = `<a href="#" onclick="addVideoToPage('${video}')">${vidName}</a>`;
-        videoMenu.appendChild(listItem);
+    const videoMenu = document.getElementById("videoMenu");
+    videoMenu.innerHTML = "";
+
+    videos.forEach(url => {
+        const name = url.split("/").pop();
+        const li = document.createElement("li");
+        li.innerHTML = `<a href="#" onclick="addVideoToPage('${url}')">${name}</a>`;
+        videoMenu.appendChild(li);
     });
 }
 
-// ✅ Function to Add Video to Page When Clicked
-function addVideoToPage(videoPath) {
-    let videoContainer = document.getElementById("videoContainer");
+function addVideoToPage(url) {
+    const videoContainer = document.getElementById("videoContainer");
 
-    let videoWrapper = document.createElement("div");
-    videoWrapper.classList.add("video-wrapper");
-
-    videoWrapper.innerHTML = `
+    const wrapper = document.createElement("div");
+    wrapper.classList.add("video-wrapper");
+    wrapper.innerHTML = `
         <video controls>
-            <source src="${videoPath}" type="video/mp4">
-            Your browser does not support this video format.
+            <source src="${url}" type="video/mp4">
+            Your browser does not support the video tag.
         </video>
     `;
+    videoContainer.appendChild(wrapper);
+}
 
-    videoContainer.appendChild(videoWrapper);
+function checkURLs() {
+    const inputs = document.querySelectorAll(".video-url");
+    const submitBtn = document.getElementById("submitVideos");
+    let hasURL = false;
+
+    inputs.forEach(input => {
+        if (input.value.trim()) hasURL = true;
+    });
+
+    submitBtn.disabled = !hasURL;
+}
+
+function loadVideos() {
+    const inputs = document.querySelectorAll(".video-url");
+    inputs.forEach(input => {
+        const url = input.value.trim();
+        if (url) addVideoToPage(url);
+    });
+
+    alert("Custom video URLs loaded.");
 }
