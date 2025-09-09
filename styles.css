@@ -6,57 +6,125 @@ body {
     padding: 0;
     height: 100vh;
     display: flex;
-    justify-content: flex-end;  /* pushes play button right */
-    align-items: center;        /* vertically centered */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
     font-family: Arial, sans-serif;
-    position: relative;
+    overflow: hidden;
+    animation: bg-pan 15s infinite alternate ease-in-out;
 }
 
-/* === Play Button (Right Side) === */
+/* Background pan effect */
+@keyframes bg-pan {
+    0% { background-position: center center; }
+    50% { background-position: 52% 48%; }
+    100% { background-position: 48% 52%; }
+}
+
+/* === Play Button Container === */
+.url-picker {
+    text-align: center;
+}
+
+/* === Play Button Styling === */
 .play-button {
-    margin-right: 120px; /* controls horizontal offset */
+    display: inline-block;
     cursor: pointer;
-    transition: transform 0.3s ease-in-out;
+    animation: float 4s ease-in-out infinite, pulseGlow 6s infinite;
+    transition: transform 0.5s ease-in-out;
 }
 
 .play-button .button-image {
     width: 180px;
     height: 180px;
-    border-radius: 50%;
-    object-fit: contain;
-    box-shadow: 0 0 35px rgba(255, 255, 255, 0.4);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.play-button:hover .button-image {
-    transform: scale(1.1);
-    box-shadow: 0 0 55px rgba(255, 255, 255, 0.7);
-}
-
-/* ✅ Chat Button – shifted up and left from bottom-right */
-.chat-button {
-    position: fixed;
-    bottom: 100px;   /* was 20px → move it UP */
-    right: 100px;    /* was 20px → move it LEFT */
-    cursor: pointer;
-    transition: transform 0.3s ease-in-out;
-}
-
-.chat-button .button-image {
-    width: 180px;  /* slightly smaller for balance */
-    height: 180px;
     object-fit: contain;
     border-radius: 50%;
-    box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+    box-shadow: 0 0 30px rgba(92, 2, 89, 0.6);
     transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out;
 }
 
-.chat-button:hover .button-image {
-    box-shadow: 0 0 35px rgba(255, 255, 255, 0.6);
-    transform: scale(1.05);
+/* Hover effect */
+.play-button:hover .button-image {
+    box-shadow: 0 0 50px rgba(98, 114, 249, 0.9), 0 0 80px rgba(98, 114, 249, 0.6);
+    transform: scale(1.1) rotate(5deg);
 }
 
-/* === Remove underline === */
+/* Click Animation */
+.play-button.clicked {
+    animation: clickBurst 0.7s ease forwards, screenShake 0.5s ease;
+}
+
+/* === Chat Button (floating bottom-right but shifted) === */
+.chat-button {
+    position: fixed;
+    bottom: 100px;
+    right: 100px;
+    cursor: pointer;
+    animation: float 5s ease-in-out infinite, pulseGlowAlt 7s infinite;
+    transition: transform 0.5s ease-in-out;
+}
+
+.chat-button .button-image {
+    width: 160px;
+    height: 160px;
+    object-fit: contain;
+    border-radius: 50%;
+    box-shadow: 0 0 25px rgba(92, 2, 89, 0.6);
+    transition: box-shadow 0.5s ease-in-out, transform 0.5s ease-in-out;
+}
+
+/* Hover effect */
+.chat-button:hover .button-image {
+    box-shadow: 0 0 45px rgba(98, 114, 249, 0.9), 0 0 70px rgba(98, 114, 249, 0.7);
+    transform: scale(1.2) rotate(-8deg);
+}
+
+/* Click Animation */
+.chat-button.clicked {
+    animation: clickBurstAlt 0.7s ease forwards, screenShake 0.5s ease;
+}
+
+/* === Shared Effects === */
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-15px); }
+    100% { transform: translateY(0px); }
+}
+
+@keyframes pulseGlow {
+    0%, 100% { box-shadow: 0 0 25px rgba(92, 2, 89, 0.5); }
+    50% { box-shadow: 0 0 60px rgba(98, 114, 249, 0.9); }
+}
+
+@keyframes pulseGlowAlt {
+    0%, 100% { box-shadow: 0 0 25px rgba(92, 2, 89, 0.4); }
+    50% { box-shadow: 0 0 55px rgba(249, 98, 232, 0.9); }
+}
+
+@keyframes clickBurst {
+    0% { transform: scale(1) rotate(0deg); }
+    50% { transform: scale(1.5) rotate(10deg); }
+    100% { transform: scale(1) rotate(0deg); }
+}
+
+@keyframes clickBurstAlt {
+    0% { transform: scale(1) rotate(0deg); }
+    50% { transform: scale(1.6) rotate(-12deg); }
+    100% { transform: scale(1) rotate(0deg); }
+}
+
+/* Screen shake effect */
+@keyframes screenShake {
+    0% { transform: translate(0, 0); }
+    20% { transform: translate(-8px, 5px); }
+    40% { transform: translate(8px, -5px); }
+    60% { transform: translate(-6px, 4px); }
+    80% { transform: translate(6px, -4px); }
+    100% { transform: translate(0, 0); }
+}
+
+/* === Remove underline from chat link === */
 .chat-button a {
     text-decoration: none;
     display: inline-block;
