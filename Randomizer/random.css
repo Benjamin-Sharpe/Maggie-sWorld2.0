@@ -1,1 +1,6 @@
-console.log("✅ script.js loaded correctly");
+body {
+  background: url("images/background.png") no-repeat center center fixed;
+  background-size: cover;
+  color: white;
+  font-family: Arial, sans-serif;
+}
