@@ -1,4 +1,4 @@
-/* ✅ Full-Screen Background */
+/* === Full-Screen Background === */
 body {
     background: url('images/background.png') no-repeat center center fixed;
     background-size: cover;
@@ -6,78 +6,62 @@ body {
     padding: 0;
     height: 100vh;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    color: white;
+    justify-content: flex-end;  /* pushes play button right */
+    align-items: center;        /* vertically centered */
     font-family: Arial, sans-serif;
+    position: relative;
 }
 
-/* ✅ Centered Container for Play Button */
-.url-picker {
-    text-align: center;
-}
-
-/* ✅ Play Button Styling */
+/* === Play Button (Right Side) === */
 .play-button {
-    display: inline-block;
+    margin-right: 120px; /* controls horizontal offset */
     cursor: pointer;
     transition: transform 0.3s ease-in-out;
 }
 
 .play-button .button-image {
-    width: 160px;
-    height: 160px;
-    object-fit: contain;
+    width: 180px;
+    height: 180px;
     border-radius: 50%;
-    box-shadow: 0 0 25px rgba(255, 255, 255, 0.3);
-    transition: box-shadow 0.3s ease-in-out;
+    object-fit: contain;
+    box-shadow: 0 0 35px rgba(255, 255, 255, 0.4);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* ✅ Hover effect for play button */
 .play-button:hover .button-image {
-    box-shadow: 0 0 40px rgba(255, 255, 255, 0.6);
+    transform: scale(1.1);
+    box-shadow: 0 0 55px rgba(255, 255, 255, 0.7);
 }
 
-/* ✅ Click Animation */
-.play-button.clicked {
-    transform: scale(1.2);
-    animation: bounce 0.3s ease-in-out;
-}
-
-@keyframes bounce {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.1); }
-    100% { transform: scale(1.2); }
-}
-
-/* ✅ Floating Chat Button (bottom-right corner) */
+/* === Chat Button (Up-Left) === */
 .chat-button {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
+    position: absolute;
+    top: 25%;      /* moves upward */
+    left: 120px;   /* controls left offset */
     cursor: pointer;
-    transition: transform 0.3s ease-in-out;
+    transform: rotate(-8deg);
+    z-index: 10;
 }
 
 .chat-button .button-image {
-    width: 200px;
-    height: 200px;
-    object-fit: contain;
+    width: 110px;
+    height: 110px;
     border-radius: 50%;
-    box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
-    transition: box-shadow 0.3s ease-in-out;
+    object-fit: contain;
+    box-shadow: 0 0 25px rgba(0, 200, 255, 0.5);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
 }
 
-/* ✅ Hover effect for chat button */
+.chat-button:hover {
+    transform: rotate(0deg) scale(1.15);
+}
+
 .chat-button:hover .button-image {
-    box-shadow: 0 0 35px rgba(255, 255, 255, 0.6);
+    box-shadow: 0 0 45px rgba(0, 200, 255, 0.9);
 }
 
-/* ✅ Remove link underline */
+/* === Remove underline === */
 .chat-button a {
     text-decoration: none;
     display: inline-block;
-    width: 100%;
-    height: 100%;
 }
