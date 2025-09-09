@@ -18,13 +18,22 @@ body {
     text-align: center;
 }
 
-/* ✅ Play Button */
-.play-button {
+/* ✅ Play and Chat Button styling */
+.play-button, .chat-button {
     display: inline-block;
-    width: 160px;  /* bigger button for impact */
+    width: 160px;
     height: 160px;
     cursor: pointer;
     transition: transform 0.3s ease-in-out;
+    /* Add a margin to separate the buttons */
+    margin: 0 15px; 
+}
+
+.chat-button a {
+    text-decoration: none; /* Removes underline from the link */
+    display: inline-block;
+    width: 100%;
+    height: 100%;
 }
 
 .button-image {
@@ -36,7 +45,8 @@ body {
     transition: box-shadow 0.3s ease-in-out;
 }
 
-.play-button:hover .button-image {
+.play-button:hover .button-image,
+.chat-button:hover .button-image {
     box-shadow: 0 0 40px rgba(255, 255, 255, 0.6);
 }
 
