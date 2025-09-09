@@ -35,19 +35,25 @@ body {
     transition: transform 0.5s ease-in-out;
 }
 
-.play-button .button-image {
+.play-button .button-image,
+.chat-button .button-image {
     width: 180px;
     height: 180px;
     object-fit: contain;
-    border-radius: 50%;
-    box-shadow: 0 0 30px rgba(92, 2, 89, 0.6);
-    transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out;
+    border-radius: 0;          /* ✅ Let PNG transparency define shape */
+    background: transparent;   /* ✅ Ensure no background fills in */
+    box-shadow: none;          /* ✅ Remove old box-shadow */
+    transition: filter 0.3s ease-in-out, transform 0.3s ease-in-out;
 }
 
-/* Hover effect */
+/* Play Button Glow */
+.play-button .button-image {
+    filter: drop-shadow(0 0 20px rgba(92, 2, 89, 0.8))
+            drop-shadow(0 0 10px rgba(92, 2, 89, 0.5));
+}
 .play-button:hover .button-image {
-    box-shadow: 0 0 50px rgba(98, 114, 249, 0.9), 0 0 80px rgba(98, 114, 249, 0.6);
-    transform: scale(1.1) rotate(5deg);
+    filter: drop-shadow(0 0 35px rgba(98, 114, 249, 1))
+            drop-shadow(0 0 15px rgba(98, 114, 249, 0.6));
 }
 
 /* Click Animation */
@@ -55,7 +61,7 @@ body {
     animation: clickBurst 0.7s ease forwards, screenShake 0.5s ease;
 }
 
-/* === Chat Button (floating bottom-right but shifted) === */
+/* === Chat Button (floating bottom-right) === */
 .chat-button {
     position: fixed;
     bottom: 100px;
@@ -65,19 +71,16 @@ body {
     transition: transform 0.5s ease-in-out;
 }
 
+/* Chat Button Glow */
 .chat-button .button-image {
     width: 160px;
     height: 160px;
-    object-fit: contain;
-    border-radius: 50%;
-    box-shadow: 0 0 25px rgba(92, 2, 89, 0.6);
-    transition: box-shadow 0.5s ease-in-out, transform 0.5s ease-in-out;
+    filter: drop-shadow(0 0 20px rgba(92, 2, 89, 0.8))
+            drop-shadow(0 0 10px rgba(92, 2, 89, 0.5));
 }
-
-/* Hover effect */
 .chat-button:hover .button-image {
-    box-shadow: 0 0 45px rgba(98, 114, 249, 0.9), 0 0 70px rgba(98, 114, 249, 0.7);
-    transform: scale(1.2) rotate(-8deg);
+    filter: drop-shadow(0 0 35px rgba(249, 98, 232, 1))
+            drop-shadow(0 0 15px rgba(249, 98, 232, 0.6));
 }
 
 /* Click Animation */
@@ -85,7 +88,7 @@ body {
     animation: clickBurstAlt 0.7s ease forwards, screenShake 0.5s ease;
 }
 
-/* === Shared Effects === */
+/* === Shared Animations === */
 @keyframes float {
     0% { transform: translateY(0px); }
     50% { transform: translateY(-15px); }
@@ -93,13 +96,13 @@ body {
 }
 
 @keyframes pulseGlow {
-    0%, 100% { box-shadow: 0 0 25px rgba(92, 2, 89, 0.5); }
-    50% { box-shadow: 0 0 60px rgba(98, 114, 249, 0.9); }
+    0%, 100% { filter: drop-shadow(0 0 25px rgba(92, 2, 89, 0.5)); }
+    50% { filter: drop-shadow(0 0 60px rgba(98, 114, 249, 0.9)); }
 }
 
 @keyframes pulseGlowAlt {
-    0%, 100% { box-shadow: 0 0 25px rgba(92, 2, 89, 0.4); }
-    50% { box-shadow: 0 0 55px rgba(249, 98, 232, 0.9); }
+    0%, 100% { filter: drop-shadow(0 0 25px rgba(92, 2, 89, 0.4)); }
+    50% { filter: drop-shadow(0 0 55px rgba(249, 98, 232, 0.9)); }
 }
 
 @keyframes clickBurst {
@@ -124,7 +127,7 @@ body {
     100% { transform: translate(0, 0); }
 }
 
-/* === Remove underline from chat link === */
+/* Remove underline from chat link */
 .chat-button a {
     text-decoration: none;
     display: inline-block;
