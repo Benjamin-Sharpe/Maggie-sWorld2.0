@@ -18,15 +18,24 @@ body {
     text-align: center;
 }
 
-/* ✅ Play and Chat Button styling */
-.play-button, .chat-button {
+/* ✅ Play Button styling */
+.play-button {
     display: inline-block;
-    width: 160px;
+    width: 160px; /* Keep this size for the main play button */
     height: 160px;
     cursor: pointer;
     transition: transform 0.3s ease-in-out;
-    /* Add a margin to separate the buttons */
-    margin: 0 15px; 
+    margin: 0 15px; /* Add margin to separate buttons */
+}
+
+/* ✅ Chat Button styling - making it smaller */
+.chat-button {
+    display: inline-block;
+    width: 80px; /* Adjust this to your desired smaller width */
+    height: 80px; /* Adjust this to your desired smaller height */
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+    margin: 0 15px; /* Add margin to separate buttons */
 }
 
 .chat-button a {
@@ -45,6 +54,7 @@ body {
     transition: box-shadow 0.3s ease-in-out;
 }
 
+/* Hover effects for both buttons */
 .play-button:hover .button-image,
 .chat-button:hover .button-image {
     box-shadow: 0 0 40px rgba(255, 255, 255, 0.6);
