@@ -21,8 +21,8 @@ body {
 /* ✅ Play Button */
 .play-button {
     display: inline-block;
-    width: 120px;
-    height: 120px;
+    width: 160px;  /* bigger button for impact */
+    height: 160px;
     cursor: pointer;
     transition: transform 0.3s ease-in-out;
 }
@@ -32,6 +32,12 @@ body {
     height: 100%;
     object-fit: contain;
     border-radius: 50%;
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.3);
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.play-button:hover .button-image {
+    box-shadow: 0 0 40px rgba(255, 255, 255, 0.6);
 }
 
 /* ✅ Click Animation */
