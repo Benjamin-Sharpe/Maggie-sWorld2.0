@@ -13,49 +13,29 @@ body {
     font-family: Arial, sans-serif;
 }
 
-/* ✅ Centered Container */
+/* ✅ Centered Container for Play Button */
 .url-picker {
     text-align: center;
 }
 
-/* ✅ Button Containers */
-.play-button, .chat-button {
+/* ✅ Play Button Styling */
+.play-button {
     display: inline-block;
     cursor: pointer;
     transition: transform 0.3s ease-in-out;
-    margin: 0 15px; /* Add margin to separate buttons */
 }
 
-/* ✅ Specific Sizing for each button's image */
 .play-button .button-image {
     width: 160px;
     height: 160px;
-}
-
-.chat-button .button-image {
-    width: 80px; /* This is the key fix */
-    height: 80px; /* This is the key fix */
-}
-
-/* ✅ Button image styling (shared) */
-.button-image {
     object-fit: contain;
     border-radius: 50%;
     box-shadow: 0 0 25px rgba(255, 255, 255, 0.3);
     transition: box-shadow 0.3s ease-in-out;
 }
 
-/* ✅ Link styling for the chat button */
-.chat-button a {
-    text-decoration: none; /* Removes underline from the link */
-    display: inline-block;
-    width: 100%;
-    height: 100%;
-}
-
-/* ✅ Hover effects for both buttons */
-.play-button:hover .button-image,
-.chat-button:hover .button-image {
+/* ✅ Hover effect for play button */
+.play-button:hover .button-image {
     box-shadow: 0 0 40px rgba(255, 255, 255, 0.6);
 }
 
@@ -69,4 +49,35 @@ body {
     0% { transform: scale(1); }
     50% { transform: scale(1.1); }
     100% { transform: scale(1.2); }
+}
+
+/* ✅ Floating Chat Button (bottom-right corner) */
+.chat-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+}
+
+.chat-button .button-image {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    border-radius: 50%;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+/* ✅ Hover effect for chat button */
+.chat-button:hover .button-image {
+    box-shadow: 0 0 35px rgba(255, 255, 255, 0.6);
+}
+
+/* ✅ Remove link underline */
+.chat-button a {
+    text-decoration: none;
+    display: inline-block;
+    width: 100%;
+    height: 100%;
 }
