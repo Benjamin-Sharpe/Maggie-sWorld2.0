@@ -26,27 +26,20 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 30px;              /* spacing between play & chat */
+    gap: 30px;              /* spacing between buttons */
     flex-wrap: wrap;        /* ✅ stacks nicely on small screens */
-    margin-bottom: 40px;
-}
-
-.arthur-button {
-    text-align: center;
 }
 
 /* === Shared Button Styling === */
 .play-button,
-.chat-button,
-.arthur-button {
+.chat-button {
     display: inline-block;
     cursor: pointer;
     transition: transform 0.5s ease-in-out;
 }
 
 .play-button .button-image,
-.chat-button .button-image,
-.arthur-button .button-image {
+.chat-button .button-image {
     width: 160px;
     height: 160px;
     object-fit: contain;
@@ -69,7 +62,7 @@ body {
             drop-shadow(0 0 15px rgba(98, 114, 249, 0.6));
 }
 
-/* === Chat Button Glow === */
+/* === Chat/Arthur’s Button Glow === */
 .chat-button {
     animation: float 5s ease-in-out infinite, pulseGlowAlt 7s infinite;
 }
@@ -80,19 +73,6 @@ body {
 .chat-button:hover .button-image {
     filter: drop-shadow(0 0 35px rgba(249, 98, 232, 1))
             drop-shadow(0 0 15px rgba(249, 98, 232, 0.6));
-}
-
-/* === Arthur’s Button Glow === */
-.arthur-button {
-    animation: float 6s ease-in-out infinite, pulseGlow 8s infinite;
-}
-.arthur-button .button-image {
-    filter: drop-shadow(0 0 20px rgba(50, 180, 120, 0.8))
-            drop-shadow(0 0 10px rgba(50, 180, 120, 0.5));
-}
-.arthur-button:hover .button-image {
-    filter: drop-shadow(0 0 35px rgba(80, 255, 180, 1))
-            drop-shadow(0 0 15px rgba(80, 255, 180, 0.6));
 }
 
 /* === Shared Animations === */
