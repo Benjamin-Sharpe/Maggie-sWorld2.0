@@ -4,12 +4,11 @@ body {
     background-size: cover;
     margin: 0;
     padding: 0;
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    color: white;
     font-family: Arial, sans-serif;
     overflow: hidden;
     animation: bg-pan 15s infinite alternate ease-in-out;
@@ -22,31 +21,45 @@ body {
     100% { background-position: 48% 52%; }
 }
 
-/* === Play Button Container === */
-.url-picker {
+/* === Button Layout === */
+.button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;              /* spacing between play & chat */
+    flex-wrap: wrap;        /* ✅ stacks nicely on small screens */
+    margin-bottom: 40px;
+}
+
+.arthur-button {
     text-align: center;
 }
 
-/* === Play Button Styling === */
-.play-button {
+/* === Shared Button Styling === */
+.play-button,
+.chat-button,
+.arthur-button {
     display: inline-block;
     cursor: pointer;
-    animation: float 4s ease-in-out infinite, pulseGlow 6s infinite;
     transition: transform 0.5s ease-in-out;
 }
 
 .play-button .button-image,
-.chat-button .button-image {
-    width: 180px;
-    height: 180px;
+.chat-button .button-image,
+.arthur-button .button-image {
+    width: 160px;
+    height: 160px;
     object-fit: contain;
-    border-radius: 0;          /* ✅ Let PNG transparency define shape */
-    background: transparent;   /* ✅ Ensure no background fills in */
-    box-shadow: none;          /* ✅ Remove old box-shadow */
+    background: transparent;
+    border-radius: 0;
+    box-shadow: none;
     transition: filter 0.3s ease-in-out, transform 0.3s ease-in-out;
 }
 
-/* Play Button Glow */
+/* === Play Button Glow === */
+.play-button {
+    animation: float 4s ease-in-out infinite, pulseGlow 6s infinite;
+}
 .play-button .button-image {
     filter: drop-shadow(0 0 20px rgba(92, 2, 89, 0.8))
             drop-shadow(0 0 10px rgba(92, 2, 89, 0.5));
@@ -56,25 +69,11 @@ body {
             drop-shadow(0 0 15px rgba(98, 114, 249, 0.6));
 }
 
-/* Click Animation */
-.play-button.clicked {
-    animation: clickBurst 0.7s ease forwards, screenShake 0.5s ease;
-}
-
-/* === Chat Button (floating bottom-right) === */
+/* === Chat Button Glow === */
 .chat-button {
-    position: fixed;
-    bottom: 100px;
-    right: 100px;
-    cursor: pointer;
     animation: float 5s ease-in-out infinite, pulseGlowAlt 7s infinite;
-    transition: transform 0.5s ease-in-out;
 }
-
-/* Chat Button Glow */
 .chat-button .button-image {
-    width: 160px;
-    height: 160px;
     filter: drop-shadow(0 0 20px rgba(92, 2, 89, 0.8))
             drop-shadow(0 0 10px rgba(92, 2, 89, 0.5));
 }
@@ -83,9 +82,17 @@ body {
             drop-shadow(0 0 15px rgba(249, 98, 232, 0.6));
 }
 
-/* Click Animation */
-.chat-button.clicked {
-    animation: clickBurstAlt 0.7s ease forwards, screenShake 0.5s ease;
+/* === Arthur’s Button Glow === */
+.arthur-button {
+    animation: float 6s ease-in-out infinite, pulseGlow 8s infinite;
+}
+.arthur-button .button-image {
+    filter: drop-shadow(0 0 20px rgba(50, 180, 120, 0.8))
+            drop-shadow(0 0 10px rgba(50, 180, 120, 0.5));
+}
+.arthur-button:hover .button-image {
+    filter: drop-shadow(0 0 35px rgba(80, 255, 180, 1))
+            drop-shadow(0 0 15px rgba(80, 255, 180, 0.6));
 }
 
 /* === Shared Animations === */
@@ -105,30 +112,8 @@ body {
     50% { filter: drop-shadow(0 0 55px rgba(249, 98, 232, 0.9)); }
 }
 
-@keyframes clickBurst {
-    0% { transform: scale(1) rotate(0deg); }
-    50% { transform: scale(1.5) rotate(10deg); }
-    100% { transform: scale(1) rotate(0deg); }
-}
-
-@keyframes clickBurstAlt {
-    0% { transform: scale(1) rotate(0deg); }
-    50% { transform: scale(1.6) rotate(-12deg); }
-    100% { transform: scale(1) rotate(0deg); }
-}
-
-/* Screen shake effect */
-@keyframes screenShake {
-    0% { transform: translate(0, 0); }
-    20% { transform: translate(-8px, 5px); }
-    40% { transform: translate(8px, -5px); }
-    60% { transform: translate(-6px, 4px); }
-    80% { transform: translate(6px, -4px); }
-    100% { transform: translate(0, 0); }
-}
-
-/* Remove underline from chat link */
-.chat-button a {
+/* Remove underline from links */
+a {
     text-decoration: none;
     display: inline-block;
 }
