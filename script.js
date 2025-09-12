@@ -64,6 +64,10 @@ function openRandomURL() {
             "https://www.eporner.com/video-l145JY0pZH6/giant-black-cocks-pmv/", 
             "https://www.eporner.com/video-SBSZ1z6ThS6/let-bbc-penetrate-your-mind-joi/",
             "https://www.eporner.com/video-viJjFOVcToO/pmv-huge-dicks/",
+		    "https://hypnotube.com/video/slut-affirmation-for-women-30477.html",
+		    "https://hypnotube.com/video/rough-interracial-domination-6678.html",
+		    "https://hypnotube.com/video/hot-slutty-brainmelt-for-good-girls-105289.html",
+		    "https://hypnotube.com/video/hot-slutty-brainmelt-for-good-girls-105289.html",
 
     ];
 
