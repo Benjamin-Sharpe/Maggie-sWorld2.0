@@ -229,7 +229,7 @@ body {
     right: 20px; /* Initial position */
     font-size: 2em; /* Size of the heart */
     color: #ff007f; /* Tinder-like pink/red */
-    opacity: 0.1; /* Very subtle */
+    opacity: 0.5; /* Changed from 0.1 to 0.5 (50% opaque) */
     cursor: pointer;
     transition: opacity 0.3s ease, transform 0.3s ease;
     z-index: 100; /* Ensure it's above other content */
