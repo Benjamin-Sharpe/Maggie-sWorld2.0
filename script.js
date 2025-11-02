@@ -4,6 +4,106 @@ document.addEventListener("DOMContentLoaded", function() {
     button.addEventListener("click", function() {
         openRandomURL();
     });
+
+    // Particle Animation
+    const canvas = document.getElementById('particle-canvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    class Particle {
+        constructor(x, y) {
+            this.x = x;
+            this.y = y;
+            this.size = Math.random() * 2 + 0.5; // Smaller particles
+            this.speedX = Math.random() * 0.5 - 0.25; // Slower movement
+            this.speedY = Math.random() * 0.5 - 0.25; // Slower movement
+            this.color = 'rgba(255, 255, 255, 0.3)'; // Subtle white glow
+        }
+        update() {
+            this.x += this.speedX;
+            this.y += this.speedY;
+            if (this.size > 0.1) this.size -= 0.01; // Fade out slowly
+        }
+        draw() {
+            ctx.fillStyle = this.color;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fill();
+        }
+    }
+
+    function createParticles() {
+        for (let i = 0; i < 5; i++) { // Create a few particles at a time
+            particles.push(new Particle(Math.random() * canvas.width, Math.random() * canvas.height));
+        }
+    }
+
+    function animateParticles() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (let i = 0; i < particles.length; i++) {
+            particles[i].update();
+            particles[i].draw();
+        }
+        particles = particles.filter(particle => particle.size > 0.1); // Remove faded particles
+        if (particles.length < 100) { // Maintain a certain number of particles
+            createParticles();
+        }
+        requestAnimationFrame(animateParticles);
+    }
+
+    createParticles();
+    animateParticles();
+
+    // Floating Heart Animation
+    const tinderHeart = document.getElementById('tinder-heart');
+    const tinderUrl = "https://tinder.com/@SSL_ERROR_RX_RECORD";
+
+    let heartX = Math.random() * (window.innerWidth - 50); // Initial random X position
+    let heartY = Math.random() * (window.innerHeight - 50); // Initial random Y position
+    let heartSpeedX = (Math.random() - 0.5) * 4; // Increased speed range
+    let heartSpeedY = (Math.random() - 0.5) * 4; // Increased speed range
+    const heartSize = 50; // Approximate size for boundary checks
+
+    function animateHeart() {
+        heartX += heartSpeedX;
+        heartY += heartSpeedY;
+
+        // Bounce off edges with slight randomness
+        if (heartX + heartSize > window.innerWidth || heartX < 0) {
+            heartSpeedX *= -1;
+            heartSpeedX += (Math.random() - 0.5) * 0.5; // Add slight random change
+        }
+        if (heartY + heartSize > window.innerHeight || heartY < 0) {
+            heartSpeedY *= -1;
+            heartSpeedY += (Math.random() - 0.5) * 0.5; // Add slight random change
+        }
+
+        // Keep heart within bounds if it somehow gets stuck
+        if (heartX < 0) heartX = 0;
+        if (heartX + heartSize > window.innerWidth) heartX = window.innerWidth - heartSize;
+        if (heartY < 0) heartY = 0;
+        if (heartY + heartSize > window.innerHeight) heartY = window.innerHeight - heartSize;
+
+
+        tinderHeart.style.left = heartX + 'px';
+        tinderHeart.style.top = heartY + 'px';
+
+        requestAnimationFrame(animateHeart);
+    }
+
+    tinderHeart.addEventListener('click', () => {
+        window.open(tinderUrl, '_blank');
+    });
+
+    animateHeart();
 });
 
 function openRandomURL() {
@@ -63,14 +163,21 @@ function openRandomURL() {
             "https://www.eporner.com/video-viJjFOVcToO/pmv-huge-dicks/", 
             "https://www.eporner.com/video-l145JY0pZH6/giant-black-cocks-pmv/", 
             "https://www.eporner.com/video-SBSZ1z6ThS6/let-bbc-penetrate-your-mind-joi/",
-            "https://www.eporner.com/video-viJjFOVcToO/pmv-huge-dicks/",
-		    "https://hypnotube.com/video/slut-affirmation-for-women-30477.html",
-		    "https://hypnotube.com/video/rough-interracial-domination-6678.html",
-		    "https://hypnotube.com/video/hot-slutty-brainmelt-for-good-girls-105289.html",
-		    "https://hypnotube.com/video/hot-slutty-brainmelt-for-good-girls-105289.html",
+            "https://www.eporner.com/video-viJjFOVcToO/pmv-huge-dicks/", 
+            "https://hypnotube.com/video/slut-affirmation-for-women-30477.html",
+    	    "https://hypnotube.com/video/rough-interracial-domination-6678.html",
+            "https://hypnotube.com/video/hot-slutty-brainmelt-for-good-girls-105289.html",
+            "https://hypnotube.com/video/hot-slutty-brainmelt-for-good-girls-105289.html",
+            "https://www.xvideos.com/video.udeeotvbe73/my_big_titty_neighbor_caught_me_spying_now_i_have_to_pay_the_price_-_chloe_surreal",
+            "https://www.eporner.com/video-UsfF3Fx8ySn/i-swear-her-ass-got-bigger/",
+            "https://www.eporner.com/video-A5s7cVBTxUz/andr3-a-ur4ch-alemao/",
+            "https://noodlemagazine.com/watch/-229755164_456239797",
+            "https://noodlemagazine.com/watch/-227575090_456240684",
+            "https://noodlemagazine.com/watch/-181509778_456246225",
+            "https://noodlemagazine.com/watch/-224711092_456239480",
+            "https://noodlemagazine.com/watch/-226422549_456242723"
 
-    ];
-
+                ];
     if (urls.length > 0) {
         let randomIndex = Math.floor(Math.random() * urls.length);
         let button = document.querySelector(".play-button");
