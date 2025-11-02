@@ -5,23 +5,52 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Just Goon</title>
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-  <!-- Button Container -->
-  <div class="button-container">
-    <!-- Play Button -->
-    <div class="play-button">
-      <img src="images/button.png" alt="Play Button" class="button-image">
+  <canvas id="particle-canvas"></canvas>
+  <div class="social-buttons-container">
+    <h1>Connect w me Fam</h1>
+    <div class="social-buttons">
+        <a href="https://www.facebook.com/xbenjaminsharpe" target="_blank" class="social-button facebook">
+            <i class="fab fa-facebook-f"></i>
+            <span>Facebook</span>
+        </a>
+        <a href="https://www.instagram.com/benjaminsharpe_/?hl=en" target="_blank" class="social-button instagram">
+            <i class="fab fa-instagram"></i>
+            <span>Instagram</span>
+        </a>
+        <a href="https://www.tiktok.com/@the.red.shirt.lmao" target="_blank" class="social-button tiktok">
+            <i class="fab fa-tiktok"></i>
+            <span>TikTok</span>
+        </a>
+    </div>
+  </div>
+
+  <!-- Original Buttons Container -->
+  <div class="original-buttons-section">
+    <h2 class="button-label">Can't Make Up Your Mind? Use Ai Find</h2>
+    <div class="button-container">
+      <!-- Play Button -->
+      <div class="play-button">
+        <img src="images/button.png" alt="Play Button" class="button-image">
+      </div>
     </div>
 
-    <!-- Chat / Arthur's Playground Button -->
-    <div class="chat-button">
-      <a href="https://viper-open-centrally.ngrok-free.app" target="_blank">
-        <img src="images/chat.png" alt="Arthur's Playground" class="button-image">
-      </a>
+    <h2 class="button-label">Meet the team</h2>
+    <div class="button-container">
+      <!-- Chat / Arthur's Playground Button -->
+      <div class="chat-button">
+        <a href="https://viper-open-centrally.ngrok-free.app" target="_blank">
+          <img src="images/chat.png" alt="Arthur's Playground" class="button-image">
+        </a>
+      </div>
     </div>
   </div>
 
   <script src="script.js"></script>
+  <div id="tinder-heart" class="floating-heart">
+    <i class="fas fa-heart"></i>
+  </div>
 </body>
 </html>
