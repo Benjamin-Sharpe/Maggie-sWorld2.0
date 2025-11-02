@@ -1,4 +1,11 @@
-/* === Full-Screen Background === */
+#particle-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; /* Ensure it's behind other content */
+}
 body {
     background: url('images/background.png') no-repeat center center fixed;
     background-size: cover;
@@ -10,8 +17,11 @@ body {
     justify-content: center;
     align-items: center;
     font-family: Arial, sans-serif;
-    overflow: hidden;
+
     animation: bg-pan 15s infinite alternate ease-in-out;
+    color: #fff;
+    text-align: center;
+    gap: 30px; /* Space between the two main sections */
 }
 
 /* Background pan effect */
@@ -40,8 +50,8 @@ body {
 
 .play-button .button-image,
 .chat-button .button-image {
-    width: 160px;
-    height: 160px;
+    width: 200px;
+    height: 200px;
     object-fit: contain;
     background: transparent;
     border-radius: 0;
@@ -92,8 +102,165 @@ body {
     50% { filter: drop-shadow(0 0 55px rgba(249, 98, 232, 0.9)); }
 }
 
-/* Remove underline from links */
-a {
+/* Interactive Button Hover Effects */
+.social-button,
+.play-button .button-image,
+.chat-button .button-image {
+    position: relative;
+    overflow: hidden;
+    transform: translateZ(0); /* Force hardware acceleration */
+}
+
+.social-button::before,
+.play-button .button-image::before,
+.chat-button .button-image::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.2); /* Light ripple color */
+    border-radius: 50%;
+    opacity: 0;
+    transform: translate(-50%, -50%);
+    transition: width 0.4s ease-out, height 0.4s ease-out, opacity 0.4s ease-out;
+    z-index: 1;
+}
+
+.social-button:hover::before,
+.play-button:hover .button-image::before,
+.chat-button:hover .button-image::before {
+    width: 200%;
+    height: 200%;
+    opacity: 1;
+}
+
+.social-button:active,
+.play-button:active .button-image,
+.chat-button:active .button-image {
+    transform: scale(0.95) translateZ(-5px); /* Subtle 3D press effect */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Adjust shadow on press */
+    transition: transform 0.1s ease-out, box-shadow 0.1s ease-out;
+}
+
+/* Ensure button content is above the ripple */
+.social-button span,
+.social-button i {
+    position: relative;
+    z-index: 2;
+}
+
+.social-buttons-container {
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 40px 60px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    margin-bottom: 30px; /* Space between the two main sections */
+}
+
+.social-buttons-container h1 {
+    font-size: 2.5em;
+    margin-bottom: 40px;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    color: #fff; /* Ensure heading color is white */
+}
+
+.social-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.social-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px 30px;
+    border-radius: 10px;
+    font-size: 1.2em;
     text-decoration: none;
-    display: inline-block;
+    color: #fff;
+    transition: all 0.3s ease;
+    min-width: 250px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.social-button i {
+    margin-right: 15px;
+    font-size: 1.5em;
+}
+
+.social-button.facebook {
+    background: linear-gradient(to right, #3b5998, #6d84b4);
+}
+
+.social-button.instagram {
+    background: linear-gradient(to right, #833ab4, #fd1d1d, #fcb045);
+}
+
+.social-button.tiktok {
+    background: linear-gradient(to right, #000, #222);
+}
+
+.social-button:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.social-button.facebook:hover {
+    background: linear-gradient(to right, #6d84b4, #3b5998);
+}
+
+.social-button.instagram:hover {
+    background: linear-gradient(to right, #fcb045, #fd1d1d, #833ab4);
+}
+
+.social-button.tiktok:hover {
+    background: linear-gradient(to right, #222, #000);
+}
+
+/* Styles for the floating heart icon */
+.floating-heart {
+    position: absolute;
+    bottom: 20px; /* Initial position */
+    right: 20px; /* Initial position */
+    font-size: 2em; /* Size of the heart */
+    color: #ff007f; /* Tinder-like pink/red */
+    opacity: 0.1; /* Very subtle */
+    cursor: pointer;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 100; /* Ensure it's above other content */
+}
+
+.floating-heart:hover {
+    opacity: 0.7; /* More visible on hover */
+    transform: scale(1.1); /* Slightly larger on hover */
+}
+
+.original-buttons-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px; /* Space between labels and button containers */
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 40px 60px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.original-buttons-section .button-container {
+    flex-direction: column; /* Stack original buttons vertically */
+    gap: 20px; /* Space between original buttons */
+}
+
+.button-label {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    color: #fff;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
