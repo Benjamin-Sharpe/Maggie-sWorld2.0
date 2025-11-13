@@ -68,8 +68,9 @@ body {
             drop-shadow(0 0 10px rgba(92, 2, 89, 0.5));
 }
 .play-button:hover .button-image {
-    filter: drop-shadow(0 0 35px rgba(98, 114, 249, 1))
-            drop-shadow(0 0 15px rgba(98, 114, 249, 0.6));
+    /* Adjusted glow size to prevent accidental heart clicks */
+    filter: drop-shadow(0 0 28px rgba(98, 114, 249, 1))
+            drop-shadow(0 0 12px rgba(98, 114, 249, 0.6));
 }
 
 /* === Chat/Arthur’s Button Glow === */
@@ -222,22 +223,29 @@ body {
     background: linear-gradient(to right, #222, #000);
 }
 
-/* Styles for the floating heart icon */
+/* Styles for the floating heart icon - UPDATED */
 .floating-heart {
     position: absolute;
     bottom: 20px; /* Initial position */
     right: 20px; /* Initial position */
     font-size: 2em; /* Size of the heart */
     color: #ff007f; /* Tinder-like pink/red */
-    opacity: 0.5; /* Changed from 0.1 to 0.5 (50% opaque) */
+    opacity: 0.5; /* 50% opaque */
     cursor: pointer;
     transition: opacity 0.3s ease, transform 0.3s ease;
-    z-index: 100; /* Ensure it's above other content */
+    z-index: 1000; /* Ensured highest z-index for click priority */
+
+    /* ADDED: Thin white outline for definition and better click area */
+    text-shadow: 
+        1px 1px 0 #fff, 
+        -1px -1px 0 #fff, 
+        1px -1px 0 #fff, 
+        -1px 1px 0 #fff; 
 }
 
 .floating-heart:hover {
-    opacity: 0.7; /* More visible on hover */
-    transform: scale(1.1); /* Slightly larger on hover */
+    opacity: 1; /* Fully visible on hover */
+    transform: scale(1.2); /* More prominent scale on hover */
 }
 
 .original-buttons-section {
