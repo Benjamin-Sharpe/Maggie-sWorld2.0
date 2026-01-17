@@ -4,70 +4,72 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Just Goon | Benjamin Sharpe Official</title>
+    <title>Just Goon | Official Portal</title>
     
     <link rel="stylesheet" href="styles.css">
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
-<body class="main-portal-body">
+<body class="site-master-container">
 
-    <canvas id="particle-canvas" class="canvas-engine-layer"></canvas>
+    <canvas id="particle-canvas" class="background-canvas-layer"></canvas>
 
-    <header class="hero-social-interface">
-        <div class="glass-module-container">
-            <div class="text-grouping">
-                <h1 class="hero-header-title">Follow the Twitch</h1>
-                <p class="hero-subtitle-caption">Join the community live at the link below</p>
-            </div>
-            
-            <nav class="active-social-links">
-                <a href="https://www.twitch.tv/benjamindsharpe" target="_blank" class="platform-btn twitch-active" id="twitch-link-main">
-                    <i class="fab fa-twitch"></i>
-                    <span class="platform-label">Follow Benjamin Sharpe</span>
-                </a>
+    <div class="vertical-layout-stack">
 
-                </nav>
-        </div>
-    </header>
-
-    <main class="primary-feature-section" id="team-portal">
-        <div class="feature-card">
-            <div class="feature-header-wrap">
-                <h2 class="section-heading-text">Meet the team</h2>
-                <span class="heading-accent-line"></span>
-            </div>
-            
-            <div class="interaction-node">
-                <div class="image-anchor-wrapper" id="team-trigger">
-                    <a href="https://viper-open-centrally.ngrok-free.app" target="_blank" class="portrait-anchor">
-                        <img src="images/chat.png" alt="Arthur's Playground" class="team-interactive-asset">
+        <header class="section-module hero-module">
+            <div class="glass-panel">
+                <div class="text-content">
+                    <h1 class="main-heading">Follow the Twitch</h1>
+                    <p class="sub-heading">Join the community live at the link below</p>
+                </div>
+                
+                <nav class="navigation-hub">
+                    <a href="https://www.twitch.tv/benjamindsharpe" target="_blank" class="action-btn twitch-primary" id="twitch-cta">
+                        <i class="fab fa-twitch"></i>
+                        <span class="btn-label">Follow Benjamin Sharpe</span>
                     </a>
-                </div>
-            </div>
-        </div>
-    </main>
 
-    <footer class="discovery-footer-tray" id="ai-footer-tray">
-        
-        <div class="tray-reveal-action" id="trigger-footer-reveal">
-            <p class="reveal-prompt-text">Can't Make Up Your Mind? Use Ai Find</p>
-            <span class="reveal-hint-text">(Click to Expand Feature)</span>
-        </div>
-        
-        <div class="tray-content-expanded" id="ai-feature-ui">
-            <h3 class="feature-mini-title">AI Discovery Engine</h3>
-            <div class="action-button-group">
-                <div class="ai-execute-btn" id="run-randomizer">
-                    <img src="images/button.png" alt="AI Action" class="ai-button-image-asset">
+                    </nav>
+            </div>
+        </header>
+
+        <main class="section-module team-module">
+            <div class="glass-panel team-panel">
+                <div class="panel-header">
+                    <h2 class="section-title">Meet the team</h2>
+                    <div class="accent-divider"></div>
+                </div>
+                
+                <div class="interactive-area">
+                    <div class="image-wrapper" id="team-click-trigger">
+                        <a href="https://viper-open-centrally.ngrok-free.app" target="_blank" class="image-link">
+                            <img src="images/chat.png" alt="Arthur's Playground" class="team-asset">
+                        </a>
+                    </div>
                 </div>
             </div>
-            <p class="feature-disclaimer">This utility opens a random destination portal in a new browser tab.</p>
+        </main>
+
+    </div> <footer class="footer-dock" id="discovery-dock">
+        
+        <div class="dock-trigger-layer" id="reveal-btn">
+            <p class="trigger-text">Can't Make Up Your Mind? Use Ai Find</p>
+            <span class="trigger-subtext">(Click to Expand Feature)</span>
+        </div>
+        
+        <div class="dock-content-layer" id="dock-content">
+            <h3 class="dock-title">AI Content Randomizer</h3>
+            <div class="dock-actions">
+                <div class="ai-btn-wrapper" id="execute-ai">
+                    <img src="images/button.png" alt="AI Button" class="ai-asset">
+                </div>
+            </div>
+            <p class="dock-warning">Opens a random portal in a new tab.</p>
         </div>
 
     </footer>
 
-    <div id="tinder-heart" class="kinetic-heart-sprite" title="Connect on Tinder">
+    <div id="tinder-heart" class="floating-ui-element" title="Open Tinder">
         <i class="fas fa-heart"></i>
     </div>
 
