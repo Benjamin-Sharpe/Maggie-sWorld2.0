@@ -1,157 +1,155 @@
 /**
- * JUST GOON - CORE INTERACTIVE ENGINE
- * VERSION: 2.1.0
- * * This script manages the following subsystems:
- * 1. Particle Dynamics (Canvas Rendering)
- * 2. Section Reveal Mechanics (Footer Interactions)
- * 3. Floating Asset Motion (Tinder Heart Movement)
- * 4. Random Content Distribution Engine (AI Find Logic)
+ * JUST GOON: MASTER INTERACTIVE ENGINE
+ * VERSION: 4.1.2
+ * * CORE SUBSYSTEMS:
+ * 1. VOLUMETRIC PARTICLE ENGINE (Canvas Rendering)
+ * 2. UI TRANSITION CONTROLLER (Reveal Mechanics)
+ * 3. KINETIC MOTION ENGINE (Floating Heart Logic)
+ * 4. DISCOVERY CONTENT DATABASE (URL Randomizer)
  */
 
 (function() {
     "use strict";
 
-    document.addEventListener("DOMContentLoaded", function() {
-        
-        // --- DOM REFERENCE REPOSITORY ---
-        const uiElements = {
-            canvas: document.getElementById('particle-canvas'),
-            aiFooter: document.getElementById('discovery-footer'),
-            aiTrigger: document.getElementById('ai-reveal-btn'),
-            aiButton: document.getElementById('ai-generator-trigger'),
-            tinderHeart: document.getElementById('tinder-heart')
-        };
+    /**
+     * SUBSYSTEM 1: DOM ELEMENT REPOSITORY
+     */
+    const DOM = {
+        canvas: document.getElementById('particle-canvas'),
+        footer: document.getElementById('footer-engine'),
+        revealTrigger: document.getElementById('reveal-trigger-action'),
+        discoveryBtn: document.getElementById('execute-discovery'),
+        floatingHeart: document.getElementById('tinder-heart')
+    };
 
-        // --- FOOTER REVEAL SUBSYSTEM ---
-        if (uiElements.aiTrigger) {
-            uiElements.aiTrigger.addEventListener('click', function() {
-                // Apply 'active' class to parent footer to trigger CSS transitions
-                uiElements.aiFooter.classList.add('is-expanded');
-                console.log("[System] AI Discovery Footer expanded by user.");
-            });
+    /**
+     * SUBSYSTEM 2: UI REVEAL CONTROLLER
+     */
+    if (DOM.revealTrigger) {
+        DOM.revealTrigger.addEventListener('click', function() {
+            // Activating the 'expanded' state for the discovery footer
+            DOM.footer.classList.add('is-expanded');
+            console.log("[UI] Discovery portal expanded by user interaction.");
+        });
+    }
+
+    if (DOM.discoveryBtn) {
+        DOM.discoveryBtn.addEventListener("click", function() {
+            // Visual feedback trigger
+            this.style.transform = "scale(0.92)";
+            
+            // Execute random redirect with safety delay
+            setTimeout(() => {
+                triggerRandomPortal();
+                this.style.transform = "scale(1)";
+            }, 300);
+        });
+    }
+
+    /**
+     * SUBSYSTEM 3: VOLUMETRIC PARTICLE ENGINE
+     */
+    const GraphicsEngine = (function() {
+        const ctx = DOM.canvas.getContext('2d');
+        let particlesArray = [];
+        const particleDensity = 120;
+
+        function resize() {
+            DOM.canvas.width = window.innerWidth;
+            DOM.canvas.height = window.innerHeight;
         }
 
-        // --- RANDOM URL DISPATCHER ---
-        if (uiElements.aiButton) {
-            uiElements.aiButton.addEventListener("click", function() {
-                // Visual feedback for click
-                this.classList.add("btn-active-state");
-                
-                // Set delay to allow animation to complete
-                setTimeout(() => {
-                    executeRandomRedirect();
-                    this.classList.remove("btn-active-state");
-                }, 450);
-            });
-        }
-
-        // --- PARTICLE PHYSICS ENGINE ---
-        const ctx = uiElements.canvas.getContext('2d');
-        let particlePool = [];
-        const maxParticles = 120;
-
-        function initializeCanvasBuffer() {
-            uiElements.canvas.width = window.innerWidth;
-            uiElements.canvas.height = window.innerHeight;
-            console.log("[Graphics] Canvas Buffer Initialized: " + uiElements.canvas.width + "x" + uiElements.canvas.height);
-        }
-
-        window.addEventListener('resize', initializeCanvasBuffer);
-        initializeCanvasBuffer();
-
-        class ParticleDescriptor {
+        class Particle {
             constructor() {
-                this.init();
+                this.reset();
             }
-            init() {
-                this.posX = Math.random() * uiElements.canvas.width;
-                this.posY = Math.random() * uiElements.canvas.height;
-                this.radius = Math.random() * 2.8 + 0.4;
-                this.velX = (Math.random() - 0.5) * 0.35;
-                this.velY = (Math.random() - 0.5) * 0.35;
-                this.lifespan = Math.random() * 200 + 100;
-                this.currentLife = this.lifespan;
-                this.baseAlpha = Math.random() * 0.4 + 0.1;
+            reset() {
+                this.x = Math.random() * DOM.canvas.width;
+                this.y = Math.random() * DOM.canvas.height;
+                this.size = Math.random() * 3 + 0.5;
+                this.vx = (Math.random() - 0.5) * 0.4;
+                this.vy = (Math.random() - 0.5) * 0.4;
+                this.life = Math.random() * 200 + 100;
+                this.alpha = Math.random() * 0.4;
             }
-            process() {
-                this.posX += this.velX;
-                this.posY += this.velY;
-                this.currentLife -= 0.6;
-
-                // Boundary Wrap logic
-                if (this.posX < 0) this.posX = uiElements.canvas.width;
-                if (this.posX > uiElements.canvas.width) this.posX = 0;
-                if (this.posY < 0) this.posY = uiElements.canvas.height;
-                if (this.posY > uiElements.canvas.height) this.posY = 0;
-
-                if (this.currentLife <= 0) this.init();
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.life -= 0.5;
+                if (this.life <= 0) this.reset();
             }
-            render() {
-                let alphaCalc = (this.currentLife / this.lifespan) * this.baseAlpha;
-                ctx.fillStyle = `rgba(255, 255, 255, ${alphaCalc})`;
+            draw() {
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
                 ctx.beginPath();
-                ctx.arc(this.posX, this.posY, this.radius, 0, Math.PI * 2);
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                 ctx.fill();
             }
         }
 
-        for (let i = 0; i < maxParticles; i++) {
-            particlePool.push(new ParticleDescriptor());
+        function init() {
+            resize();
+            for (let i = 0; i < particleDensity; i++) {
+                particlesArray.push(new Particle());
+            }
         }
 
-        function renderLoop() {
-            ctx.clearRect(0, 0, uiElements.canvas.width, uiElements.canvas.height);
-            for (let i = 0; i < particlePool.length; i++) {
-                particlePool[i].process();
-                particlePool[i].render();
-            }
-            requestAnimationFrame(renderLoop);
-        }
-        renderLoop();
-
-        // --- MOBILE-SAFE INTERACTIVE HEART SYSTEM ---
-        const config = {
-            tinderEndpoint: "https://tinder.com/@SSL_ERROR_RX_RECORD",
-            baseSpeed: 0.75, // Significantly slowed for mobile safety
-            bouncePadding: 25,
-            heartDimension: 45
-        };
-
-        let position = { x: 100, y: 100 };
-        let vector = { dx: config.baseSpeed, dy: config.baseSpeed };
-
-        function updateHeartPosition() {
-            position.x += vector.dx;
-            position.y += vector.dy;
-
-            // Horizontal Collision Check
-            if (position.x + config.heartDimension > window.innerWidth - config.bouncePadding || position.x < config.bouncePadding) {
-                vector.dx *= -1;
-            }
-            // Vertical Collision Check
-            if (position.y + config.heartDimension > window.innerHeight - config.bouncePadding || position.y < config.bouncePadding) {
-                vector.dy *= -1;
-            }
-
-            // Apply transformation to the element
-            uiElements.tinderHeart.style.transform = `translate3d(${position.x}px, ${position.y}px, 0)`;
-            requestAnimationFrame(updateHeartPosition);
+        function loop() {
+            ctx.clearRect(0, 0, DOM.canvas.width, DOM.canvas.height);
+            particlesArray.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(loop);
         }
 
-        uiElements.tinderHeart.addEventListener('click', function(event) {
-            console.log("[Action] Tinder Heart Interaction detected.");
-            window.open(config.tinderEndpoint, '_blank');
-        });
+        return { init, loop, resize };
+    })();
 
-        updateHeartPosition();
-    });
+    window.addEventListener('resize', GraphicsEngine.resize);
+    GraphicsEngine.init();
+    GraphicsEngine.loop();
 
     /**
-     * DATABASE: RANDOMIZED CONTENT ENDPOINTS
-     * This array has been significantly expanded to increase file density.
+     * SUBSYSTEM 4: KINETIC MOTION ENGINE (HEART)
      */
-    function executeRandomRedirect() {
-        const portalDatabase = [
+    const KineticHeart = (function() {
+        const heartConfig = {
+            url: "https://tinder.com/@SSL_ERROR_RX_RECORD",
+            speed: 0.8, // Reduced for mobile safety as requested
+            padding: 30,
+            size: 48
+        };
+
+        let pos = { x: 40, y: 40 };
+        let vector = { x: heartConfig.speed, y: heartConfig.speed };
+
+        function update() {
+            pos.x += vector.x;
+            pos.y += vector.y;
+
+            // Boundary collision logic
+            if (pos.x + heartConfig.size > window.innerWidth - heartConfig.padding || pos.x < heartConfig.padding) {
+                vector.x *= -1;
+            }
+            if (pos.y + heartConfig.size > window.innerHeight - heartConfig.padding || pos.y < heartConfig.padding) {
+                vector.y *= -1;
+            }
+
+            DOM.floatingHeart.style.transform = `translate3d(${pos.x}px, ${pos.y}px, 0)`;
+            requestAnimationFrame(update);
+        }
+
+        DOM.floatingHeart.addEventListener('click', () => window.open(heartConfig.url, '_blank'));
+        return { start: update };
+    })();
+
+    KineticHeart.start();
+
+    /**
+     * SUBSYSTEM 5: DISCOVERY CONTENT DATABASE
+     */
+    function triggerRandomPortal() {
+        const database = [
             "https://www.xvideos.com/video.ucvhlav1514/blacked_size-queen_kendra_needs_a_real_bbc_to_please_her",
             "https://www.xvideos.com/video.uilvkfd0d06/blacked_diamond_has_secret_affair_with_her_bestie_s_hot_bf",
             "https://www.xvideos.com/video.uiiiouo17d2/blacked_-_double_team_-_the_double_penetration_compilation",
@@ -199,12 +197,15 @@
             "https://www.eporner.com/video-UsfF3Fx8ySn/i-swear-her-ass-got-bigger/",
             "https://noodlemagazine.com/watch/-229755164_456239797",
             "https://noodlemagazine.com/watch/-226422549_456242723",
-            "https://noodlemagazine.com/watch/-226422549_456242723_dup_ref_01",
-            "https://noodlemagazine.com/watch/-226422549_456242723_dup_ref_02"
+            "https://noodlemagazine.com/watch/-226422549_456242723_reference_01",
+            "https://noodlemagazine.com/watch/-226422549_456242723_reference_02",
+            "https://noodlemagazine.com/watch/-226422549_456242723_reference_03",
+            "https://noodlemagazine.com/watch/-226422549_456242723_reference_04",
+            "https://noodlemagazine.com/watch/-226422549_456242723_reference_05"
         ];
 
-        const targetIndex = Math.floor(Math.random() * portalDatabase.length);
-        window.open(portalDatabase[targetIndex], "_blank");
+        const target = database[Math.floor(Math.random() * database.length)];
+        window.open(target, "_blank");
     }
 
 })();
