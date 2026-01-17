@@ -1,43 +1,40 @@
 /**
- * JUST GOON: ARCHITECTURAL STYLE SYSTEM
- * VERSION: 5.0.0
- * * TABLE OF CONTENTS:
- * 1. CSS CUSTOM PROPERTIES (VARIABLES)
- * 2. CORE ELEMENT RESET
- * 3. BACKGROUND ENGINE LAYERING
- * 4. COMPONENT: SOCIAL HERO (HEADER)
- * 5. COMPONENT: FEATURE SHOWCASE (MAIN)
- * 6. COMPONENT: DISCOVERY PORTAL (FOOTER)
- * 7. INTERACTIVE KINETIC ELEMENTS
- * 8. MEDIA ADAPTATION LAYER
+ * JUST GOON: ARCHITECTURAL DESIGN SYSTEM
+ * VERSION: 6.0.0
+ * * DESIGN TOKENS:
+ * 1. PERSISTENT COLOR VARIANTS
+ * 2. SPACING & BOX HIERARCHY
+ * 3. TYPOGRAPHY & TEXT EFFECTS
+ * 4. ANIMATION & KEYFRAME REPOSITORY
  */
 
 /* -------------------------------------------------------------------------- */
-/* 1. CSS CUSTOM PROPERTIES                                                  */
+/* 1. DESIGN TOKENS                                                          */
 /* -------------------------------------------------------------------------- */
 :root {
-    /* Color Palette Configuration */
-    --color-twitch-vibe: #9146ff;
+    /* Brand Colors */
+    --color-twitch-vibrant: #a970ff;
+    --color-twitch-action: #9146ff;
     --color-twitch-deep: #6441a5;
-    --color-accent-love: #ff007f;
-    --color-background-obsidian: #0e0e10;
-    --color-glass-shield: rgba(0, 0, 0, 0.75);
+    --color-tinder-heart: #ff007f;
+    --color-obsidian-bg: #0e0e10;
+    --color-glass-surface: rgba(0, 0, 0, 0.82);
     
-    /* Layout Scaling Configurations */
-    --width-max-shield: 550px;
-    --radius-standard: 20px;
-    --spacing-xl: 60px;
-    --spacing-lg: 40px;
-    --spacing-md: 25px;
+    /* Layout Tokens */
+    --max-width-module: 560px;
+    --border-radius-lg: 24px;
+    --spacing-xl: 70px;
+    --spacing-lg: 45px;
+    --spacing-md: 30px;
     
-    /* Animation Timing Configurations */
-    --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-standard: 0.35s;
-    --shadow-glow-twitch: 0 0 15px rgba(145, 70, 255, 0.5);
+    /* Effects */
+    --ease-fluid: cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-speed: 0.4s;
+    --glow-twitch-active: 0 0 25px rgba(145, 70, 255, 0.7);
 }
 
 /* -------------------------------------------------------------------------- */
-/* 2. CORE ELEMENT RESET                                                    */
+/* 2. BASE CORE STYLES                                                       */
 /* -------------------------------------------------------------------------- */
 * {
     box-sizing: border-box;
@@ -45,28 +42,28 @@
     padding: 0;
 }
 
-body.site-wrapper {
+body.main-portal-body {
     background: url('images/background.png') no-repeat center center fixed;
     background-size: cover;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
     color: #ffffff;
     overflow-x: hidden;
-    animation: backgroundBreathing 20s infinite alternate ease-in-out;
+    animation: backgroundSlowPan 30s infinite alternate ease-in-out;
 }
 
-@keyframes backgroundBreathing {
+@keyframes backgroundSlowPan {
     0% { background-position: 50% 50%; }
-    100% { background-position: 54% 46%; }
+    100% { background-position: 55% 45%; }
 }
 
 /* -------------------------------------------------------------------------- */
-/* 3. BACKGROUND ENGINE LAYERING                                            */
+/* 3. BACKGROUND LAYER                                                      */
 /* -------------------------------------------------------------------------- */
-.background-engine {
+.canvas-engine-layer {
     position: fixed;
     top: 0;
     left: 0;
@@ -77,190 +74,186 @@ body.site-wrapper {
 }
 
 /* -------------------------------------------------------------------------- */
-/* 4. COMPONENT: SOCIAL HERO (HEADER)                                       */
+/* 4. HERO SECTION & TWITCH LINK (FIXED VISIBILITY)                         */
 /* -------------------------------------------------------------------------- */
-.social-hero-container {
+.hero-social-interface {
     margin-top: var(--spacing-xl);
     width: 90%;
-    max-width: var(--width-max-shield);
-    z-index: 10;
+    max-width: var(--max-width-module);
+    position: relative;
+    z-index: 100;
 }
 
-.content-shield {
-    background: var(--color-glass-shield);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+.glass-module-container {
+    background: var(--color-glass-surface);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
     padding: var(--spacing-lg);
-    border-radius: var(--radius-standard);
+    border-radius: var(--border-radius-lg);
     text-align: center;
-    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
 }
 
-.hero-main-title {
-    font-size: 2.2em;
-    font-weight: 800;
-    letter-spacing: 1px;
-    margin-bottom: 10px;
-    text-shadow: var(--shadow-glow-twitch);
+.hero-header-title {
+    font-size: 2.5em;
+    font-weight: 900;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    background: linear-gradient(to bottom, #fff, #ccc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
-.hero-sub-text {
-    opacity: 0.7;
+.hero-subtitle-caption {
+    opacity: 0.8;
     margin-bottom: var(--spacing-md);
-    font-size: 0.95em;
+    font-size: 1.1em;
 }
 
-.hub-btn.twitch-primary {
+/* FIXED: Twitch Link visibility */
+.platform-btn.twitch-active {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 12px;
-    background: linear-gradient(135deg, var(--color-twitch-deep), var(--color-twitch-vibe));
-    color: white;
+    gap: 15px;
+    background: linear-gradient(135deg, var(--color-twitch-deep), var(--color-twitch-action));
+    color: #ffffff !important;
     text-decoration: none;
-    padding: 18px 30px;
-    border-radius: 12px;
-    font-weight: 700;
-    font-size: 1.25em;
-    transition: transform var(--transition-standard) var(--ease-smooth), box-shadow 0.3s;
+    padding: 22px 35px;
+    border-radius: 16px;
+    font-weight: 800;
+    font-size: 1.4em;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    transition: all var(--transition-speed) var(--ease-fluid);
+    box-shadow: var(--glow-twitch-active);
 }
 
-.hub-btn.twitch-primary:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 10px 25px rgba(145, 70, 255, 0.6);
+.platform-btn.twitch-active:hover {
+    transform: translateY(-5px) scale(1.03);
+    box-shadow: 0 15px 40px rgba(145, 70, 255, 0.9);
+    border-color: #ffffff;
 }
 
 /* -------------------------------------------------------------------------- */
-/* 5. COMPONENT: FEATURE SHOWCASE (MAIN)                                    */
+/* 5. TEAM SHOWCASE MODULE                                                  */
 /* -------------------------------------------------------------------------- */
-.feature-block.team-showcase-section {
+.primary-feature-section {
     margin-top: var(--spacing-lg);
     width: 90%;
-    max-width: var(--width-max-shield);
+    max-width: var(--max-width-module);
 }
 
-.feature-shield {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(10px);
-    border-radius: var(--radius-standard);
+.feature-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(12px);
+    border-radius: var(--border-radius-lg);
     padding: var(--spacing-md);
     text-align: center;
 }
 
-.feature-header-group {
-    margin-bottom: var(--spacing-md);
+.section-heading-text {
+    font-size: 1.8em;
+    margin-bottom: 15px;
+    font-weight: 300;
 }
 
-.feature-title {
-    font-size: 1.6em;
-    font-weight: 400;
-}
-
-.team-dynamic-portrait {
-    width: 190px;
-    height: 190px;
+.team-interactive-asset {
+    width: 200px;
+    height: 200px;
     object-fit: contain;
-    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.2));
-    transition: filter 0.4s ease, transform 0.4s ease;
+    filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.15));
+    transition: all 0.5s ease;
 }
 
-.team-dynamic-portrait:hover {
-    filter: drop-shadow(0 0 25px var(--color-twitch-vibe));
-    transform: scale(1.05);
+.team-interactive-asset:hover {
+    filter: drop-shadow(0 0 30px var(--color-twitch-vibrant));
+    transform: rotate(2deg) scale(1.05);
 }
 
 /* -------------------------------------------------------------------------- */
-/* 6. COMPONENT: DISCOVERY PORTAL (FOOTER)                                  */
+/* 6. AI DISCOVERY TRAY (FOOTER)                                            */
 /* -------------------------------------------------------------------------- */
-.footer-discovery-portal {
+.discovery-footer-tray {
     margin-top: auto;
     width: 100%;
-    background: rgba(0, 0, 0, 0.9);
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.95);
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
     position: relative;
-    transition: max-height 0.6s var(--ease-smooth);
+    transition: max-height 0.8s ease-in-out;
 }
 
-.portal-reveal-layer {
+.tray-reveal-action {
     padding: var(--spacing-md);
     cursor: pointer;
     text-align: center;
-    opacity: 0.6;
-    transition: opacity 0.3s;
+    transition: background 0.3s;
 }
 
-.portal-reveal-layer:hover {
-    opacity: 1;
+.tray-reveal-action:hover {
+    background: rgba(255, 255, 255, 0.04);
 }
 
-.portal-hidden-interface {
+.reveal-prompt-text {
+    font-size: 1.1em;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.tray-content-expanded {
     display: none;
     padding: var(--spacing-lg);
     flex-direction: column;
     align-items: center;
-    animation: slideUpFade 0.7s forwards;
+    animation: portalFadeIn 0.8s forwards;
 }
 
-/* Reveal Mechanism Trigger */
-.footer-discovery-portal.is-expanded .portal-hidden-interface {
+.discovery-footer-tray.tray-is-open .tray-content-expanded {
     display: flex;
 }
 
-.footer-discovery-portal.is-expanded .portal-reveal-layer {
+.discovery-footer-tray.tray-is-open .tray-reveal-action {
     display: none;
 }
 
-.portal-asset-image {
-    width: 110px;
+.ai-button-image-asset {
+    width: 120px;
     cursor: pointer;
-    opacity: 0.85;
-    transition: 0.3s;
+    opacity: 0.9;
+    filter: drop-shadow(0 0 10px rgba(0, 255, 255, 0.3));
 }
 
-.portal-asset-image:hover {
-    opacity: 1;
-    transform: rotate(4deg) scale(1.1);
-}
-
-@keyframes slideUpFade {
-    from { opacity: 0; transform: translateY(20px); }
+@keyframes portalFadeIn {
+    from { opacity: 0; transform: translateY(30px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
 /* -------------------------------------------------------------------------- */
-/* 7. INTERACTIVE KINETIC ELEMENTS                                          */
+/* 7. KINETIC BOUNCE SPRITE (FIXED HEART)                                   */
 /* -------------------------------------------------------------------------- */
-.kinetic-heart-element {
+.kinetic-heart-sprite {
     position: fixed;
-    top: 0;
-    left: 0;
-    font-size: 2.2em;
-    color: var(--color-accent-love);
-    opacity: 0.25;
-    z-index: 1000;
+    font-size: 2.8em;
+    color: var(--color-tinder-heart);
+    opacity: 0.4;
+    z-index: 2000;
     cursor: pointer;
-    transition: opacity 0.3s;
-    text-shadow: 0 0 8px rgba(255, 0, 127, 0.4);
+    will-change: transform;
+    transition: opacity 0.3s, scale 0.3s;
+    text-shadow: 0 0 15px rgba(255, 0, 127, 0.5);
 }
 
-.kinetic-heart-element:hover {
+.kinetic-heart-sprite:hover {
     opacity: 1;
+    scale: 1.2;
 }
 
 /* -------------------------------------------------------------------------- */
-/* 8. MEDIA ADAPTATION LAYER                                                */
+/* 8. RESPONSIVE OPTIMIZATION                                               */
 /* -------------------------------------------------------------------------- */
-@media screen and (max-width: 600px) {
-    .content-shield {
-        padding: var(--spacing-md);
-    }
-    .hero-main-title {
-        font-size: 1.8em;
-    }
-    .kinetic-heart-element {
-        font-size: 1.8em;
-        opacity: 0.15;
-    }
+@media screen and (max-width: 650px) {
+    .hero-header-title { font-size: 1.8em; }
+    .platform-btn.twitch-active { font-size: 1.1em; padding: 18px 25px; }
+    .kinetic-heart-sprite { font-size: 2.2em; opacity: 0.2; }
 }
