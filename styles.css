@@ -1,77 +1,72 @@
 /**
- * JUST GOON - COMPREHENSIVE STYLE SYSTEM
- * VERSION: 3.5.0
- * * SYSTEM ARCHITECTURE:
- * 1. DESIGN TOKEN REPOSITORY (Variables)
- * 2. CORE RESET & BASE STYLES
- * 3. COMPONENT: BACKGROUND ENGINE
- * 4. COMPONENT: HEADER & SOCIAL NAVIGATION
- * 5. COMPONENT: TEAM FEATURE (PRIMARY)
- * 6. COMPONENT: FOOTER & AI INTERFACE (SUBTLE)
- * 7. COMPONENT: INTERACTIVE FLOATING ASSETS
- * 8. MEDIA QUERIES & RESPONSIVE ADAPTATION
+ * JUST GOON: ARCHITECTURAL STYLE SYSTEM
+ * VERSION: 5.0.0
+ * * TABLE OF CONTENTS:
+ * 1. CSS CUSTOM PROPERTIES (VARIABLES)
+ * 2. CORE ELEMENT RESET
+ * 3. BACKGROUND ENGINE LAYERING
+ * 4. COMPONENT: SOCIAL HERO (HEADER)
+ * 5. COMPONENT: FEATURE SHOWCASE (MAIN)
+ * 6. COMPONENT: DISCOVERY PORTAL (FOOTER)
+ * 7. INTERACTIVE KINETIC ELEMENTS
+ * 8. MEDIA ADAPTATION LAYER
  */
 
 /* -------------------------------------------------------------------------- */
-/* 1. DESIGN TOKEN REPOSITORY                                                 */
+/* 1. CSS CUSTOM PROPERTIES                                                  */
 /* -------------------------------------------------------------------------- */
 :root {
-    /* Palette Tokens */
-    --color-primary-twitch: #9146ff;
-    --color-primary-dark: #6441a5;
-    --color-bg-dark: #0e0e10;
-    --color-accent-heart: #ff007f;
-    --color-white-pure: #ffffff;
-    --color-glass-bg: rgba(0, 0, 0, 0.65);
+    /* Color Palette Configuration */
+    --color-twitch-vibe: #9146ff;
+    --color-twitch-deep: #6441a5;
+    --color-accent-love: #ff007f;
+    --color-background-obsidian: #0e0e10;
+    --color-glass-shield: rgba(0, 0, 0, 0.75);
     
-    /* Spacing & Layout Tokens */
+    /* Layout Scaling Configurations */
+    --width-max-shield: 550px;
+    --radius-standard: 20px;
     --spacing-xl: 60px;
     --spacing-lg: 40px;
-    --spacing-md: 20px;
-    --spacing-sm: 10px;
+    --spacing-md: 25px;
     
-    /* Animation & Transition Tokens */
-    --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-fast: 0.2s;
-    --transition-slow: 0.5s;
-    
-    /* Typography Tokens */
-    --font-primary: 'Segoe UI', system-ui, -apple-system, sans-serif;
-    --text-shadow-glow: 0 0 10px rgba(145, 70, 255, 0.6);
+    /* Animation Timing Configurations */
+    --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-standard: 0.35s;
+    --shadow-glow-twitch: 0 0 15px rgba(145, 70, 255, 0.5);
 }
 
 /* -------------------------------------------------------------------------- */
-/* 2. CORE RESET & BASE STYLES                                               */
+/* 2. CORE ELEMENT RESET                                                    */
 /* -------------------------------------------------------------------------- */
-*, *::before, *::after {
+* {
     box-sizing: border-box;
-}
-
-body {
     margin: 0;
     padding: 0;
-    min-height: 100vh;
+}
+
+body.site-wrapper {
     background: url('images/background.png') no-repeat center center fixed;
     background-size: cover;
-    font-family: var(--font-primary);
-    color: var(--color-white-pure);
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: #ffffff;
     overflow-x: hidden;
-    animation: backgroundPanning 25s infinite alternate ease-in-out;
+    animation: backgroundBreathing 20s infinite alternate ease-in-out;
 }
 
-@keyframes backgroundPanning {
+@keyframes backgroundBreathing {
     0% { background-position: 50% 50%; }
-    50% { background-position: 54% 46%; }
-    100% { background-position: 46% 54%; }
+    100% { background-position: 54% 46%; }
 }
 
 /* -------------------------------------------------------------------------- */
-/* 3. COMPONENT: BACKGROUND ENGINE                                           */
+/* 3. BACKGROUND ENGINE LAYERING                                            */
 /* -------------------------------------------------------------------------- */
-#particle-canvas {
+.background-engine {
     position: fixed;
     top: 0;
     left: 0;
@@ -82,180 +77,190 @@ body {
 }
 
 /* -------------------------------------------------------------------------- */
-/* 4. COMPONENT: HEADER & SOCIAL NAVIGATION                                 */
+/* 4. COMPONENT: SOCIAL HERO (HEADER)                                       */
 /* -------------------------------------------------------------------------- */
-.social-buttons-container {
+.social-hero-container {
     margin-top: var(--spacing-xl);
     width: 90%;
-    max-width: 550px;
-    background: var(--color-glass-bg);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 24px;
-    padding: var(--spacing-lg);
-    text-align: center;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+    max-width: var(--width-max-shield);
+    z-index: 10;
 }
 
-.main-title {
+.content-shield {
+    background: var(--color-glass-shield);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: var(--spacing-lg);
+    border-radius: var(--radius-standard);
+    text-align: center;
+    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.5);
+}
+
+.hero-main-title {
     font-size: 2.2em;
     font-weight: 800;
-    margin-bottom: var(--spacing-sm);
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    text-shadow: var(--text-shadow-glow);
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+    text-shadow: var(--shadow-glow-twitch);
 }
 
-.social-button.twitch-active-link {
+.hero-sub-text {
+    opacity: 0.7;
+    margin-bottom: var(--spacing-md);
+    font-size: 0.95em;
+}
+
+.hub-btn.twitch-primary {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 15px;
-    background: linear-gradient(135deg, var(--color-primary-dark), var(--color-primary-twitch));
-    color: var(--color-white-pure);
+    gap: 12px;
+    background: linear-gradient(135deg, var(--color-twitch-deep), var(--color-twitch-vibe));
+    color: white;
     text-decoration: none;
-    padding: 18px 32px;
-    border-radius: 14px;
+    padding: 18px 30px;
+    border-radius: 12px;
     font-weight: 700;
-    font-size: 1.3em;
-    transition: all var(--transition-slow) var(--ease-standard);
-    margin-top: var(--spacing-md);
+    font-size: 1.25em;
+    transition: transform var(--transition-standard) var(--ease-smooth), box-shadow 0.3s;
 }
 
-.social-button.twitch-active-link:hover {
-    transform: translateY(-4px) scale(1.02);
-    box-shadow: 0 8px 30px rgba(145, 70, 255, 0.6);
+.hub-btn.twitch-primary:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(145, 70, 255, 0.6);
 }
 
 /* -------------------------------------------------------------------------- */
-/* 5. COMPONENT: TEAM FEATURE (PRIMARY)                                     */
+/* 5. COMPONENT: FEATURE SHOWCASE (MAIN)                                    */
 /* -------------------------------------------------------------------------- */
-.original-buttons-section.priority-feature {
+.feature-block.team-showcase-section {
     margin-top: var(--spacing-lg);
     width: 90%;
-    max-width: 550px;
-    background: rgba(255, 255, 255, 0.04);
-    backdrop-filter: blur(8px);
+    max-width: var(--width-max-shield);
+}
+
+.feature-shield {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(10px);
+    border-radius: var(--radius-standard);
     padding: var(--spacing-md);
-    border-radius: 20px;
-    border: 1px dashed rgba(255, 255, 255, 0.2);
+    text-align: center;
 }
 
-.button-label {
-    font-size: 1.5em;
+.feature-header-group {
     margin-bottom: var(--spacing-md);
-    opacity: 0.9;
 }
 
-.team-portrait-image {
-    width: 200px;
-    height: 200px;
+.feature-title {
+    font-size: 1.6em;
+    font-weight: 400;
+}
+
+.team-dynamic-portrait {
+    width: 190px;
+    height: 190px;
     object-fit: contain;
-    transition: filter var(--transition-slow);
-    filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.2));
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.2));
+    transition: filter 0.4s ease, transform 0.4s ease;
 }
 
-.team-portrait-image:hover {
-    filter: drop-shadow(0 0 25px var(--color-primary-twitch));
+.team-dynamic-portrait:hover {
+    filter: drop-shadow(0 0 25px var(--color-twitch-vibe));
+    transform: scale(1.05);
 }
 
 /* -------------------------------------------------------------------------- */
-/* 6. COMPONENT: FOOTER & AI INTERFACE (SUBTLE)                             */
+/* 6. COMPONENT: DISCOVERY PORTAL (FOOTER)                                  */
 /* -------------------------------------------------------------------------- */
-.footer-ai-section {
+.footer-discovery-portal {
     margin-top: auto;
     width: 100%;
-    background: rgba(0, 0, 0, 0.85);
+    background: rgba(0, 0, 0, 0.9);
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     position: relative;
-    overflow: hidden;
-    transition: max-height var(--transition-slow) ease-in-out;
+    transition: max-height 0.6s var(--ease-smooth);
 }
 
-.ai-interaction-layer {
+.portal-reveal-layer {
     padding: var(--spacing-md);
     cursor: pointer;
     text-align: center;
-    transition: background 0.3s;
+    opacity: 0.6;
+    transition: opacity 0.3s;
 }
 
-.ai-interaction-layer:hover {
-    background: rgba(255, 255, 255, 0.05);
-}
-
-.reveal-text {
-    font-size: 1em;
-    font-weight: 500;
-    margin: 0;
-    color: rgba(255, 255, 255, 0.6);
-}
-
-.ai-expanded-content {
-    display: none;
-    padding: var(--spacing-lg);
-    text-align: center;
-    flex-direction: column;
-    align-items: center;
-}
-
-/* Status: Revealed */
-.footer-ai-section.is-expanded .ai-expanded-content {
-    display: flex;
-}
-
-.footer-ai-section.is-expanded .ai-interaction-layer {
-    display: none;
-}
-
-.footer-button-asset {
-    width: 110px;
-    cursor: pointer;
-    transition: transform 0.3s ease;
-    opacity: 0.8;
-}
-
-.footer-button-asset:hover {
-    transform: rotate(5deg) scale(1.1);
+.portal-reveal-layer:hover {
     opacity: 1;
 }
 
+.portal-hidden-interface {
+    display: none;
+    padding: var(--spacing-lg);
+    flex-direction: column;
+    align-items: center;
+    animation: slideUpFade 0.7s forwards;
+}
+
+/* Reveal Mechanism Trigger */
+.footer-discovery-portal.is-expanded .portal-hidden-interface {
+    display: flex;
+}
+
+.footer-discovery-portal.is-expanded .portal-reveal-layer {
+    display: none;
+}
+
+.portal-asset-image {
+    width: 110px;
+    cursor: pointer;
+    opacity: 0.85;
+    transition: 0.3s;
+}
+
+.portal-asset-image:hover {
+    opacity: 1;
+    transform: rotate(4deg) scale(1.1);
+}
+
+@keyframes slideUpFade {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
 /* -------------------------------------------------------------------------- */
-/* 7. COMPONENT: INTERACTIVE FLOATING ASSETS                                */
+/* 7. INTERACTIVE KINETIC ELEMENTS                                          */
 /* -------------------------------------------------------------------------- */
-.floating-heart-element {
+.kinetic-heart-element {
     position: fixed;
     top: 0;
     left: 0;
     font-size: 2.2em;
-    color: var(--color-accent-heart);
-    opacity: 0.2;
-    z-index: 10000;
+    color: var(--color-accent-love);
+    opacity: 0.25;
+    z-index: 1000;
     cursor: pointer;
-    filter: drop-shadow(0 0 5px rgba(255, 0, 127, 0.3));
-    will-change: transform;
-    transition: opacity var(--transition-fast);
+    transition: opacity 0.3s;
+    text-shadow: 0 0 8px rgba(255, 0, 127, 0.4);
 }
 
-.floating-heart-element:hover {
+.kinetic-heart-element:hover {
     opacity: 1;
 }
 
 /* -------------------------------------------------------------------------- */
-/* 8. MEDIA QUERIES & RESPONSIVE ADAPTATION                                 */
+/* 8. MEDIA ADAPTATION LAYER                                                */
 /* -------------------------------------------------------------------------- */
-@media screen and (max-width: 768px) {
-    .social-buttons-container {
-        width: 95%;
+@media screen and (max-width: 600px) {
+    .content-shield {
         padding: var(--spacing-md);
     }
-    
-    .main-title {
+    .hero-main-title {
         font-size: 1.8em;
     }
-    
-    .floating-heart-element {
-        font-size: 1.6em; /* More subtle for mobile */
-        opacity: 0.1;
+    .kinetic-heart-element {
+        font-size: 1.8em;
+        opacity: 0.15;
     }
 }
