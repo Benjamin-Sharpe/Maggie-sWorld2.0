@@ -1,259 +1,213 @@
 /**
- * JUST GOON: ARCHITECTURAL DESIGN SYSTEM
- * VERSION: 6.0.0
- * * DESIGN TOKENS:
- * 1. PERSISTENT COLOR VARIANTS
- * 2. SPACING & BOX HIERARCHY
- * 3. TYPOGRAPHY & TEXT EFFECTS
- * 4. ANIMATION & KEYFRAME REPOSITORY
+ * JUST GOON: STYLE MATRIX (FIXED)
+ * VERSION: 7.0.0
+ * * CRITICAL REPAIRS:
+ * 1. LAYOUT: Implemented Flexbox Vertical Stack (No more overlapping).
+ * 2. COLORS: Forced White Text on Twitch Button for visibility.
+ * 3. Z-INDEX: Corrected layering for Canvas, Content, and Heart.
+ * 4. STRUCTURE: Added gap spacing to prevent elements touching.
  */
 
-/* -------------------------------------------------------------------------- */
-/* 1. DESIGN TOKENS                                                          */
-/* -------------------------------------------------------------------------- */
+/* --- 1. VARIABLES --- */
 :root {
-    /* Brand Colors */
-    --color-twitch-vibrant: #a970ff;
-    --color-twitch-action: #9146ff;
-    --color-twitch-deep: #6441a5;
-    --color-tinder-heart: #ff007f;
-    --color-obsidian-bg: #0e0e10;
-    --color-glass-surface: rgba(0, 0, 0, 0.82);
-    
-    /* Layout Tokens */
-    --max-width-module: 560px;
-    --border-radius-lg: 24px;
-    --spacing-xl: 70px;
-    --spacing-lg: 45px;
-    --spacing-md: 30px;
-    
-    /* Effects */
-    --ease-fluid: cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-speed: 0.4s;
-    --glow-twitch-active: 0 0 25px rgba(145, 70, 255, 0.7);
+    --twitch-purple: #9146ff;
+    --twitch-dark: #6441a5;
+    --heart-pink: #ff007f;
+    --glass-bg: rgba(0, 0, 0, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.15);
+    --text-white: #ffffff;
+    --gap-standard: 40px;
 }
 
-/* -------------------------------------------------------------------------- */
-/* 2. BASE CORE STYLES                                                       */
-/* -------------------------------------------------------------------------- */
+/* --- 2. RESET & BODY LAYOUT --- */
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
 
-body.main-portal-body {
+body.site-master-container {
     background: url('images/background.png') no-repeat center center fixed;
     background-size: cover;
     min-height: 100vh;
     display: flex;
-    flex-direction: column;
+    flex-direction: column; /* Stacks children vertically */
+    justify-content: space-between; /* Pushes footer to bottom */
     align-items: center;
-    font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
-    color: #ffffff;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    color: var(--text-white);
     overflow-x: hidden;
-    animation: backgroundSlowPan 30s infinite alternate ease-in-out;
+    padding-bottom: 0; /* Footer handles padding */
 }
 
-@keyframes backgroundSlowPan {
-    0% { background-position: 50% 50%; }
-    100% { background-position: 55% 45%; }
-}
-
-/* -------------------------------------------------------------------------- */
-/* 3. BACKGROUND LAYER                                                      */
-/* -------------------------------------------------------------------------- */
-.canvas-engine-layer {
+/* --- 3. BACKGROUND --- */
+.background-canvas-layer {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: -1;
+    width: 100%;
+    height: 100%;
+    z-index: -1; /* Behind everything */
     pointer-events: none;
 }
 
-/* -------------------------------------------------------------------------- */
-/* 4. HERO SECTION & TWITCH LINK (FIXED VISIBILITY)                         */
-/* -------------------------------------------------------------------------- */
-.hero-social-interface {
-    margin-top: var(--spacing-xl);
-    width: 90%;
-    max-width: var(--max-width-module);
-    position: relative;
-    z-index: 100;
+/* --- 4. MAIN CONTENT STACK (PREVENTS OVERLAP) --- */
+.vertical-layout-stack {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: var(--gap-standard); /* Adds space between sections */
+    padding: 60px 20px; /* Top padding for breathing room */
+    flex-grow: 1;
 }
 
-.glass-module-container {
-    background: var(--color-glass-surface);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    padding: var(--spacing-lg);
-    border-radius: var(--border-radius-lg);
+/* --- 5. GLASS PANELS (SHARED) --- */
+.section-module {
+    width: 100%;
+    max-width: 600px;
+    display: flex;
+    justify-content: center;
+}
+
+.glass-panel {
+    background: var(--glass-bg);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 40px;
+    width: 100%;
     text-align: center;
-    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.5);
 }
 
-.hero-header-title {
-    font-size: 2.5em;
-    font-weight: 900;
-    letter-spacing: 2px;
-    margin-bottom: 12px;
-    text-transform: uppercase;
-    background: linear-gradient(to bottom, #fff, #ccc);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+/* --- 6. HERO SECTION --- */
+.main-heading {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 10px;
+    text-shadow: 0 0 15px rgba(145, 70, 255, 0.6);
 }
 
-.hero-subtitle-caption {
+.sub-heading {
     opacity: 0.8;
-    margin-bottom: var(--spacing-md);
-    font-size: 1.1em;
+    margin-bottom: 30px;
 }
 
-/* FIXED: Twitch Link visibility */
-.platform-btn.twitch-active {
+/* TWITCH BUTTON FIX */
+.action-btn.twitch-primary {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 15px;
-    background: linear-gradient(135deg, var(--color-twitch-deep), var(--color-twitch-action));
-    color: #ffffff !important;
+    background: linear-gradient(135deg, var(--twitch-dark), var(--twitch-purple));
+    color: #ffffff !important; /* FORCED WHITE TEXT */
     text-decoration: none;
-    padding: 22px 35px;
-    border-radius: 16px;
-    font-weight: 800;
-    font-size: 1.4em;
-    border: 2px solid rgba(255, 255, 255, 0.2);
-    transition: all var(--transition-speed) var(--ease-fluid);
-    box-shadow: var(--glow-twitch-active);
+    padding: 20px 40px;
+    border-radius: 15px;
+    font-size: 1.3rem;
+    font-weight: 700;
+    border: 1px solid rgba(255,255,255,0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.platform-btn.twitch-active:hover {
-    transform: translateY(-5px) scale(1.03);
-    box-shadow: 0 15px 40px rgba(145, 70, 255, 0.9);
-    border-color: #ffffff;
+.action-btn.twitch-primary:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(145, 70, 255, 0.8);
+    background: linear-gradient(135deg, var(--twitch-purple), var(--twitch-dark));
 }
 
-/* -------------------------------------------------------------------------- */
-/* 5. TEAM SHOWCASE MODULE                                                  */
-/* -------------------------------------------------------------------------- */
-.primary-feature-section {
-    margin-top: var(--spacing-lg);
-    width: 90%;
-    max-width: var(--max-width-module);
+/* --- 7. TEAM SECTION --- */
+.section-title {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
 }
 
-.feature-card {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(12px);
-    border-radius: var(--border-radius-lg);
-    padding: var(--spacing-md);
-    text-align: center;
-}
-
-.section-heading-text {
-    font-size: 1.8em;
-    margin-bottom: 15px;
-    font-weight: 300;
-}
-
-.team-interactive-asset {
+.team-asset {
     width: 200px;
     height: 200px;
     object-fit: contain;
-    filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.15));
-    transition: all 0.5s ease;
+    filter: drop-shadow(0 0 10px rgba(255,255,255,0.2));
+    transition: transform 0.3s ease;
 }
 
-.team-interactive-asset:hover {
-    filter: drop-shadow(0 0 30px var(--color-twitch-vibrant));
-    transform: rotate(2deg) scale(1.05);
+.team-asset:hover {
+    transform: scale(1.05) rotate(2deg);
+    filter: drop-shadow(0 0 20px var(--twitch-purple));
 }
 
-/* -------------------------------------------------------------------------- */
-/* 6. AI DISCOVERY TRAY (FOOTER)                                            */
-/* -------------------------------------------------------------------------- */
-.discovery-footer-tray {
-    margin-top: auto;
+/* --- 8. FOOTER DOCK (AI) --- */
+.footer-dock {
     width: 100%;
-    background: rgba(0, 0, 0, 0.95);
-    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(0, 0, 0, 0.9);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
     position: relative;
-    transition: max-height 0.8s ease-in-out;
+    z-index: 100;
 }
 
-.tray-reveal-action {
-    padding: var(--spacing-md);
-    cursor: pointer;
+.dock-trigger-layer {
+    padding: 20px;
     text-align: center;
+    cursor: pointer;
     transition: background 0.3s;
 }
 
-.tray-reveal-action:hover {
-    background: rgba(255, 255, 255, 0.04);
+.dock-trigger-layer:hover {
+    background: rgba(255,255,255,0.05);
 }
 
-.reveal-prompt-text {
-    font-size: 1.1em;
-    color: rgba(255, 255, 255, 0.7);
-}
-
-.tray-content-expanded {
-    display: none;
-    padding: var(--spacing-lg);
+.dock-content-layer {
+    display: none; /* Hidden by default */
+    padding: 30px;
+    text-align: center;
     flex-direction: column;
     align-items: center;
-    animation: portalFadeIn 0.8s forwards;
+    animation: slideUp 0.5s ease;
 }
 
-.discovery-footer-tray.tray-is-open .tray-content-expanded {
+/* Reveal State */
+.footer-dock.is-active .dock-content-layer {
     display: flex;
 }
-
-.discovery-footer-tray.tray-is-open .tray-reveal-action {
+.footer-dock.is-active .dock-trigger-layer {
     display: none;
 }
 
-.ai-button-image-asset {
-    width: 120px;
+.ai-asset {
+    width: 100px;
     cursor: pointer;
-    opacity: 0.9;
-    filter: drop-shadow(0 0 10px rgba(0, 255, 255, 0.3));
+    transition: opacity 0.3s;
 }
+.ai-asset:hover { opacity: 0.8; }
 
-@keyframes portalFadeIn {
-    from { opacity: 0; transform: translateY(30px); }
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* -------------------------------------------------------------------------- */
-/* 7. KINETIC BOUNCE SPRITE (FIXED HEART)                                   */
-/* -------------------------------------------------------------------------- */
-.kinetic-heart-sprite {
+/* --- 9. FLOATING HEART --- */
+.floating-ui-element {
     position: fixed;
-    font-size: 2.8em;
-    color: var(--color-tinder-heart);
-    opacity: 0.4;
-    z-index: 2000;
+    /* Positions managed by JS, default top-left offscreen init */
+    top: 0;
+    left: 0;
+    font-size: 3rem;
+    color: var(--heart-pink);
+    z-index: 9999; /* TOP LAYER */
+    opacity: 0.6;
     cursor: pointer;
+    text-shadow: 0 0 10px rgba(255, 0, 127, 0.5);
+    transition: opacity 0.3s;
     will-change: transform;
-    transition: opacity 0.3s, scale 0.3s;
-    text-shadow: 0 0 15px rgba(255, 0, 127, 0.5);
 }
 
-.kinetic-heart-sprite:hover {
+.floating-ui-element:hover {
     opacity: 1;
-    scale: 1.2;
+    transform: scale(1.1);
 }
 
-/* -------------------------------------------------------------------------- */
-/* 8. RESPONSIVE OPTIMIZATION                                               */
-/* -------------------------------------------------------------------------- */
-@media screen and (max-width: 650px) {
-    .hero-header-title { font-size: 1.8em; }
-    .platform-btn.twitch-active { font-size: 1.1em; padding: 18px 25px; }
-    .kinetic-heart-sprite { font-size: 2.2em; opacity: 0.2; }
-}
+/* --- 10. MEDIA QUERIES --- */
+@media (max-width: 600px) {
+    .main-heading { font-size: 2rem; }
+    .action-btn.twitch-primary { padding: 15px 25px; font
