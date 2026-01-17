@@ -1,274 +1,261 @@
+/**
+ * JUST GOON - COMPREHENSIVE STYLE SYSTEM
+ * VERSION: 3.5.0
+ * * SYSTEM ARCHITECTURE:
+ * 1. DESIGN TOKEN REPOSITORY (Variables)
+ * 2. CORE RESET & BASE STYLES
+ * 3. COMPONENT: BACKGROUND ENGINE
+ * 4. COMPONENT: HEADER & SOCIAL NAVIGATION
+ * 5. COMPONENT: TEAM FEATURE (PRIMARY)
+ * 6. COMPONENT: FOOTER & AI INTERFACE (SUBTLE)
+ * 7. COMPONENT: INTERACTIVE FLOATING ASSETS
+ * 8. MEDIA QUERIES & RESPONSIVE ADAPTATION
+ */
+
+/* -------------------------------------------------------------------------- */
+/* 1. DESIGN TOKEN REPOSITORY                                                 */
+/* -------------------------------------------------------------------------- */
+:root {
+    /* Palette Tokens */
+    --color-primary-twitch: #9146ff;
+    --color-primary-dark: #6441a5;
+    --color-bg-dark: #0e0e10;
+    --color-accent-heart: #ff007f;
+    --color-white-pure: #ffffff;
+    --color-glass-bg: rgba(0, 0, 0, 0.65);
+    
+    /* Spacing & Layout Tokens */
+    --spacing-xl: 60px;
+    --spacing-lg: 40px;
+    --spacing-md: 20px;
+    --spacing-sm: 10px;
+    
+    /* Animation & Transition Tokens */
+    --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-fast: 0.2s;
+    --transition-slow: 0.5s;
+    
+    /* Typography Tokens */
+    --font-primary: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    --text-shadow-glow: 0 0 10px rgba(145, 70, 255, 0.6);
+}
+
+/* -------------------------------------------------------------------------- */
+/* 2. CORE RESET & BASE STYLES                                               */
+/* -------------------------------------------------------------------------- */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    background: url('images/background.png') no-repeat center center fixed;
+    background-size: cover;
+    font-family: var(--font-primary);
+    color: var(--color-white-pure);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-x: hidden;
+    animation: backgroundPanning 25s infinite alternate ease-in-out;
+}
+
+@keyframes backgroundPanning {
+    0% { background-position: 50% 50%; }
+    50% { background-position: 54% 46%; }
+    100% { background-position: 46% 54%; }
+}
+
+/* -------------------------------------------------------------------------- */
+/* 3. COMPONENT: BACKGROUND ENGINE                                           */
+/* -------------------------------------------------------------------------- */
 #particle-canvas {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1; /* Ensure it's behind other content */
-}
-body {
-    background: url('images/background.png') no-repeat center center fixed;
-    background-size: cover;
-    margin: 0;
-    padding: 0;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    font-family: Arial, sans-serif;
-
-    animation: bg-pan 15s infinite alternate ease-in-out;
-    color: #fff;
-    text-align: center;
-    gap: 30px; /* Space between the two main sections */
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    pointer-events: none;
 }
 
-/* Background pan effect */
-@keyframes bg-pan {
-    0% { background-position: center center; }
-    50% { background-position: 52% 48%; }
-    100% { background-position: 48% 52%; }
-}
-
-/* === Button Layout === */
-.button-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 30px;              /* spacing between buttons */
-    flex-wrap: wrap;        /* ✅ stacks nicely on small screens */
-}
-
-/* === Shared Button Styling === */
-.play-button,
-.chat-button {
-    display: inline-block;
-    cursor: pointer;
-    transition: transform 0.5s ease-in-out;
-}
-
-.play-button .button-image,
-.chat-button .button-image {
-    width: 200px;
-    height: 200px;
-    object-fit: contain;
-    background: transparent;
-    border-radius: 0;
-    box-shadow: none;
-    transition: filter 0.3s ease-in-out, transform 0.3s ease-in-out;
-}
-
-/* === Play Button Glow === */
-.play-button {
-    animation: float 4s ease-in-out infinite, pulseGlow 6s infinite;
-}
-.play-button .button-image {
-    filter: drop-shadow(0 0 20px rgba(92, 2, 89, 0.8))
-            drop-shadow(0 0 10px rgba(92, 2, 89, 0.5));
-}
-.play-button:hover .button-image {
-    /* Adjusted glow size to prevent accidental heart clicks */
-    filter: drop-shadow(0 0 28px rgba(98, 114, 249, 1))
-            drop-shadow(0 0 12px rgba(98, 114, 249, 0.6));
-}
-
-/* === Chat/Arthur’s Button Glow === */
-.chat-button {
-    animation: float 5s ease-in-out infinite, pulseGlowAlt 7s infinite;
-}
-.chat-button .button-image {
-    filter: drop-shadow(0 0 20px rgba(92, 2, 89, 0.8))
-            drop-shadow(0 0 10px rgba(92, 2, 89, 0.5));
-}
-.chat-button:hover .button-image {
-    filter: drop-shadow(0 0 35px rgba(249, 98, 232, 1))
-            drop-shadow(0 0 15px rgba(249, 98, 232, 0.6));
-}
-
-/* === Shared Animations === */
-@keyframes float {
-    0% { transform: translateY(0px); }
-    50% { transform: translateY(-15px); }
-    100% { transform: translateY(0px); }
-}
-
-@keyframes pulseGlow {
-    0%, 100% { filter: drop-shadow(0 0 25px rgba(92, 2, 89, 0.5)); }
-    50% { filter: drop-shadow(0 0 60px rgba(98, 114, 249, 0.9)); }
-}
-
-@keyframes pulseGlowAlt {
-    0%, 100% { filter: drop-shadow(0 0 25px rgba(92, 2, 89, 0.4)); }
-    50% { filter: drop-shadow(0 0 55px rgba(249, 98, 232, 0.9)); }
-}
-
-/* Interactive Button Hover Effects */
-.social-button,
-.play-button .button-image,
-.chat-button .button-image {
-    position: relative;
-    overflow: hidden;
-    transform: translateZ(0); /* Force hardware acceleration */
-}
-
-.social-button::before,
-.play-button .button-image::before,
-.chat-button .button-image::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    background: rgba(255, 255, 255, 0.2); /* Light ripple color */
-    border-radius: 50%;
-    opacity: 0;
-    transform: translate(-50%, -50%);
-    transition: width 0.4s ease-out, height 0.4s ease-out, opacity 0.4s ease-out;
-    z-index: 1;
-}
-
-.social-button:hover::before,
-.play-button:hover .button-image::before,
-.chat-button:hover .button-image::before {
-    width: 200%;
-    height: 200%;
-    opacity: 1;
-}
-
-.social-button:active,
-.play-button:active .button-image,
-.chat-button:active .button-image {
-    transform: scale(0.95) translateZ(-5px); /* Subtle 3D press effect */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Adjust shadow on press */
-    transition: transform 0.1s ease-out, box-shadow 0.1s ease-out;
-}
-
-/* Ensure button content is above the ripple */
-.social-button span,
-.social-button i {
-    position: relative;
-    z-index: 2;
-}
-
+/* -------------------------------------------------------------------------- */
+/* 4. COMPONENT: HEADER & SOCIAL NAVIGATION                                 */
+/* -------------------------------------------------------------------------- */
 .social-buttons-container {
-    background-color: rgba(255, 255, 255, 0.1);
-    padding: 40px 60px;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    margin-bottom: 30px; /* Space between the two main sections */
+    margin-top: var(--spacing-xl);
+    width: 90%;
+    max-width: 550px;
+    background: var(--color-glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 24px;
+    padding: var(--spacing-lg);
+    text-align: center;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
 }
 
-.social-buttons-container h1 {
-    font-size: 2.5em;
-    margin-bottom: 40px;
-    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    color: #fff; /* Ensure heading color is white */
+.main-title {
+    font-size: 2.2em;
+    font-weight: 800;
+    margin-bottom: var(--spacing-sm);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: var(--text-shadow-glow);
 }
 
-.social-buttons {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-.social-button {
+.social-button.twitch-active-link {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 15px 30px;
-    border-radius: 10px;
-    font-size: 1.2em;
+    gap: 15px;
+    background: linear-gradient(135deg, var(--color-primary-dark), var(--color-primary-twitch));
+    color: var(--color-white-pure);
     text-decoration: none;
-    color: #fff;
-    transition: all 0.3s ease;
-    min-width: 250px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    padding: 18px 32px;
+    border-radius: 14px;
+    font-weight: 700;
+    font-size: 1.3em;
+    transition: all var(--transition-slow) var(--ease-standard);
+    margin-top: var(--spacing-md);
 }
 
-.social-button i {
-    margin-right: 15px;
-    font-size: 1.5em;
+.social-button.twitch-active-link:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 8px 30px rgba(145, 70, 255, 0.6);
 }
 
-.social-button.facebook {
-    background: linear-gradient(to right, #3b5998, #6d84b4);
-}
-
-.social-button.instagram {
-    background: linear-gradient(to right, #833ab4, #fd1d1d, #fcb045);
-}
-
-.social-button.tiktok {
-    background: linear-gradient(to right, #000, #222);
-}
-
-.social-button:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-}
-
-.social-button.facebook:hover {
-    background: linear-gradient(to right, #6d84b4, #3b5998);
-}
-
-.social-button.instagram:hover {
-    background: linear-gradient(to right, #fcb045, #fd1d1d, #833ab4);
-}
-
-.social-button.tiktok:hover {
-    background: linear-gradient(to right, #222, #000);
-}
-
-/* Styles for the floating heart icon - UPDATED */
-.floating-heart {
-    position: absolute;
-    bottom: 20px; /* Initial position */
-    right: 20px; /* Initial position */
-    font-size: 2em; /* Size of the heart */
-    color: #ff007f; /* Tinder-like pink/red */
-    opacity: 0.5; /* 50% opaque */
-    cursor: pointer;
-    transition: opacity 0.3s ease, transform 0.3s ease;
-    z-index: 1000; /* Ensured highest z-index for click priority */
-
-    /* ADDED: Thin white outline for definition and better click area */
-    text-shadow: 
-        1px 1px 0 #fff, 
-        -1px -1px 0 #fff, 
-        1px -1px 0 #fff, 
-        -1px 1px 0 #fff; 
-}
-
-.floating-heart:hover {
-    opacity: 1; /* Fully visible on hover */
-    transform: scale(1.2); /* More prominent scale on hover */
-}
-
-.original-buttons-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px; /* Space between labels and button containers */
-    background-color: rgba(255, 255, 255, 0.1);
-    padding: 40px 60px;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-}
-
-.original-buttons-section .button-container {
-    flex-direction: column; /* Stack original buttons vertically */
-    gap: 20px; /* Space between original buttons */
+/* -------------------------------------------------------------------------- */
+/* 5. COMPONENT: TEAM FEATURE (PRIMARY)                                     */
+/* -------------------------------------------------------------------------- */
+.original-buttons-section.priority-feature {
+    margin-top: var(--spacing-lg);
+    width: 90%;
+    max-width: 550px;
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(8px);
+    padding: var(--spacing-md);
+    border-radius: 20px;
+    border: 1px dashed rgba(255, 255, 255, 0.2);
 }
 
 .button-label {
     font-size: 1.5em;
-    margin-bottom: 10px;
-    color: #fff;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    margin-bottom: var(--spacing-md);
+    opacity: 0.9;
+}
+
+.team-portrait-image {
+    width: 200px;
+    height: 200px;
+    object-fit: contain;
+    transition: filter var(--transition-slow);
+    filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.2));
+}
+
+.team-portrait-image:hover {
+    filter: drop-shadow(0 0 25px var(--color-primary-twitch));
+}
+
+/* -------------------------------------------------------------------------- */
+/* 6. COMPONENT: FOOTER & AI INTERFACE (SUBTLE)                             */
+/* -------------------------------------------------------------------------- */
+.footer-ai-section {
+    margin-top: auto;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+    transition: max-height var(--transition-slow) ease-in-out;
+}
+
+.ai-interaction-layer {
+    padding: var(--spacing-md);
+    cursor: pointer;
+    text-align: center;
+    transition: background 0.3s;
+}
+
+.ai-interaction-layer:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.reveal-text {
+    font-size: 1em;
+    font-weight: 500;
+    margin: 0;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.ai-expanded-content {
+    display: none;
+    padding: var(--spacing-lg);
+    text-align: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Status: Revealed */
+.footer-ai-section.is-expanded .ai-expanded-content {
+    display: flex;
+}
+
+.footer-ai-section.is-expanded .ai-interaction-layer {
+    display: none;
+}
+
+.footer-button-asset {
+    width: 110px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    opacity: 0.8;
+}
+
+.footer-button-asset:hover {
+    transform: rotate(5deg) scale(1.1);
+    opacity: 1;
+}
+
+/* -------------------------------------------------------------------------- */
+/* 7. COMPONENT: INTERACTIVE FLOATING ASSETS                                */
+/* -------------------------------------------------------------------------- */
+.floating-heart-element {
+    position: fixed;
+    top: 0;
+    left: 0;
+    font-size: 2.2em;
+    color: var(--color-accent-heart);
+    opacity: 0.2;
+    z-index: 10000;
+    cursor: pointer;
+    filter: drop-shadow(0 0 5px rgba(255, 0, 127, 0.3));
+    will-change: transform;
+    transition: opacity var(--transition-fast);
+}
+
+.floating-heart-element:hover {
+    opacity: 1;
+}
+
+/* -------------------------------------------------------------------------- */
+/* 8. MEDIA QUERIES & RESPONSIVE ADAPTATION                                 */
+/* -------------------------------------------------------------------------- */
+@media screen and (max-width: 768px) {
+    .social-buttons-container {
+        width: 95%;
+        padding: var(--spacing-md);
+    }
+    
+    .main-title {
+        font-size: 1.8em;
+    }
+    
+    .floating-heart-element {
+        font-size: 1.6em; /* More subtle for mobile */
+        opacity: 0.1;
+    }
 }
