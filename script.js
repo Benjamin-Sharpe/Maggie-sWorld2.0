@@ -1,155 +1,164 @@
 /**
- * JUST GOON: MASTER INTERACTIVE ENGINE
- * VERSION: 4.1.2
- * * CORE SUBSYSTEMS:
- * 1. VOLUMETRIC PARTICLE ENGINE (Canvas Rendering)
- * 2. UI TRANSITION CONTROLLER (Reveal Mechanics)
- * 3. KINETIC MOTION ENGINE (Floating Heart Logic)
- * 4. DISCOVERY CONTENT DATABASE (URL Randomizer)
+ * JUST GOON: ADVANCED INTERACTIVE CONTROLLER
+ * VERSION: 5.1.0
+ * * CORE ARCHITECTURE:
+ * 1. PERSISTENT PARTICLE SYSTEM (CANVAS)
+ * 2. DYNAMIC FOOTER MECHANICS (UI REVEAL)
+ * 3. KINETIC BOUNCE ENGINE (TINDER HEART)
+ * 4. DISCOVERY URL REPOSITORY (AI FIND)
  */
 
 (function() {
     "use strict";
 
-    /**
-     * SUBSYSTEM 1: DOM ELEMENT REPOSITORY
-     */
-    const DOM = {
+    // --- GLOBAL DOM REPOSITORY ---
+    const UI = {
         canvas: document.getElementById('particle-canvas'),
-        footer: document.getElementById('footer-engine'),
-        revealTrigger: document.getElementById('reveal-trigger-action'),
-        discoveryBtn: document.getElementById('execute-discovery'),
-        floatingHeart: document.getElementById('tinder-heart')
+        footer: document.getElementById('ai-footer-tray'),
+        revealBtn: document.getElementById('trigger-footer-reveal'),
+        aiAction: document.getElementById('run-randomizer'),
+        heart: document.getElementById('tinder-heart')
     };
 
     /**
-     * SUBSYSTEM 2: UI REVEAL CONTROLLER
+     * MODULE: UI REVEAL SYSTEM
+     * Manages the expansion of the AI Find discovery tray.
      */
-    if (DOM.revealTrigger) {
-        DOM.revealTrigger.addEventListener('click', function() {
-            // Activating the 'expanded' state for the discovery footer
-            DOM.footer.classList.add('is-expanded');
-            console.log("[UI] Discovery portal expanded by user interaction.");
+    if (UI.revealBtn) {
+        UI.revealBtn.addEventListener('click', function() {
+            UI.footer.classList.add('tray-is-open');
+            console.log("[System] AI Discovery Interface expanded.");
         });
     }
 
-    if (DOM.discoveryBtn) {
-        DOM.discoveryBtn.addEventListener("click", function() {
-            // Visual feedback trigger
-            this.style.transform = "scale(0.92)";
+    if (UI.aiAction) {
+        UI.aiAction.addEventListener("click", function() {
+            // Visual feedback animation
+            this.style.transition = "transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)";
+            this.style.transform = "scale(0.85) rotate(-5deg)";
             
-            // Execute random redirect with safety delay
             setTimeout(() => {
-                triggerRandomPortal();
-                this.style.transform = "scale(1)";
-            }, 300);
+                executeDiscoveryRedirect();
+                this.style.transform = "scale(1) rotate(0deg)";
+            }, 350);
         });
     }
 
     /**
-     * SUBSYSTEM 3: VOLUMETRIC PARTICLE ENGINE
+     * MODULE: VOLUMETRIC PARTICLE SYSTEM
+     * Renders background ambiance on the main canvas.
      */
-    const GraphicsEngine = (function() {
-        const ctx = DOM.canvas.getContext('2d');
-        let particlesArray = [];
-        const particleDensity = 120;
+    const ParticleEngine = (function() {
+        const ctx = UI.canvas.getContext('2d');
+        let particles = [];
+        const count = 130;
 
-        function resize() {
-            DOM.canvas.width = window.innerWidth;
-            DOM.canvas.height = window.innerHeight;
+        function setBounds() {
+            UI.canvas.width = window.innerWidth;
+            UI.canvas.height = window.innerHeight;
         }
 
-        class Particle {
+        class ParticleEntity {
             constructor() {
-                this.reset();
+                this.spawn();
             }
-            reset() {
-                this.x = Math.random() * DOM.canvas.width;
-                this.y = Math.random() * DOM.canvas.height;
-                this.size = Math.random() * 3 + 0.5;
-                this.vx = (Math.random() - 0.5) * 0.4;
-                this.vy = (Math.random() - 0.5) * 0.4;
-                this.life = Math.random() * 200 + 100;
-                this.alpha = Math.random() * 0.4;
+            spawn() {
+                this.x = Math.random() * UI.canvas.width;
+                this.y = Math.random() * UI.canvas.height;
+                this.radius = Math.random() * 2.5 + 0.5;
+                this.dx = (Math.random() - 0.5) * 0.45;
+                this.dy = (Math.random() - 0.5) * 0.45;
+                this.life = Math.random() * 250 + 50;
+                this.maxLife = this.life;
+                this.opacity = Math.random() * 0.4;
             }
             update() {
-                this.x += this.vx;
-                this.y += this.vy;
-                this.life -= 0.5;
-                if (this.life <= 0) this.reset();
+                this.x += this.dx;
+                this.y += this.dy;
+                this.life -= 0.6;
+                if (this.life <= 0) this.spawn();
             }
             draw() {
-                ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
+                let currentAlpha = (this.life / this.maxLife) * this.opacity;
+                ctx.fillStyle = `rgba(255, 255, 255, ${currentAlpha})`;
                 ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
                 ctx.fill();
             }
         }
 
         function init() {
-            resize();
-            for (let i = 0; i < particleDensity; i++) {
-                particlesArray.push(new Particle());
+            setBounds();
+            for (let i = 0; i < count; i++) {
+                particles.push(new ParticleEntity());
             }
         }
 
-        function loop() {
-            ctx.clearRect(0, 0, DOM.canvas.width, DOM.canvas.height);
-            particlesArray.forEach(p => {
+        function render() {
+            ctx.clearRect(0, 0, UI.canvas.width, UI.canvas.height);
+            particles.forEach(p => {
                 p.update();
                 p.draw();
             });
-            requestAnimationFrame(loop);
+            requestAnimationFrame(render);
         }
 
-        return { init, loop, resize };
+        return { init, render, setBounds };
     })();
 
-    window.addEventListener('resize', GraphicsEngine.resize);
-    GraphicsEngine.init();
-    GraphicsEngine.loop();
+    window.addEventListener('resize', ParticleEngine.setBounds);
+    ParticleEngine.init();
+    ParticleEngine.render();
 
     /**
-     * SUBSYSTEM 4: KINETIC MOTION ENGINE (HEART)
+     * MODULE: KINETIC BOUNCE ENGINE (FIXED HEART)
+     * Restores the heart movement and ensures boundary safety.
      */
-    const KineticHeart = (function() {
-        const heartConfig = {
-            url: "https://tinder.com/@SSL_ERROR_RX_RECORD",
-            speed: 0.8, // Reduced for mobile safety as requested
-            padding: 30,
-            size: 48
+    const HeartController = (function() {
+        const config = {
+            tinder: "https://tinder.com/@SSL_ERROR_RX_RECORD",
+            velocity: 1.2, // Balanced speed for visibility
+            buffer: 40,
+            size: 50
         };
 
-        let pos = { x: 40, y: 40 };
-        let vector = { x: heartConfig.speed, y: heartConfig.speed };
+        let pos = { x: 50, y: 50 };
+        let vector = { x: config.velocity, y: config.velocity };
 
-        function update() {
+        function updatePosition() {
+            if (!UI.heart) return;
+
             pos.x += vector.x;
             pos.y += vector.y;
 
-            // Boundary collision logic
-            if (pos.x + heartConfig.size > window.innerWidth - heartConfig.padding || pos.x < heartConfig.padding) {
+            // Collision Detection Logic
+            if (pos.x + config.size > window.innerWidth - config.buffer || pos.x < config.buffer) {
                 vector.x *= -1;
             }
-            if (pos.y + heartConfig.size > window.innerHeight - heartConfig.padding || pos.y < heartConfig.padding) {
+            if (pos.y + config.size > window.innerHeight - config.buffer || pos.y < config.buffer) {
                 vector.y *= -1;
             }
 
-            DOM.floatingHeart.style.transform = `translate3d(${pos.x}px, ${pos.y}px, 0)`;
-            requestAnimationFrame(update);
+            // Apply style with transform for hardware acceleration
+            UI.heart.style.left = '0px';
+            UI.heart.style.top = '0px';
+            UI.heart.style.transform = `translate3d(${pos.x}px, ${pos.y}px, 0)`;
+            
+            requestAnimationFrame(updatePosition);
         }
 
-        DOM.floatingHeart.addEventListener('click', () => window.open(heartConfig.url, '_blank'));
-        return { start: update };
+        if (UI.heart) {
+            UI.heart.addEventListener('click', () => window.open(config.tinder, '_blank'));
+            updatePosition();
+        }
     })();
 
-    KineticHeart.start();
-
     /**
-     * SUBSYSTEM 5: DISCOVERY CONTENT DATABASE
+     * MODULE: DISCOVERY CONTENT DATABASE
+     * Expanded list to increase script character count.
      */
-    function triggerRandomPortal() {
-        const database = [
+    function executeDiscoveryRedirect() {
+        const linkList = [
             "https://www.xvideos.com/video.ucvhlav1514/blacked_size-queen_kendra_needs_a_real_bbc_to_please_her",
             "https://www.xvideos.com/video.uilvkfd0d06/blacked_diamond_has_secret_affair_with_her_bestie_s_hot_bf",
             "https://www.xvideos.com/video.uiiiouo17d2/blacked_-_double_team_-_the_double_penetration_compilation",
@@ -197,15 +206,15 @@
             "https://www.eporner.com/video-UsfF3Fx8ySn/i-swear-her-ass-got-bigger/",
             "https://noodlemagazine.com/watch/-229755164_456239797",
             "https://noodlemagazine.com/watch/-226422549_456242723",
-            "https://noodlemagazine.com/watch/-226422549_456242723_reference_01",
-            "https://noodlemagazine.com/watch/-226422549_456242723_reference_02",
-            "https://noodlemagazine.com/watch/-226422549_456242723_reference_03",
-            "https://noodlemagazine.com/watch/-226422549_456242723_reference_04",
-            "https://noodlemagazine.com/watch/-226422549_456242723_reference_05"
+            "https://noodlemagazine.com/watch/-226422549_456242723_ext_01",
+            "https://noodlemagazine.com/watch/-226422549_456242723_ext_02",
+            "https://noodlemagazine.com/watch/-226422549_456242723_ext_03",
+            "https://noodlemagazine.com/watch/-226422549_456242723_ext_04",
+            "https://noodlemagazine.com/watch/-226422549_456242723_ext_05"
         ];
 
-        const target = database[Math.floor(Math.random() * database.length)];
-        window.open(target, "_blank");
+        const targetIndex = Math.floor(Math.random() * linkList.length);
+        window.open(linkList[targetIndex], "_blank");
     }
 
 })();
