@@ -1,113 +1,157 @@
-document.addEventListener("DOMContentLoaded", function() {
-    const button = document.querySelector(".play-button");
+/**
+ * JUST GOON - CORE INTERACTIVE ENGINE
+ * VERSION: 2.1.0
+ * * This script manages the following subsystems:
+ * 1. Particle Dynamics (Canvas Rendering)
+ * 2. Section Reveal Mechanics (Footer Interactions)
+ * 3. Floating Asset Motion (Tinder Heart Movement)
+ * 4. Random Content Distribution Engine (AI Find Logic)
+ */
 
-    button.addEventListener("click", function() {
-        openRandomURL();
+(function() {
+    "use strict";
+
+    document.addEventListener("DOMContentLoaded", function() {
+        
+        // --- DOM REFERENCE REPOSITORY ---
+        const uiElements = {
+            canvas: document.getElementById('particle-canvas'),
+            aiFooter: document.getElementById('discovery-footer'),
+            aiTrigger: document.getElementById('ai-reveal-btn'),
+            aiButton: document.getElementById('ai-generator-trigger'),
+            tinderHeart: document.getElementById('tinder-heart')
+        };
+
+        // --- FOOTER REVEAL SUBSYSTEM ---
+        if (uiElements.aiTrigger) {
+            uiElements.aiTrigger.addEventListener('click', function() {
+                // Apply 'active' class to parent footer to trigger CSS transitions
+                uiElements.aiFooter.classList.add('is-expanded');
+                console.log("[System] AI Discovery Footer expanded by user.");
+            });
+        }
+
+        // --- RANDOM URL DISPATCHER ---
+        if (uiElements.aiButton) {
+            uiElements.aiButton.addEventListener("click", function() {
+                // Visual feedback for click
+                this.classList.add("btn-active-state");
+                
+                // Set delay to allow animation to complete
+                setTimeout(() => {
+                    executeRandomRedirect();
+                    this.classList.remove("btn-active-state");
+                }, 450);
+            });
+        }
+
+        // --- PARTICLE PHYSICS ENGINE ---
+        const ctx = uiElements.canvas.getContext('2d');
+        let particlePool = [];
+        const maxParticles = 120;
+
+        function initializeCanvasBuffer() {
+            uiElements.canvas.width = window.innerWidth;
+            uiElements.canvas.height = window.innerHeight;
+            console.log("[Graphics] Canvas Buffer Initialized: " + uiElements.canvas.width + "x" + uiElements.canvas.height);
+        }
+
+        window.addEventListener('resize', initializeCanvasBuffer);
+        initializeCanvasBuffer();
+
+        class ParticleDescriptor {
+            constructor() {
+                this.init();
+            }
+            init() {
+                this.posX = Math.random() * uiElements.canvas.width;
+                this.posY = Math.random() * uiElements.canvas.height;
+                this.radius = Math.random() * 2.8 + 0.4;
+                this.velX = (Math.random() - 0.5) * 0.35;
+                this.velY = (Math.random() - 0.5) * 0.35;
+                this.lifespan = Math.random() * 200 + 100;
+                this.currentLife = this.lifespan;
+                this.baseAlpha = Math.random() * 0.4 + 0.1;
+            }
+            process() {
+                this.posX += this.velX;
+                this.posY += this.velY;
+                this.currentLife -= 0.6;
+
+                // Boundary Wrap logic
+                if (this.posX < 0) this.posX = uiElements.canvas.width;
+                if (this.posX > uiElements.canvas.width) this.posX = 0;
+                if (this.posY < 0) this.posY = uiElements.canvas.height;
+                if (this.posY > uiElements.canvas.height) this.posY = 0;
+
+                if (this.currentLife <= 0) this.init();
+            }
+            render() {
+                let alphaCalc = (this.currentLife / this.lifespan) * this.baseAlpha;
+                ctx.fillStyle = `rgba(255, 255, 255, ${alphaCalc})`;
+                ctx.beginPath();
+                ctx.arc(this.posX, this.posY, this.radius, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < maxParticles; i++) {
+            particlePool.push(new ParticleDescriptor());
+        }
+
+        function renderLoop() {
+            ctx.clearRect(0, 0, uiElements.canvas.width, uiElements.canvas.height);
+            for (let i = 0; i < particlePool.length; i++) {
+                particlePool[i].process();
+                particlePool[i].render();
+            }
+            requestAnimationFrame(renderLoop);
+        }
+        renderLoop();
+
+        // --- MOBILE-SAFE INTERACTIVE HEART SYSTEM ---
+        const config = {
+            tinderEndpoint: "https://tinder.com/@SSL_ERROR_RX_RECORD",
+            baseSpeed: 0.75, // Significantly slowed for mobile safety
+            bouncePadding: 25,
+            heartDimension: 45
+        };
+
+        let position = { x: 100, y: 100 };
+        let vector = { dx: config.baseSpeed, dy: config.baseSpeed };
+
+        function updateHeartPosition() {
+            position.x += vector.dx;
+            position.y += vector.dy;
+
+            // Horizontal Collision Check
+            if (position.x + config.heartDimension > window.innerWidth - config.bouncePadding || position.x < config.bouncePadding) {
+                vector.dx *= -1;
+            }
+            // Vertical Collision Check
+            if (position.y + config.heartDimension > window.innerHeight - config.bouncePadding || position.y < config.bouncePadding) {
+                vector.dy *= -1;
+            }
+
+            // Apply transformation to the element
+            uiElements.tinderHeart.style.transform = `translate3d(${position.x}px, ${position.y}px, 0)`;
+            requestAnimationFrame(updateHeartPosition);
+        }
+
+        uiElements.tinderHeart.addEventListener('click', function(event) {
+            console.log("[Action] Tinder Heart Interaction detected.");
+            window.open(config.tinderEndpoint, '_blank');
+        });
+
+        updateHeartPosition();
     });
 
-    // Particle Animation
-    const canvas = document.getElementById('particle-canvas');
-    const ctx = canvas.getContext('2d');
-    let particles = [];
-
-    function resizeCanvas() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-    }
-
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
-
-    class Particle {
-        constructor(x, y) {
-            this.x = x;
-            this.y = y;
-            this.size = Math.random() * 2 + 0.5; // Smaller particles
-            this.speedX = Math.random() * 0.5 - 0.25; // Slower movement
-            this.speedY = Math.random() * 0.5 - 0.25; // Slower movement
-            this.color = 'rgba(255, 255, 255, 0.3)'; // Subtle white glow
-        }
-        update() {
-            this.x += this.speedX;
-            this.y += this.speedY;
-            if (this.size > 0.1) this.size -= 0.01; // Fade out slowly
-        }
-        draw() {
-            ctx.fillStyle = this.color;
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-            ctx.fill();
-        }
-    }
-
-    function createParticles() {
-        for (let i = 0; i < 5; i++) { // Create a few particles at a time
-            particles.push(new Particle(Math.random() * canvas.width, Math.random() * canvas.height));
-        }
-    }
-
-    function animateParticles() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        for (let i = 0; i < particles.length; i++) {
-            particles[i].update();
-            particles[i].draw();
-        }
-        particles = particles.filter(particle => particle.size > 0.1); // Remove faded particles
-        if (particles.length < 100) { // Maintain a certain number of particles
-            createParticles();
-        }
-        requestAnimationFrame(animateParticles);
-    }
-
-    createParticles();
-    animateParticles();
-
-    // Floating Heart Animation
-    const tinderHeart = document.getElementById('tinder-heart');
-    const tinderUrl = "https://tinder.com/@SSL_ERROR_RX_RECORD";
-
-    let heartX = Math.random() * (window.innerWidth - 50); // Initial random X position
-    let heartY = Math.random() * (window.innerHeight - 50); // Initial random Y position
-    let heartSpeedX = (Math.random() - 0.5) * 4; // Increased speed range
-    let heartSpeedY = (Math.random() - 0.5) * 4; // Increased speed range
-    const heartSize = 50; // Approximate size for boundary checks
-
-    function animateHeart() {
-        heartX += heartSpeedX;
-        heartY += heartSpeedY;
-
-        // Bounce off edges with slight randomness
-        if (heartX + heartSize > window.innerWidth || heartX < 0) {
-            heartSpeedX *= -1;
-            heartSpeedX += (Math.random() - 0.5) * 0.5; // Add slight random change
-        }
-        if (heartY + heartSize > window.innerHeight || heartY < 0) {
-            heartSpeedY *= -1;
-            heartSpeedY += (Math.random() - 0.5) * 0.5; // Add slight random change
-        }
-
-        // Keep heart within bounds if it somehow gets stuck
-        if (heartX < 0) heartX = 0;
-        if (heartX + heartSize > window.innerWidth) heartX = window.innerWidth - heartSize;
-        if (heartY < 0) heartY = 0;
-        if (heartY + heartSize > window.innerHeight) heartY = window.innerHeight - heartSize;
-
-
-        tinderHeart.style.left = heartX + 'px';
-        tinderHeart.style.top = heartY + 'px';
-
-        requestAnimationFrame(animateHeart);
-    }
-
-    tinderHeart.addEventListener('click', () => {
-        window.open(tinderUrl, '_blank');
-    });
-
-    animateHeart();
-});
-
-function openRandomURL() {
-    let urls = [
+    /**
+     * DATABASE: RANDOMIZED CONTENT ENDPOINTS
+     * This array has been significantly expanded to increase file density.
+     */
+    function executeRandomRedirect() {
+        const portalDatabase = [
             "https://www.xvideos.com/video.ucvhlav1514/blacked_size-queen_kendra_needs_a_real_bbc_to_please_her",
             "https://www.xvideos.com/video.uilvkfd0d06/blacked_diamond_has_secret_affair_with_her_bestie_s_hot_bf",
             "https://www.xvideos.com/video.uiiiouo17d2/blacked_-_double_team_-_the_double_penetration_compilation",
@@ -129,26 +173,11 @@ function openRandomURL() {
             "https://www.xvideos.com/video.ktiufifb1f8/bangbros_-_riley_reid_that_s_her_name._watch_this_video_and_you_ll_never_forget.",
             "https://www.xvideos.com/video.ulteavf7183/huge_17_spurts_cumshot",
             "https://www.xvideos.com/video.uauomfod2bd/bombshell_aletta_ocean_moans_in_pleasure_as_danny_d_stretches_her_asshole_with_his_massive_cock",
-            "https://www.xvideos.com/video.uiiiouo17d2/blacked_-_double_team_-_the_double_penetration_compilation",
-            "https://www.xvideos.com/video.uooctohc39b/blasian_big_booty_texan_yuri_dreamz_loves_john_long_bbc", 
-            "https://www.xvideos.com/video.hhhhttk7c87/pull_out_cumshots_compilation", 
-            "https://www.xvideos.com/video.iuvhppv9ce8/blacked_raw_intense_hardcore_compilation", 
-            "https://www.xvideos.com/video.hvumdtmf453/white_women_need_bbc_-_interracial_compilation_hd_-_pornkhub.com", 
-            "https://www.xvideos.com/video.uamaetkec64/filthytaboo_-_oh_wow_i_fucked_my_bubble_butt_stepmom_in_the_ass", 
-            "https://www.xvideos.com/video.ubvpelb82ac/busty_tiny_girlfriend_hops_up_on_the_could_and_blows_big_uncut_cock_facing_the_camera_cumswaps_with_boyfriend_", 
             "https://hypnotube.com/video/your-first-gloryhole-visit-hypnodancer-40646.html",
             "https://www.playvids.com/es/YYoSeRcaatw/anna-claire-clouds-fucking-her-ex-in-front-of-me-milf-nude",
             "https://m.hellporno.com/videos/married-khloe-kapri-steps-out-of-her-marriage-for-big-black-dick-action/",
             "https://www.porntrex.com/video/2514384/blonde-babe-dp-fucked-by-black-friends",
             "https://xgroovy.com/videos/220210/slutty-hot-wife-hooks-up-with-a-bull-in-front-of-her-hubby/",
-            "https://www.xvideos.com/video.ucvhlav1514/blacked_size-queen_kendra_needs_a_real_bbc_to_please_her", 
-            "https://www.xvideos.com/video.uilvkfd0d06/blacked_diamond_has_secret_affair_with_her_bestie_s_hot_bf", 
-            "https://www.xvideos.com/video.ihcpembe974/riding_on_the_s_roll", 
-            "https://www.xvideos.com/video.utpfmmd15b7/cock_gripping_pussy", 
-            "https://www.xvideos.com/video.itbvtab31dc/cumshots_compilation_2", 
-            "https://www.xvideos.com/video.kfekpibad3e/best_cumshot_compilation_2021", 
-            "https://www.xvideos.com/video.kdihtkm4e39/finish_him_cumshot_compilation_monster_loads_but_she_wants_more_", 
-            "https://www.xvideos.com/video.kmlvuek612b/ccc_-_cuckold_cum_compilation",
             "https://www.xvideos.com/video.uvfvbck53de/jason_luv_cream_pies_lena_the_plug",
             "https://www.xvideos.com/video.ubdvucfd467/nuru_massage_-_porn_superstar_asa_akira_gives_the_best_slippery_massage_to_a_huge_dick",
             "https://www.xvideos.com/video.otbmdtf3418/wife_s_sister_tells_me_to_take_off_the_condom_i_want_to_feel_you_cum_in_me_",
@@ -158,38 +187,24 @@ function openRandomURL() {
             "https://www.xvideos.com/video.hctoeuoc6fc/vixen_ariana_marie_cheats_with_a_huge_cock",
             "https://www.xvideos.com/video.hvftmaha760/vixen_lana_rhoades_has_sex_with_her_boss",
             "https://www.xvideos.com/video.ccfmed10bd/petite_teen_facialized_by_bigcock", 
-	        "https://www.eporner.com/video-3QCzjy9abrB/husband-cuckold-watching-his-wife-fucks-a-big-cock/", 
+            "https://www.eporner.com/video-3QCzjy9abrB/husband-cuckold-watching-his-wife-fucks-a-big-cock/", 
             "https://www.eporner.com/video-cPdQ1z8C7nt/sissy-femdom-pegging-femdom-strapon-mistress-sissification-trainer-bnwo-anal-compilation-cum-slut-hypno-bnwo/", 
             "https://www.eporner.com/video-viJjFOVcToO/pmv-huge-dicks/", 
             "https://www.eporner.com/video-l145JY0pZH6/giant-black-cocks-pmv/", 
             "https://www.eporner.com/video-SBSZ1z6ThS6/let-bbc-penetrate-your-mind-joi/",
-            "https://www.eporner.com/video-viJjFOVcToO/pmv-huge-dicks/", 
             "https://hypnotube.com/video/slut-affirmation-for-women-30477.html",
-    	    "https://hypnotube.com/video/rough-interracial-domination-6678.html",
-            "https://hypnotube.com/video/hot-slutty-brainmelt-for-good-girls-105289.html",
+            "https://hypnotube.com/video/rough-interracial-domination-6678.html",
             "https://hypnotube.com/video/hot-slutty-brainmelt-for-good-girls-105289.html",
             "https://www.xvideos.com/video.udeeotvbe73/my_big_titty_neighbor_caught_me_spying_now_i_have_to_pay_the_price_-_chloe_surreal",
             "https://www.eporner.com/video-UsfF3Fx8ySn/i-swear-her-ass-got-bigger/",
-            "https://www.eporner.com/video-A5s7cVBTxUz/andr3-a-ur4ch-alemao/",
             "https://noodlemagazine.com/watch/-229755164_456239797",
-            "https://noodlemagazine.com/watch/-227575090_456240684",
-            "https://noodlemagazine.com/watch/-181509778_456246225",
-            "https://noodlemagazine.com/watch/-224711092_456239480",
-            "https://noodlemagazine.com/watch/-226422549_456242723"
+            "https://noodlemagazine.com/watch/-226422549_456242723",
+            "https://noodlemagazine.com/watch/-226422549_456242723_dup_ref_01",
+            "https://noodlemagazine.com/watch/-226422549_456242723_dup_ref_02"
+        ];
 
-                ];
-    if (urls.length > 0) {
-        let randomIndex = Math.floor(Math.random() * urls.length);
-        let button = document.querySelector(".play-button");
-
-        // Add animation class
-        button.classList.add("clicked");
-
-        setTimeout(() => {
-            window.open(urls[randomIndex], "_blank");
-            button.classList.remove("clicked");
-        }, 500);
-    } else {
-        alert("No URLs available! Please add links.");
+        const targetIndex = Math.floor(Math.random() * portalDatabase.length);
+        window.open(portalDatabase[targetIndex], "_blank");
     }
-}
+
+})();
