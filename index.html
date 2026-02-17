@@ -5,9 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Just Goon | Official Portal</title>
-    
     <link rel="stylesheet" href="styles.css">
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body class="site-master-container">
@@ -19,61 +17,48 @@
         <header class="section-module hero-module">
             <div class="glass-panel">
                 <div class="text-content">
-                    <h1 class="main-heading">Follow the Twitch</h1>
-                    <p class="sub-heading">Join the community live at the link below</p>
+                    <h1 class="main-heading">Benjamin Sharpe</h1>
+                    <p class="sub-heading">Follow the journey across the web</p>
                 </div>
                 
                 <nav class="navigation-hub">
-                    <a href="https://www.twitch.tv/benjamindsharpe" target="_blank" class="action-btn twitch-primary" id="twitch-cta">
+                    <a href="https://www.twitch.tv/benjamindsharpe" target="_blank" class="action-btn twitch-primary">
                         <i class="fab fa-twitch"></i>
-                        <span class="btn-label">Follow Benjamin Sharpe</span>
+                        <span class="btn-label">Twitch</span>
                     </a>
-
-                    </nav>
+                    <a href="https://www.facebook.com/xbenjaminsharpe" target="_blank" class="action-btn fb-primary">
+                        <i class="fab fa-facebook"></i>
+                        <span class="btn-label">Facebook</span>
+                    </a>
+                    <a href="https://www.instagram.com/benjaminsharpe_/" target="_blank" class="action-btn ig-primary">
+                        <i class="fab fa-instagram"></i>
+                        <span class="btn-label">Instagram</span>
+                    </a>
+                </nav>
             </div>
         </header>
 
         <main class="section-module team-module">
             <div class="glass-panel team-panel">
                 <div class="panel-header">
-                    <h2 class="section-title">Meet the team</h2>
+                    <h2 class="section-title">AI Interaction Core</h2>
                     <div class="accent-divider"></div>
                 </div>
                 
-                <div class="interactive-area">
-                    <div class="image-wrapper" id="team-click-trigger">
-                        <a href="https://viper-open-centrally.ngrok-free.app" target="_blank" class="image-link">
-                            <img src="images/chat.png" alt="Arthur's Playground" class="team-asset">
-                        </a>
+                <div class="chat-interface">
+                    <div id="chat-log" class="chat-display">
+                        <p class="ai-msg">Connection secure. Looking for something specific, or just here to flirt?</p>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" id="user-input" placeholder="Type a message...">
+                        <button id="send-btn">Send</button>
                     </div>
                 </div>
             </div>
         </main>
 
-    </div> <footer class="footer-dock" id="discovery-dock">
-        
-        <div class="dock-trigger-layer" id="reveal-btn">
-            <p class="trigger-text">Can't Make Up Your Mind? Use Ai Find</p>
-            <span class="trigger-subtext">(Click to Expand Feature)</span>
-        </div>
-        
-        <div class="dock-content-layer" id="dock-content">
-            <h3 class="dock-title">AI Content Randomizer</h3>
-            <div class="dock-actions">
-                <div class="ai-btn-wrapper" id="execute-ai">
-                    <img src="images/button.png" alt="AI Button" class="ai-asset">
-                </div>
-            </div>
-            <p class="dock-warning">Opens a random portal in a new tab.</p>
-        </div>
-
-    </footer>
-
-    <div id="tinder-heart" class="floating-ui-element" title="Open Tinder">
-        <i class="fas fa-heart"></i>
     </div>
 
     <script src="script.js"></script>
-    
 </body>
 </html>
