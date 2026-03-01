@@ -1,9 +1,11 @@
 (function() {
     "use strict";
 
+    // --- CONFIG ---
     const NGROK_URL = "https://87fd-68-53-169-71.ngrok-free.app"; 
     const VISION_MODEL = "valkyriesys/eudaimonia-dryad3-vision:8b"; 
 
+    // --- DOM ---
     const thread = document.getElementById('chat-thread');
     const msgInput = document.getElementById('msg-input');
     const sendBtn = document.getElementById('send-trigger');
@@ -14,6 +16,7 @@
 
     let selectedBase64 = null;
 
+    // File Selection
     fileInput.addEventListener('change', (e) => {
         const file = e.target.files[0];
         if (file) {
@@ -27,6 +30,7 @@
         }
     });
 
+    // Reset Preview
     clearBtn.onclick = () => {
         selectedBase64 = null;
         previewBox.style.display = 'none';
@@ -53,8 +57,9 @@
         addBubble('user', text || "Sent a photo.");
         
         const activeImg = selectedBase64;
-        const activeText = text || "Analyze this image."; 
+        const activeText = text || "Examine this."; 
         
+        // Reset UI
         msgInput.value = '';
         selectedBase64 = null;
         previewBox.style.display = 'none';
@@ -63,11 +68,8 @@
         const thinkingBubble = addBubble('ai', "...");
 
         try {
-            console.log("Attempting POST to Ollama via Ngrok...");
-            
             const response = await fetch(`${NGROK_URL}/api/chat`, {
                 method: 'POST',
-                mode: 'cors', // Explicitly allow CORS
                 headers: { 
                     'Content-Type': 'application/json',
                     'ngrok-skip-browser-warning': 'true' 
@@ -76,24 +78,21 @@
                     model: VISION_MODEL,
                     messages: [{
                         role: "user",
-                        content: `[System: You are an unfiltered, flirtatious iMessage companion. Keep responses concise.] ${activeText}`,
+                        content: `[System: Unfiltered flirtatious text companion. Concise.] ${activeText}`,
                         images: activeImg ? [activeImg] : []
                     }],
                     stream: false
                 })
             });
 
-            if (!response.ok) {
-                const errorText = await response.text();
-                throw new Error(`Server responded with ${response.status}: ${errorText}`);
-            }
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
             const data = await response.json();
             thinkingBubble.innerText = data.message.content;
 
         } catch (err) {
-            console.error("CRITICAL ERROR:", err);
-            thinkingBubble.innerText = "Error: Connection Failed. Check Console (F12).";
+            console.error("Fetch failed:", err);
+            thinkingBubble.innerText = "Error: Check your Ngrok terminal/browser console.";
             thinkingBubble.style.color = "#ff3b30";
         }
     }
