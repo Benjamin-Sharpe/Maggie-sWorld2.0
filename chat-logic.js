@@ -1,7 +1,7 @@
 (function() {
     "use strict";
 
-    const NGROK_URL = "https://87fd-68-53-169-71.ngrok-free.app"; 
+    const NGROK_URL = "https://d23b-68-53-169-71.ngrok-free.app"; 
     const VISION_MODEL = "valkyriesys/eudaimonia-dryad3-vision:8b"; 
 
     const thread = document.getElementById('chat-thread');
