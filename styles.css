@@ -1,220 +1,55 @@
-/**
- * JUST GOON: STYLE MATRIX (V8.1.0 - FULL REPAIR)
- * 1. FIX: Social buttons now stack and style correctly.
- * 2. AI: Added full chat interface and bubble styling.
- * 3. LAYOUT: Refined glassmorphism and vertical flow.
- */
-
-/* --- 1. VARIABLES --- */
 :root {
-    --twitch-purple: #9146ff;
-    --fb-blue: #1877f2;
-    --ig-gradient: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
-    --heart-pink: #ff007f;
-    --glass-bg: rgba(0, 0, 0, 0.75);
-    --glass-border: rgba(255, 255, 255, 0.15);
-    --text-white: #ffffff;
-    --gap-standard: 30px;
+    --twitch: #9146ff;
+    --fb: #1877f2;
+    --ig: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+    --glass: rgba(0, 0, 0, 0.8);
+    --border: rgba(255, 255, 255, 0.1);
 }
 
-/* --- 2. RESET & BODY --- */
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #050505; color: white; font-family: sans-serif; overflow-x: hidden; }
 
-body.site-master-container {
-    background: #0a0a0a; /* Fallback for your image */
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    font-family: 'Segoe UI', Tahoma, sans-serif;
-    color: var(--text-white);
-    overflow-x: hidden;
-}
+.background-canvas-layer { position: fixed; top: 0; z-index: -1; }
 
-.background-canvas-layer {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    pointer-events: none;
-}
-
-/* --- 3. LAYOUT STACK --- */
 .vertical-layout-stack {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    gap: var(--gap-standard);
-    padding: 40px 20px;
-    max-width: 650px; /* Optimal width for readability */
-    z-index: 10;
+    display: flex; flex-direction: column; align-items: center;
+    padding: 40px 20px; gap: 30px; width: 100%;
 }
 
-/* --- 4. GLASS PANELS --- */
 .glass-panel {
-    background: var(--glass-bg);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    border: 1px solid var(--glass-border);
-    border-radius: 24px;
-    padding: 35px;
-    width: 100%;
-    text-align: center;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+    background: var(--glass); backdrop-filter: blur(15px);
+    border: 1px solid var(--border); border-radius: 20px;
+    padding: 30px; width: 100%; max-width: 600px; text-align: center;
 }
 
-/* --- 5. HERO & HEADINGS --- */
-.main-heading {
-    font-size: 2.5rem;
-    font-weight: 800;
-    margin-bottom: 10px;
-    text-shadow: 0 0 15px rgba(145, 70, 255, 0.6);
-}
-
-.sub-heading {
-    opacity: 0.7;
-    font-size: 1rem;
-    margin-bottom: 5px;
-}
-
-/* --- 6. NAVIGATION HUB (FIXED SOCIAL BUTTONS) --- */
-.navigation-hub {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    margin-top: 25px;
-    width: 100%;
-}
-
+/* Social Buttons Fixed */
+.navigation-hub { display: flex; flex-direction: column; gap: 12px; margin-top: 20px; }
 .action-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    padding: 18px;
-    border-radius: 14px;
-    text-decoration: none;
-    font-weight: 700;
-    font-size: 1.1rem;
-    color: white !important; /* Force visibility */
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    border: 1px solid rgba(255,255,255,0.1);
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    padding: 15px; border-radius: 12px; text-decoration: none; color: white;
+    font-weight: bold; transition: 0.3s;
 }
+.twitch-primary { background: var(--twitch); }
+.fb-primary { background: var(--fb); }
+.ig-primary { background: var(--ig); }
+.action-btn:hover { transform: translateY(-3px); filter: brightness(1.2); }
 
-/* Specific Button Colors */
-.twitch-primary { background: var(--twitch-purple); }
-.fb-primary { background: var(--fb-blue); }
-.ig-primary { background: var(--ig-gradient); }
-
-.action-btn:hover {
-    transform: translateY(-3px) scale(1.02);
-    filter: brightness(1.2);
-    box-shadow: 0 8px 25px rgba(255,255,255,0.2);
-}
-
-/* --- 7. AI INTERACTION CORE --- */
-.chat-interface {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    text-align: left;
-}
-
+/* Chat UI */
 .chat-display {
-    height: 350px;
-    overflow-y: auto;
-    background: rgba(0,0,0,0.4);
-    border-radius: 15px;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    border: 1px solid var(--glass-border);
+    height: 300px; overflow-y: auto; background: rgba(0,0,0,0.3);
+    border-radius: 10px; padding: 15px; display: flex; flex-direction: column; gap: 10px;
 }
+.ai-msg, .user-msg { padding: 10px 15px; border-radius: 15px; max-width: 80%; font-size: 0.9rem; text-align: left;}
+.ai-msg { background: rgba(255,255,255,0.1); align-self: flex-start; }
+.user-msg { background: var(--twitch); align-self: flex-end; }
 
-/* Message Bubbles */
-.ai-msg, .user-msg {
-    padding: 12px 16px;
-    border-radius: 16px;
-    max-width: 85%;
-    line-height: 1.4;
-    font-size: 0.95rem;
-    word-wrap: break-word;
-}
+.input-group { display: flex; gap: 10px; margin-top: 15px; }
+#user-input { flex-grow: 1; background: #111; border: 1px solid var(--border); border-radius: 10px; padding: 10px; color: white; }
+.icon-btn, #send-btn { background: var(--twitch); border: none; padding: 10px 15px; border-radius: 10px; cursor: pointer; color: white; }
 
-.ai-msg {
-    background: rgba(255, 255, 255, 0.1);
-    align-self: flex-start;
-    border-bottom-left-radius: 2px;
-    border: 1px solid rgba(255,255,255,0.05);
-}
+.preview-box { position: relative; margin-top: 10px; display: none; }
+#image-preview { max-width: 100px; border-radius: 5px; border: 1px solid var(--twitch); }
+#remove-img { position: absolute; top: -5px; left: 90px; background: red; color: white; border-radius: 50%; border: none; cursor: pointer; }
 
-.user-msg {
-    background: var(--twitch-purple);
-    align-self: flex-end;
-    border-bottom-right-radius: 2px;
-    box-shadow: 0 4px 12px rgba(145, 70, 255, 0.3);
-}
-
-/* Input Area */
-.input-group {
-    display: flex;
-    gap: 10px;
-}
-
-#user-input {
-    flex-grow: 1;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid var(--glass-border);
-    border-radius: 12px;
-    padding: 12px 15px;
-    color: white;
-    outline: none;
-}
-
-#user-input:focus {
-    border-color: var(--twitch-purple);
-    background: rgba(255,255,255,0.1);
-}
-
-#send-btn {
-    background: var(--twitch-purple);
-    color: white;
-    border: none;
-    padding: 0 25px;
-    border-radius: 12px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-#send-btn:hover {
-    filter: brightness(1.2);
-}
-
-/* --- 8. UTILITIES --- */
-.accent-divider {
-    height: 3px;
-    width: 60px;
-    background: var(--twitch-purple);
-    margin: 10px auto 20px;
-    border-radius: 2px;
-}
-
-/* Custom Scrollbar */
-.chat-display::-webkit-scrollbar { width: 6px; }
-.chat-display::-webkit-scrollbar-track { background: transparent; }
-.chat-display::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
-
-/* Responsive */
-@media (max-width: 500px) {
-    .main-heading { font-size: 2rem; }
-    .glass-panel { padding: 25px; }
-}
+.floating-ui-element { position: fixed; font-size: 3rem; z-index: 99; cursor: pointer; }
+.accent-divider { height: 2px; width: 50px; background: var(--twitch); margin: 10px auto; }
