@@ -1,6 +1,7 @@
 (function() {
     "use strict";
 
+    // Update this URL whenever you restart ngrok
     const NGROK_URL = "https://4b53-68-53-169-71.ngrok-free.app"; 
     const VISION_MODEL = "valkyriesys/eudaimonia-dryad3-vision:8b"; 
 
@@ -63,10 +64,11 @@
         try {
             const response = await fetch(`${NGROK_URL}/api/chat`, {
                 method: 'POST',
-                mode: 'cors', 
+                mode: 'cors',
                 headers: { 
-                    'Content-Type': 'text/plain', // Bypass strict pre-flight
-                    'ngrok-skip-browser-warning': 'true' 
+                    // Using text/plain and removing custom ngrok headers 
+                    // bypasses the complex 'Preflight' checks in Firefox.
+                    'Content-Type': 'text/plain' 
                 },
                 body: JSON.stringify({
                     model: VISION_MODEL,
@@ -79,11 +81,14 @@
                 })
             });
 
+            if (!response.ok) throw new Error('Network response was not ok');
+            
             const data = await response.json();
             thinkingBubble.innerText = data.message.content;
 
         } catch (err) {
-            thinkingBubble.innerText = "Connection Blocked. See PowerShell Step.";
+            console.error("Fetch Error:", err);
+            thinkingBubble.innerText = "Connection Blocked. Ensure PowerShell OLLAMA_ORIGINS='*'.";
             thinkingBubble.style.color = "#ff3b30";
         }
     }
