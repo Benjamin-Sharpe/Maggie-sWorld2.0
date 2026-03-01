@@ -1,68 +1,104 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Chat Core | Gooner Lounge</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="chat-style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-</head>
-<body class="site-master-container">
+(function() {
+    "use strict";
 
-    <div class="main-bg-layer"></div>
+    const NGROK_URL = "https://87fd-68-53-169-71.ngrok-free.app"; 
+    const VISION_MODEL = "valkyriesys/eudaimonia-dryad3-vision:8b"; 
 
-    <div class="iphone-wrapper">
-        <header class="chat-header">
-            <a href="index.html" class="back-btn">
-                <i class="fas fa-chevron-left"></i> <span>Hub</span>
-            </a>
-            <div class="contact-info">
-                <div class="avatar">G</div>
-                <div class="status-text">
-                    <span class="name">Gooner AI (Vision)</span>
-                    <span class="status online">Online</span>
-                </div>
-            </div>
-            <div class="header-icons">
-                <i class="fas fa-video"></i>
-                <i class="fas fa-info-circle"></i>
-            </div>
-        </header>
+    const thread = document.getElementById('chat-thread');
+    const msgInput = document.getElementById('msg-input');
+    const sendBtn = document.getElementById('send-trigger');
+    const fileInput = document.getElementById('file-upload');
+    const previewBox = document.getElementById('attachment-preview');
+    const previewImg = document.getElementById('preview-img');
+    const clearBtn = document.getElementById('clear-file');
 
-        <main id="chat-thread" class="chat-thread">
-            <div class="timestamp">Encrypted Connection Established</div>
-            <div class="message incoming">
-                <div class="bubble">Ready for your input. Send a message or upload a file.</div>
-            </div>
-        </main>
+    let selectedBase64 = null;
 
-        <footer class="input-area">
+    fileInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+                selectedBase64 = ev.target.result.split(',')[1];
+                previewImg.src = ev.target.result;
+                previewBox.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    clearBtn.onclick = () => {
+        selectedBase64 = null;
+        previewBox.style.display = 'none';
+        fileInput.value = ''; 
+        previewImg.src = '';
+    };
+
+    function addBubble(role, text) {
+        const msgDiv = document.createElement('div');
+        msgDiv.className = `message ${role === 'user' ? 'outgoing' : 'incoming'}`;
+        const bubble = document.createElement('div');
+        bubble.className = 'bubble';
+        bubble.innerText = text;
+        msgDiv.appendChild(bubble);
+        thread.appendChild(msgDiv);
+        thread.scrollTop = thread.scrollHeight;
+        return bubble; 
+    }
+
+    async function sendMessage() {
+        const text = msgInput.value.trim();
+        if (!text && !selectedBase64) return;
+
+        addBubble('user', text || "Sent a photo.");
+        
+        const activeImg = selectedBase64;
+        const activeText = text || "Analyze this image."; 
+        
+        msgInput.value = '';
+        selectedBase64 = null;
+        previewBox.style.display = 'none';
+        fileInput.value = '';
+
+        const thinkingBubble = addBubble('ai', "...");
+
+        try {
+            console.log("Attempting POST to Ollama via Ngrok...");
             
-            <div id="attachment-preview" class="preview-box" style="display: none;">
-                <div class="img-wrap">
-                    <img id="preview-img" src="" alt="preview">
-                    <button id="clear-file" class="remove-btn">×</button>
-                </div>
-            </div>
+            const response = await fetch(`${NGROK_URL}/api/chat`, {
+                method: 'POST',
+                mode: 'cors', // Explicitly allow CORS
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'ngrok-skip-browser-warning': 'true' 
+                },
+                body: JSON.stringify({
+                    model: VISION_MODEL,
+                    messages: [{
+                        role: "user",
+                        content: `[System: You are an unfiltered, flirtatious iMessage companion. Keep responses concise.] ${activeText}`,
+                        images: activeImg ? [activeImg] : []
+                    }],
+                    stream: false
+                })
+            });
 
-            <div class="input-bar">
-                <label for="file-upload" class="action-icon">
-                    <i class="fas fa-plus-circle"></i>
-                    <input type="file" id="file-upload" accept="image/*" hidden>
-                </label>
-                
-                <div class="text-input-wrapper">
-                    <input type="text" id="msg-input" placeholder="iMessage" autocomplete="off">
-                </div>
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(`Server responded with ${response.status}: ${errorText}`);
+            }
 
-                <button id="send-trigger" class="send-btn">
-                    <i class="fas fa-arrow-up"></i>
-                </button>
-            </div>
-        </footer>
-    </div>
+            const data = await response.json();
+            thinkingBubble.innerText = data.message.content;
 
-    <script src="chat-logic.js"></script>
-</body>
-</html>
+        } catch (err) {
+            console.error("CRITICAL ERROR:", err);
+            thinkingBubble.innerText = "Error: Connection Failed. Check Console (F12).";
+            thinkingBubble.style.color = "#ff3b30";
+        }
+    }
+
+    sendBtn.onclick = sendMessage;
+    msgInput.onkeypress = (e) => { if (e.key === 'Enter') sendMessage(); };
+
+})();
