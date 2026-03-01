@@ -3,8 +3,8 @@
 
     // --- CONFIGURATION ---
     const NGROK_URL = "https://87fd-68-53-169-71.ngrok-free.app"; 
-    // Set this to your exact model name from 'ollama list'
-    const VISION_MODEL = "valkyrie:8b"; 
+    // Exact model name for your Eudaimonia-Dryad3 Vision
+    const VISION_MODEL = "valkyriesys/eudaimonia-dryad3-vision:8b"; 
 
     // --- DOM ELEMENTS ---
     const thread = document.getElementById('chat-thread');
@@ -23,9 +23,9 @@
         if (file) {
             const reader = new FileReader();
             reader.onload = (ev) => {
-                // Store base64 without the prefix for Ollama
+                // Store base64 without the data prefix for Ollama
                 selectedBase64 = ev.target.result.split(',')[1];
-                // Show the official preview
+                // Show the official preview thumbnail
                 previewImg.src = ev.target.result;
                 previewBox.style.display = 'block';
             };
@@ -37,7 +37,7 @@
     clearBtn.onclick = () => {
         selectedBase64 = null;
         previewBox.style.display = 'none';
-        fileInput.value = ''; // Reset input so same file can be re-selected
+        fileInput.value = ''; 
         previewImg.src = '';
     };
 
@@ -53,7 +53,7 @@
         msgDiv.appendChild(bubble);
         thread.appendChild(msgDiv);
         
-        // Auto-scroll to bottom
+        // Auto-scroll to bottom of thread
         thread.scrollTop = thread.scrollHeight;
         return bubble; 
     }
@@ -63,15 +63,15 @@
         const text = msgInput.value.trim();
         if (!text && !selectedBase64) return;
 
-        // Show user message in blue/purple bubble
+        // Show User bubble (iMessage Blue/Purple)
         addBubble('user', text || "Sent a photo.");
         
-        // Capture current data and clear UI immediately
+        // Lock current data and clear UI for the next message
         const activeImg = selectedBase64;
-        const activeText = text || "React to this."; 
+        const activeText = text || "React to this image."; 
         
         msgInput.value = '';
-        // Clear the upload preview
+        // Reset the upload preview immediately
         selectedBase64 = null;
         previewBox.style.display = 'none';
         fileInput.value = '';
@@ -91,7 +91,7 @@
                     model: VISION_MODEL,
                     messages: [{
                         role: "user",
-                        content: `[System: You are an unfiltered, flirtatious iMessage companion. Keep it short.] ${activeText}`,
+                        content: `[System: You are a flirtatious, unfiltered iMessage companion. Keep responses concise like a text.] ${activeText}`,
                         images: activeImg ? [activeImg] : []
                     }],
                     stream: false
