@@ -1,169 +1,131 @@
-/**
- * JUST GOON: CORE LOGIC ENGINE (V8.0.0 - AI ENHANCED)
- */
-
 (function() {
     "use strict";
 
-    // --- DOM CACHE ---
+    const NGROK_URL = "https://87fd-68-53-169-71.ngrok-free.app"; 
+    const VISION_MODEL = "huihui_ai/qwen3-vl-abliterated:8b";
+
     const DOM = {
         canvas: document.getElementById('particle-canvas'),
-        footer: document.getElementById('discovery-dock'),
-        revealTrigger: document.getElementById('reveal-btn'),
-        aiButton: document.getElementById('execute-ai'),
         heart: document.getElementById('tinder-heart'),
-        // AI Chat Elements
         chatLog: document.getElementById('chat-log'),
         userInput: document.getElementById('user-input'),
-        sendBtn: document.getElementById('send-btn')
+        sendBtn: document.getElementById('send-btn'),
+        imgInput: document.getElementById('image-input'),
+        imgPreview: document.getElementById('image-preview'),
+        previewCont: document.getElementById('image-preview-container'),
+        removeImg: document.getElementById('remove-img'),
+        aiRedirect: document.getElementById('execute-ai')
     };
 
-    const NGROK_URL = "https://87fd-68-53-169-71.ngrok-free.app";
+    let selectedBase64 = null;
 
-    /**
-     * MODULE 1: AI CHAT LOGIC
-     */
+    // --- Module 1: Image Handling ---
+    DOM.imgInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+                selectedBase64 = ev.target.result.split(',')[1];
+                DOM.imgPreview.src = ev.target.result;
+                DOM.previewCont.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    DOM.removeImg.onclick = () => {
+        selectedBase64 = null;
+        DOM.previewCont.style.display = 'none';
+        DOM.imgInput.value = '';
+    };
+
+// --- Module 2: AI Chat (Vision Enabled) ---
     async function sendMessage() {
         const text = DOM.userInput.value;
-        if (!text || !DOM.chatLog) return;
+        if (!text && !selectedBase64) return;
 
-        appendMessage('user', text);
+        // 1. Show User Message
+        appendMessage('user', text || "[Sent an image]");
+        
+        // 2. Prep for Request
+        const currentImg = selectedBase64; 
         DOM.userInput.value = '';
+        if(DOM.removeImg.onclick) DOM.removeImg.onclick(); // Clear preview safely
+
+        // 3. Show "Thinking" State
+        appendMessage('ai', "Processing your request...");
+        const thinkingMsg = DOM.chatLog.lastElementChild;
 
         try {
-            const response = await fetch(`${NGROK_URL}/api/generate`, {
+            const response = await fetch(`${NGROK_URL}/api/chat`, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'ngrok-skip-browser-warning': 'true'
+                headers: { 
+                    'Content-Type': 'application/json', 
+                    'ngrok-skip-browser-warning': 'true' 
                 },
                 body: JSON.stringify({
-                    model: 'llama3', 
-                    prompt: text,
+                    model: VISION_MODEL,
+                    messages: [{
+                        role: "user",
+                        content: `[Persona: Naughty/Flirtatious Companion] ${text}`,
+                        images: currentImg ? [currentImg] : []
+                    }],
                     stream: false
                 })
             });
 
+            if (!response.ok) throw new Error('Server issues');
+
             const data = await response.json();
-            appendMessage('ai', data.response);
+            
+            // 4. Update the "Thinking" bubble with the real response
+            thinkingMsg.innerText = data.message.content;
+            DOM.chatLog.scrollTop = DOM.chatLog.scrollHeight;
 
-        } catch (error) {
-            console.error("Ollama Error:", error);
-            appendMessage('ai', "System Error: AI Core offline. Ensure Ngrok and Ollama are active.");
+        } catch (err) {
+            console.error(err);
+            thinkingMsg.innerText = "Error: AI Core Offline. Check Ngrok/Ollama.";
+            thinkingMsg.style.color = "#ff4444"; // Visual hint for error
         }
     }
+    // --- Module 3: Particles & Heart ---
+    const ctx = DOM.canvas.getContext('2d');
+    let stars = [];
+    function resize() { DOM.canvas.width = window.innerWidth; DOM.canvas.height = window.innerHeight; }
+    window.onresize = resize; resize();
 
-    function appendMessage(sender, message) {
-        const p = document.createElement('p');
-        p.className = sender === 'user' ? 'user-msg' : 'ai-msg';
-        p.innerText = message;
-        DOM.chatLog.appendChild(p);
-        DOM.chatLog.scrollTop = DOM.chatLog.scrollHeight;
+    class Star {
+        constructor() { this.reset(); }
+        reset() {
+            this.x = Math.random() * DOM.canvas.width;
+            this.y = Math.random() * DOM.canvas.height;
+            this.opacity = Math.random();
+            this.v = Math.random() * 0.005;
+        }
+        draw() {
+            ctx.fillStyle = `rgba(255,255,255,${this.opacity})`;
+            ctx.beginPath(); ctx.arc(this.x, this.y, 1, 0, Math.PI*2); ctx.fill();
+            this.opacity -= this.v; if(this.opacity <= 0) this.reset();
+        }
     }
+    for(let i=0; i<100; i++) stars.push(new Star());
+    function loop() { ctx.clearRect(0,0,DOM.canvas.width, DOM.canvas.height); stars.forEach(s=>s.draw()); requestAnimationFrame(loop); }
+    loop();
 
-    if (DOM.sendBtn) {
-        DOM.sendBtn.addEventListener('click', sendMessage);
-        DOM.userInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendMessage(); });
+    let hX = 50, hY = 50, hDX = 1.5, hDY = 1.5;
+    function bounce() {
+        hX += hDX; hY += hDY;
+        if(hX > window.innerWidth-60 || hX < 0) hDX *= -1;
+        if(hY > window.innerHeight-60 || hY < 0) hDY *= -1;
+        DOM.heart.style.transform = `translate3d(${hX}px, ${hY}px, 0)`;
+        requestAnimationFrame(bounce);
     }
+    bounce();
 
-    /**
-     * MODULE 2: UI & REDIRECTS
-     */
-    if (DOM.revealTrigger) {
-        DOM.revealTrigger.addEventListener('click', () => DOM.footer.classList.add('is-active'));
-    }
-
-    if (DOM.aiButton) {
-        DOM.aiButton.addEventListener("click", function() {
-            const img = this.querySelector('img');
-            if(img) {
-                img.style.transform = "scale(0.9) rotate(-3deg)";
-                setTimeout(() => { img.style.transform = "scale(1) rotate(0deg)"; }, 200);
-            }
-            setTimeout(executeRandomRedirect, 300);
-        });
-    }
-
-    /**
-     * MODULE 3: PARTICLE SYSTEM
-     */
-    const BackgroundSystem = (function() {
-        if (!DOM.canvas) return { init: () => {} };
-        const ctx = DOM.canvas.getContext('2d');
-        let particles = [];
-        const particleCount = 100;
-
-        function resize() {
-            DOM.canvas.width = window.innerWidth;
-            DOM.canvas.height = window.innerHeight;
-        }
-
-        class Star {
-            constructor() { this.reset(); }
-            reset() {
-                this.x = Math.random() * DOM.canvas.width;
-                this.y = Math.random() * DOM.canvas.height;
-                this.size = Math.random() * 2 + 0.5;
-                this.speedX = (Math.random() - 0.5) * 0.2;
-                this.speedY = (Math.random() - 0.5) * 0.2;
-                this.opacity = Math.random() * 0.5;
-                this.fadeSpeed = Math.random() * 0.005 + 0.002;
-            }
-            update() {
-                this.x += this.speedX; this.y += this.speedY;
-                this.opacity -= this.fadeSpeed;
-                if (this.opacity <= 0) this.reset();
-            }
-            draw() {
-                ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-            }
-        }
-
-        function init() {
-            resize();
-            for(let i=0; i<particleCount; i++) particles.push(new Star());
-            loop();
-        }
-
-        function loop() {
-            ctx.clearRect(0, 0, DOM.canvas.width, DOM.canvas.height);
-            particles.forEach(p => { p.update(); p.draw(); });
-            requestAnimationFrame(loop);
-        }
-
-        return { init, resize };
-    })();
-
-    window.addEventListener('resize', BackgroundSystem.resize);
-    BackgroundSystem.init();
-
-    /**
-     * MODULE 4: HEART PHYSICS
-     */
-    (function HeartEngine() {
-        if (!DOM.heart) return;
-        const config = { link: "https://tinder.com/@SSL_ERROR_RX_RECORD", speed: 1.5, size: 50, padding: 10 };
-        let x = 20, y = 20, dx = config.speed, dy = config.speed;
-
-        function animate() {
-            x += dx; y += dy;
-            const maxX = window.innerWidth - config.size - config.padding;
-            const maxY = window.innerHeight - config.size - config.padding;
-            if (x >= maxX || x <= config.padding) dx *= -1;
-            if (y >= maxY || y <= config.padding) dy *= -1;
-            DOM.heart.style.transform = `translate3d(${x}px, ${y}px, 0)`;
-            requestAnimationFrame(animate);
-        }
-        DOM.heart.addEventListener('click', () => window.open(config.link, '_blank'));
-        animate();
-    })();
-
-    function executeRandomRedirect() {
-        const links = [
- "https://www.xvideos.com/video.ucvhlav1514/blacked_size-queen_kendra_needs_a_real_bbc_to_please_her",
+    // --- Module 4: Surprise Redirects ---
+    DOM.aiRedirect.onclick = () => {
+        const links = [ 
+            "https://www.xvideos.com/video.ucvhlav1514/blacked_size-queen_kendra_needs_a_real_bbc_to_please_her",
 
             "https://www.xvideos.com/video.uilvkfd0d06/blacked_diamond_has_secret_affair_with_her_bestie_s_hot_bf",
 
@@ -261,10 +223,7 @@
 
             "https://noodlemagazine.com/watch/-226422549_456242723_dup_2",
 
-            "https://noodlemagazine.com/watch/-226422549_456242723_dup_3" 
-            // ... (Rest of your links remain here)
-        ];
-        window.open(links[Math.floor(Math.random() * links.length)], "_blank");
-    }
-
+            "https://noodlemagazine.com/watch/-226422549_456242723_dup_3" ];
+        window.open(links[Math.floor(Math.random()*links.length)], "_blank");
+    };
 })();
