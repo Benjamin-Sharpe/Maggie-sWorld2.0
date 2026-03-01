@@ -1,25 +1,23 @@
 /**
- * JUST GOON: STYLE MATRIX (FIXED)
- * VERSION: 7.0.0
- * * CRITICAL REPAIRS:
- * 1. LAYOUT: Implemented Flexbox Vertical Stack (No more overlapping).
- * 2. COLORS: Forced White Text on Twitch Button for visibility.
- * 3. Z-INDEX: Corrected layering for Canvas, Content, and Heart.
- * 4. STRUCTURE: Added gap spacing to prevent elements touching.
+ * JUST GOON: STYLE MATRIX (V8.1.0 - FULL REPAIR)
+ * 1. FIX: Social buttons now stack and style correctly.
+ * 2. AI: Added full chat interface and bubble styling.
+ * 3. LAYOUT: Refined glassmorphism and vertical flow.
  */
 
 /* --- 1. VARIABLES --- */
 :root {
     --twitch-purple: #9146ff;
-    --twitch-dark: #6441a5;
+    --fb-blue: #1877f2;
+    --ig-gradient: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
     --heart-pink: #ff007f;
-    --glass-bg: rgba(0, 0, 0, 0.7);
+    --glass-bg: rgba(0, 0, 0, 0.75);
     --glass-border: rgba(255, 255, 255, 0.15);
     --text-white: #ffffff;
-    --gap-standard: 40px;
+    --gap-standard: 30px;
 }
 
-/* --- 2. RESET & BODY LAYOUT --- */
+/* --- 2. RESET & BODY --- */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -27,62 +25,52 @@
 }
 
 body.site-master-container {
-    background: url('images/background.png') no-repeat center center fixed;
-    background-size: cover;
+    background: #0a0a0a; /* Fallback for your image */
     min-height: 100vh;
     display: flex;
-    flex-direction: column; /* Stacks children vertically */
-    justify-content: space-between; /* Pushes footer to bottom */
+    flex-direction: column;
     align-items: center;
     font-family: 'Segoe UI', Tahoma, sans-serif;
     color: var(--text-white);
     overflow-x: hidden;
-    padding-bottom: 0; /* Footer handles padding */
 }
 
-/* --- 3. BACKGROUND --- */
 .background-canvas-layer {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: -1; /* Behind everything */
+    z-index: -1;
     pointer-events: none;
 }
 
-/* --- 4. MAIN CONTENT STACK (PREVENTS OVERLAP) --- */
+/* --- 3. LAYOUT STACK --- */
 .vertical-layout-stack {
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
-    gap: var(--gap-standard); /* Adds space between sections */
-    padding: 60px 20px; /* Top padding for breathing room */
-    flex-grow: 1;
+    gap: var(--gap-standard);
+    padding: 40px 20px;
+    max-width: 650px; /* Optimal width for readability */
+    z-index: 10;
 }
 
-/* --- 5. GLASS PANELS (SHARED) --- */
-.section-module {
-    width: 100%;
-    max-width: 600px;
-    display: flex;
-    justify-content: center;
-}
-
+/* --- 4. GLASS PANELS --- */
 .glass-panel {
     background: var(--glass-bg);
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
     border: 1px solid var(--glass-border);
-    border-radius: 20px;
-    padding: 40px;
+    border-radius: 24px;
+    padding: 35px;
     width: 100%;
     text-align: center;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.6);
 }
 
-/* --- 6. HERO SECTION --- */
+/* --- 5. HERO & HEADINGS --- */
 .main-heading {
     font-size: 2.5rem;
     font-weight: 800;
@@ -91,123 +79,142 @@ body.site-master-container {
 }
 
 .sub-heading {
-    opacity: 0.8;
-    margin-bottom: 30px;
+    opacity: 0.7;
+    font-size: 1rem;
+    margin-bottom: 5px;
 }
 
-/* TWITCH BUTTON FIX */
-.action-btn.twitch-primary {
+/* --- 6. NAVIGATION HUB (FIXED SOCIAL BUTTONS) --- */
+.navigation-hub {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 25px;
+    width: 100%;
+}
+
+.action-btn {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 15px;
-    background: linear-gradient(135deg, var(--twitch-dark), var(--twitch-purple));
-    color: #ffffff !important; /* FORCED WHITE TEXT */
+    gap: 12px;
+    padding: 18px;
+    border-radius: 14px;
     text-decoration: none;
-    padding: 20px 40px;
-    border-radius: 15px;
-    font-size: 1.3rem;
     font-weight: 700;
-    border: 1px solid rgba(255,255,255,0.2);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    font-size: 1.1rem;
+    color: white !important; /* Force visibility */
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 1px solid rgba(255,255,255,0.1);
 }
 
-.action-btn.twitch-primary:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 30px rgba(145, 70, 255, 0.8);
-    background: linear-gradient(135deg, var(--twitch-purple), var(--twitch-dark));
+/* Specific Button Colors */
+.twitch-primary { background: var(--twitch-purple); }
+.fb-primary { background: var(--fb-blue); }
+.ig-primary { background: var(--ig-gradient); }
+
+.action-btn:hover {
+    transform: translateY(-3px) scale(1.02);
+    filter: brightness(1.2);
+    box-shadow: 0 8px 25px rgba(255,255,255,0.2);
 }
 
-/* --- 7. TEAM SECTION --- */
-.section-title {
-    font-size: 1.8rem;
-    margin-bottom: 20px;
-}
-
-.team-asset {
-    width: 200px;
-    height: 200px;
-    object-fit: contain;
-    filter: drop-shadow(0 0 10px rgba(255,255,255,0.2));
-    transition: transform 0.3s ease;
-}
-
-.team-asset:hover {
-    transform: scale(1.05) rotate(2deg);
-    filter: drop-shadow(0 0 20px var(--twitch-purple));
-}
-
-/* --- 8. FOOTER DOCK (AI) --- */
-.footer-dock {
-    width: 100%;
-    background: rgba(0, 0, 0, 0.9);
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    position: relative;
-    z-index: 100;
-}
-
-.dock-trigger-layer {
-    padding: 20px;
-    text-align: center;
-    cursor: pointer;
-    transition: background 0.3s;
-}
-
-.dock-trigger-layer:hover {
-    background: rgba(255,255,255,0.05);
-}
-
-.dock-content-layer {
-    display: none; /* Hidden by default */
-    padding: 30px;
-    text-align: center;
-    flex-direction: column;
-    align-items: center;
-    animation: slideUp 0.5s ease;
-}
-
-/* Reveal State */
-.footer-dock.is-active .dock-content-layer {
+/* --- 7. AI INTERACTION CORE --- */
+.chat-interface {
     display: flex;
-}
-.footer-dock.is-active .dock-trigger-layer {
-    display: none;
+    flex-direction: column;
+    gap: 15px;
+    text-align: left;
 }
 
-.ai-asset {
-    width: 100px;
+.chat-display {
+    height: 350px;
+    overflow-y: auto;
+    background: rgba(0,0,0,0.4);
+    border-radius: 15px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    border: 1px solid var(--glass-border);
+}
+
+/* Message Bubbles */
+.ai-msg, .user-msg {
+    padding: 12px 16px;
+    border-radius: 16px;
+    max-width: 85%;
+    line-height: 1.4;
+    font-size: 0.95rem;
+    word-wrap: break-word;
+}
+
+.ai-msg {
+    background: rgba(255, 255, 255, 0.1);
+    align-self: flex-start;
+    border-bottom-left-radius: 2px;
+    border: 1px solid rgba(255,255,255,0.05);
+}
+
+.user-msg {
+    background: var(--twitch-purple);
+    align-self: flex-end;
+    border-bottom-right-radius: 2px;
+    box-shadow: 0 4px 12px rgba(145, 70, 255, 0.3);
+}
+
+/* Input Area */
+.input-group {
+    display: flex;
+    gap: 10px;
+}
+
+#user-input {
+    flex-grow: 1;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    padding: 12px 15px;
+    color: white;
+    outline: none;
+}
+
+#user-input:focus {
+    border-color: var(--twitch-purple);
+    background: rgba(255,255,255,0.1);
+}
+
+#send-btn {
+    background: var(--twitch-purple);
+    color: white;
+    border: none;
+    padding: 0 25px;
+    border-radius: 12px;
+    font-weight: bold;
     cursor: pointer;
-    transition: opacity 0.3s;
-}
-.ai-asset:hover { opacity: 0.8; }
-
-@keyframes slideUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+    transition: 0.2s;
 }
 
-/* --- 9. FLOATING HEART --- */
-.floating-ui-element {
-    position: fixed;
-    /* Positions managed by JS, default top-left offscreen init */
-    top: 0;
-    left: 0;
-    font-size: 3rem;
-    color: var(--heart-pink);
-    z-index: 9999; /* TOP LAYER */
-    opacity: 0.6;
-    cursor: pointer;
-    text-shadow: 0 0 10px rgba(255, 0, 127, 0.5);
-    transition: opacity 0.3s;
-    will-change: transform;
+#send-btn:hover {
+    filter: brightness(1.2);
 }
 
-.floating-ui-element:hover {
-    opacity: 1;
-    transform: scale(1.1);
+/* --- 8. UTILITIES --- */
+.accent-divider {
+    height: 3px;
+    width: 60px;
+    background: var(--twitch-purple);
+    margin: 10px auto 20px;
+    border-radius: 2px;
 }
 
-/* --- 10. MEDIA QUERIES --- */
-@media (max-width: 600px) {
+/* Custom Scrollbar */
+.chat-display::-webkit-scrollbar { width: 6px; }
+.chat-display::-webkit-scrollbar-track { background: transparent; }
+.chat-display::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
+
+/* Responsive */
+@media (max-width: 500px) {
     .main-heading { font-size: 2rem; }
-    .action-btn.twitch-primary { padding: 15px 25px; font
+    .glass-panel { padding: 25px; }
+}
