@@ -16,7 +16,6 @@
 
     let selectedBase64 = null;
 
-    // File Selection
     fileInput.addEventListener('change', (e) => {
         const file = e.target.files[0];
         if (file) {
@@ -30,7 +29,6 @@
         }
     });
 
-    // Reset Preview
     clearBtn.onclick = () => {
         selectedBase64 = null;
         previewBox.style.display = 'none';
@@ -55,11 +53,9 @@
         if (!text && !selectedBase64) return;
 
         addBubble('user', text || "Sent a photo.");
-        
         const activeImg = selectedBase64;
-        const activeText = text || "Examine this."; 
+        const activeText = text || "Analyze this."; 
         
-        // Reset UI
         msgInput.value = '';
         selectedBase64 = null;
         previewBox.style.display = 'none';
@@ -70,8 +66,10 @@
         try {
             const response = await fetch(`${NGROK_URL}/api/chat`, {
                 method: 'POST',
+                mode: 'cors', // Force CORS mode
                 headers: { 
-                    'Content-Type': 'application/json',
+                    // Using text/plain can sometimes bypass strict CORS preflights in Firefox
+                    'Content-Type': 'text/plain', 
                     'ngrok-skip-browser-warning': 'true' 
                 },
                 body: JSON.stringify({
@@ -92,7 +90,7 @@
 
         } catch (err) {
             console.error("Fetch failed:", err);
-            thinkingBubble.innerText = "Error: Check your Ngrok terminal/browser console.";
+            thinkingBubble.innerText = "CORS Blocked. Ensure OLLAMA_ORIGINS is set in PowerShell.";
             thinkingBubble.style.color = "#ff3b30";
         }
     }
