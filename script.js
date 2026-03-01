@@ -2,7 +2,7 @@
     "use strict";
 
     const NGROK_URL = "https://87fd-68-53-169-71.ngrok-free.app"; 
-    const VISION_MODEL = "huihui_ai/qwen3-vl-abliterated:8b";
+    const VISION_MODEL = "valkyriesys/eudaimonia-dryad3-vision:8b";
 
     const DOM = {
         canvas: document.getElementById('particle-canvas'),
