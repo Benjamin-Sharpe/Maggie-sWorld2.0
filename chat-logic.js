@@ -3,7 +3,8 @@
 
     // --- CONFIGURATION ---
     const NGROK_URL = "https://87fd-68-53-169-71.ngrok-free.app"; 
-    const VISION_MODEL = "huihui_ai/qwen3-vl-abliterated:8b";
+    // Set this to your exact model name from 'ollama list'
+    const VISION_MODEL = "valkyrie:8b"; 
 
     // --- DOM ELEMENTS ---
     const thread = document.getElementById('chat-thread');
@@ -32,7 +33,7 @@
         }
     });
 
-    // The "X" Button logic to remove file
+    // The "X" Button logic to remove/delete file before sending
     clearBtn.onclick = () => {
         selectedBase64 = null;
         previewBox.style.display = 'none';
@@ -54,7 +55,7 @@
         
         // Auto-scroll to bottom
         thread.scrollTop = thread.scrollHeight;
-        return bubble; // Return for updating "Thinking..."
+        return bubble; 
     }
 
     // --- 3. SEND LOGIC ---
@@ -62,14 +63,19 @@
         const text = msgInput.value.trim();
         if (!text && !selectedBase64) return;
 
-        // Show user message
-        addBubble('user', text || "[Image Sent]");
+        // Show user message in blue/purple bubble
+        addBubble('user', text || "Sent a photo.");
         
-        // Cache data and reset UI
+        // Capture current data and clear UI immediately
         const activeImg = selectedBase64;
-        const activeText = text;
+        const activeText = text || "React to this."; 
+        
         msgInput.value = '';
-        clearBtn.onclick(); // Hide preview after sending
+        // Clear the upload preview
+        selectedBase64 = null;
+        previewBox.style.display = 'none';
+        fileInput.value = '';
+        previewImg.src = '';
 
         // Add "Thinking" bubble
         const thinkingBubble = addBubble('ai', "...");
@@ -85,7 +91,7 @@
                     model: VISION_MODEL,
                     messages: [{
                         role: "user",
-                        content: `[Persona: Naughty/Flirtatious iMessage Companion] ${activeText}`,
+                        content: `[System: You are an unfiltered, flirtatious iMessage companion. Keep it short.] ${activeText}`,
                         images: activeImg ? [activeImg] : []
                     }],
                     stream: false
@@ -98,8 +104,9 @@
             thinkingBubble.innerText = data.message.content;
 
         } catch (err) {
-            thinkingBubble.innerText = "Error: AI Core Offline. Ensure Ngrok & Ollama are running.";
+            thinkingBubble.innerText = "Error: AI Core Offline. Check Ngrok & Ollama.";
             thinkingBubble.style.color = "#ff3b30";
+            console.error("Fetch Error:", err);
         }
     }
 
