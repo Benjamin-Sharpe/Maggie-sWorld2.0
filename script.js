@@ -1,130 +1,24 @@
 (function() {
     "use strict";
 
-    const NGROK_URL = "https://87fd-68-53-169-71.ngrok-free.app"; 
-    const VISION_MODEL = "valkyriesys/eudaimonia-dryad3-vision:8b";
+    // --- DOM ELEMENTS (Only the Hub ones) ---
+    const heart = document.getElementById('tinder-heart');
+    const surpriseBtn = document.getElementById('execute-ai');
 
-    const DOM = {
-        canvas: document.getElementById('particle-canvas'),
-        heart: document.getElementById('tinder-heart'),
-        chatLog: document.getElementById('chat-log'),
-        userInput: document.getElementById('user-input'),
-        sendBtn: document.getElementById('send-btn'),
-        imgInput: document.getElementById('image-input'),
-        imgPreview: document.getElementById('image-preview'),
-        previewCont: document.getElementById('image-preview-container'),
-        removeImg: document.getElementById('remove-img'),
-        aiRedirect: document.getElementById('execute-ai')
-    };
-
-    let selectedBase64 = null;
-
-    // --- Module 1: Image Handling ---
-    DOM.imgInput.addEventListener('change', (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = (ev) => {
-                selectedBase64 = ev.target.result.split(',')[1];
-                DOM.imgPreview.src = ev.target.result;
-                DOM.previewCont.style.display = 'block';
-            };
-            reader.readAsDataURL(file);
-        }
-    });
-
-    DOM.removeImg.onclick = () => {
-        selectedBase64 = null;
-        DOM.previewCont.style.display = 'none';
-        DOM.imgInput.value = '';
-    };
-
-// --- Module 2: AI Chat (Vision Enabled) ---
-    async function sendMessage() {
-        const text = DOM.userInput.value;
-        if (!text && !selectedBase64) return;
-
-        // 1. Show User Message
-        appendMessage('user', text || "[Sent an image]");
-        
-        // 2. Prep for Request
-        const currentImg = selectedBase64; 
-        DOM.userInput.value = '';
-        if(DOM.removeImg.onclick) DOM.removeImg.onclick(); // Clear preview safely
-
-        // 3. Show "Thinking" State
-        appendMessage('ai', "Processing your request...");
-        const thinkingMsg = DOM.chatLog.lastElementChild;
-
-        try {
-            const response = await fetch(`${NGROK_URL}/api/chat`, {
-                method: 'POST',
-                headers: { 
-                    'Content-Type': 'application/json', 
-                    'ngrok-skip-browser-warning': 'true' 
-                },
-                body: JSON.stringify({
-                    model: VISION_MODEL,
-                    messages: [{
-                        role: "user",
-                        content: `[Persona: Naughty/Flirtatious Companion] ${text}`,
-                        images: currentImg ? [currentImg] : []
-                    }],
-                    stream: false
-                })
-            });
-
-            if (!response.ok) throw new Error('Server issues');
-
-            const data = await response.json();
-            
-            // 4. Update the "Thinking" bubble with the real response
-            thinkingMsg.innerText = data.message.content;
-            DOM.chatLog.scrollTop = DOM.chatLog.scrollHeight;
-
-        } catch (err) {
-            console.error(err);
-            thinkingMsg.innerText = "Error: AI Core Offline. Check Ngrok/Ollama.";
-            thinkingMsg.style.color = "#ff4444"; // Visual hint for error
-        }
-    }
-    // --- Module 3: Particles & Heart ---
-    const ctx = DOM.canvas.getContext('2d');
-    let stars = [];
-    function resize() { DOM.canvas.width = window.innerWidth; DOM.canvas.height = window.innerHeight; }
-    window.onresize = resize; resize();
-
-    class Star {
-        constructor() { this.reset(); }
-        reset() {
-            this.x = Math.random() * DOM.canvas.width;
-            this.y = Math.random() * DOM.canvas.height;
-            this.opacity = Math.random();
-            this.v = Math.random() * 0.005;
-        }
-        draw() {
-            ctx.fillStyle = `rgba(255,255,255,${this.opacity})`;
-            ctx.beginPath(); ctx.arc(this.x, this.y, 1, 0, Math.PI*2); ctx.fill();
-            this.opacity -= this.v; if(this.opacity <= 0) this.reset();
-        }
-    }
-    for(let i=0; i<100; i++) stars.push(new Star());
-    function loop() { ctx.clearRect(0,0,DOM.canvas.width, DOM.canvas.height); stars.forEach(s=>s.draw()); requestAnimationFrame(loop); }
-    loop();
-
-    let hX = 50, hY = 50, hDX = 1.5, hDY = 1.5;
+    // --- MODULE: BOUNCING HEART ---
+    let hX = 50, hY = 50, hDX = 1.2, hDY = 1.2;
     function bounce() {
+        if (!heart) return; // Safety check
         hX += hDX; hY += hDY;
-        if(hX > window.innerWidth-60 || hX < 0) hDX *= -1;
-        if(hY > window.innerHeight-60 || hY < 0) hDY *= -1;
-        DOM.heart.style.transform = `translate3d(${hX}px, ${hY}px, 0)`;
+        if(hX > window.innerWidth - 60 || hX < 0) hDX *= -1;
+        if(hY > window.innerHeight - 60 || hY < 0) hDY *= -1;
+        heart.style.transform = `translate3d(${hX}px, ${hY}px, 0)`;
         requestAnimationFrame(bounce);
     }
     bounce();
 
-    // --- Module 4: Surprise Redirects ---
-    DOM.aiRedirect.onclick = () => {
-        const links = [ 
+    // --- MODULE: SURPRISE REDIRECTS ---
+    const links = [
             "https://www.xvideos.com/video.ucvhlav1514/blacked_size-queen_kendra_needs_a_real_bbc_to_please_her",
 
             "https://www.xvideos.com/video.uilvkfd0d06/blacked_diamond_has_secret_affair_with_her_bestie_s_hot_bf",
@@ -223,7 +117,15 @@
 
             "https://noodlemagazine.com/watch/-226422549_456242723_dup_2",
 
-            "https://noodlemagazine.com/watch/-226422549_456242723_dup_3" ];
-        window.open(links[Math.floor(Math.random()*links.length)], "_blank");
-    };
+            "https://noodlemagazine.com/watch/-226422549_456242723_dup_3" 
+        // ... Keep all your dirty links here
+    ];
+
+    if (surpriseBtn) {
+        surpriseBtn.onclick = () => {
+            const randomLink = links[Math.floor(Math.random() * links.length)];
+            window.open(randomLink, "_blank");
+        };
+    }
+
 })();
