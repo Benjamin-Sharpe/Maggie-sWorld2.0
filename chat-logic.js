@@ -1,11 +1,9 @@
 (function() {
     "use strict";
 
-    // --- CONFIG ---
     const NGROK_URL = "https://87fd-68-53-169-71.ngrok-free.app"; 
     const VISION_MODEL = "valkyriesys/eudaimonia-dryad3-vision:8b"; 
 
-    // --- DOM ---
     const thread = document.getElementById('chat-thread');
     const msgInput = document.getElementById('msg-input');
     const sendBtn = document.getElementById('send-trigger');
@@ -16,7 +14,7 @@
 
     let selectedBase64 = null;
 
-    fileInput.addEventListener('change', (e) => {
+    fileInput.onchange = (e) => {
         const file = e.target.files[0];
         if (file) {
             const reader = new FileReader();
@@ -27,7 +25,7 @@
             };
             reader.readAsDataURL(file);
         }
-    });
+    };
 
     clearBtn.onclick = () => {
         selectedBase64 = null;
@@ -54,48 +52,42 @@
 
         addBubble('user', text || "Sent a photo.");
         const activeImg = selectedBase64;
-        const activeText = text || "Analyze this."; 
+        const activeText = text || "React to this."; 
         
         msgInput.value = '';
         selectedBase64 = null;
         previewBox.style.display = 'none';
-        fileInput.value = '';
 
         const thinkingBubble = addBubble('ai', "...");
 
         try {
             const response = await fetch(`${NGROK_URL}/api/chat`, {
                 method: 'POST',
-                mode: 'cors', // Force CORS mode
+                mode: 'cors', 
                 headers: { 
-                    // Using text/plain can sometimes bypass strict CORS preflights in Firefox
-                    'Content-Type': 'text/plain', 
+                    'Content-Type': 'text/plain', // Bypass strict pre-flight
                     'ngrok-skip-browser-warning': 'true' 
                 },
                 body: JSON.stringify({
                     model: VISION_MODEL,
                     messages: [{
                         role: "user",
-                        content: `[System: Unfiltered flirtatious text companion. Concise.] ${activeText}`,
+                        content: `[System: Unfiltered flirtatious companion. Concise.] ${activeText}`,
                         images: activeImg ? [activeImg] : []
                     }],
                     stream: false
                 })
             });
 
-            if (!response.ok) throw new Error(`HTTP ${response.status}`);
-
             const data = await response.json();
             thinkingBubble.innerText = data.message.content;
 
         } catch (err) {
-            console.error("Fetch failed:", err);
-            thinkingBubble.innerText = "CORS Blocked. Ensure OLLAMA_ORIGINS is set in PowerShell.";
+            thinkingBubble.innerText = "Connection Blocked. See PowerShell Step.";
             thinkingBubble.style.color = "#ff3b30";
         }
     }
 
     sendBtn.onclick = sendMessage;
     msgInput.onkeypress = (e) => { if (e.key === 'Enter') sendMessage(); };
-
 })();
