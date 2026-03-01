@@ -3,68 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Just Goon | Official Portal</title>
+    <title>Just Goon | AI & Vision Portal</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body class="site-master-container">
 
     <canvas id="particle-canvas" class="background-canvas-layer"></canvas>
-
-    <div id="tinder-heart" style="position: fixed; cursor: pointer; z-index: 1000; font-size: 50px; user-select: none;">❤️</div>
+    <div id="tinder-heart" class="floating-ui-element">❤️</div>
 
     <div class="vertical-layout-stack">
-
-        <header class="section-module hero-module">
+        <header class="section-module">
             <div class="glass-panel">
                 <div class="text-content">
                     <h1 class="main-heading">Benjamin Sharpe</h1>
                     <p class="sub-heading">Follow the journey across the web</p>
                 </div>
-                
                 <nav class="navigation-hub">
                     <a href="https://www.twitch.tv/benjamindsharpe" target="_blank" class="action-btn twitch-primary">
-                        <i class="fab fa-twitch"></i>
-                        <span class="btn-label">Twitch</span>
+                        <i class="fab fa-twitch"></i><span>Twitch</span>
                     </a>
                     <a href="https://www.facebook.com/xbenjaminsharpe" target="_blank" class="action-btn fb-primary">
-                        <i class="fab fa-facebook"></i>
-                        <span class="btn-label">Facebook</span>
+                        <i class="fab fa-facebook"></i><span>Facebook</span>
                     </a>
                     <a href="https://www.instagram.com/benjaminsharpe_/" target="_blank" class="action-btn ig-primary">
-                        <i class="fab fa-instagram"></i>
-                        <span class="btn-label">Instagram</span>
+                        <i class="fab fa-instagram"></i><span>Instagram</span>
                     </a>
                 </nav>
             </div>
         </header>
 
-        <main class="section-module team-module">
-            <div class="glass-panel team-panel">
-                <div class="panel-header">
-                    <h2 class="section-title">AI Interaction Core</h2>
-                    <div class="accent-divider"></div>
-                </div>
+        <main class="section-module">
+            <div class="glass-panel">
+                <h2 class="section-title">AI Interaction Core</h2>
+                <div class="accent-divider"></div>
                 
                 <div class="chat-interface">
                     <div id="chat-log" class="chat-display">
-                        <p class="ai-msg">Connection secure. Looking for something specific, or just here to flirt?</p>
+                        <p class="ai-msg">Connection secure. Upload a photo or tell me your desires...</p>
                     </div>
+
+                    <div id="image-preview-container" class="preview-box">
+                        <img id="image-preview" src="" alt="Preview">
+                        <button id="remove-img">×</button>
+                    </div>
+
                     <div class="input-group">
-                        <input type="text" id="user-input" placeholder="Type a message...">
-                        <button id="send-btn">Send</button>
+                        <label for="image-input" class="icon-btn">
+                            <i class="fas fa-paperclip"></i>
+                            <input type="file" id="image-input" accept="image/*">
+                        </label>
+                        <input type="text" id="user-input" placeholder="Type your message...">
+                        <button id="send-btn"><i class="fas fa-paper-plane"></i></button>
                     </div>
                 </div>
             </div>
         </main>
 
-        <div style="text-align: center; margin-bottom: 50px;">
-            <button id="execute-ai" class="action-btn" style="background: rgba(255,255,255,0.1); border: 1px solid white; max-width: 200px; margin: 0 auto;">
-                <span class="btn-label">Surprise Me</span>
-            </button>
+        <div class="redirect-wrap">
+            <button id="execute-ai" class="surprise-btn">Surprise Me</button>
         </div>
-
     </div>
 
     <script src="script.js"></script>
