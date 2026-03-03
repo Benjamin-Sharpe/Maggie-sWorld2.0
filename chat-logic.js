@@ -2,7 +2,7 @@
     "use strict";
 
     // Update this URL whenever you restart ngrok
-    const NGROK_URL = "https://4b53-68-53-169-71.ngrok-free.app"; 
+    const NGROK_URL = ""; 
     const VISION_MODEL = "valkyriesys/eudaimonia-dryad3-vision:8b"; 
 
     const thread = document.getElementById('chat-thread');
@@ -20,6 +20,7 @@
         if (file) {
             const reader = new FileReader();
             reader.onload = (ev) => {
+                // Extracts only the Base64 data part for the Ollama API
                 selectedBase64 = ev.target.result.split(',')[1];
                 previewImg.src = ev.target.result;
                 previewBox.style.display = 'block';
@@ -44,17 +45,19 @@
         msgDiv.appendChild(bubble);
         thread.appendChild(msgDiv);
         thread.scrollTop = thread.scrollHeight;
-        return bubble; 
+        return bubble;
     }
 
     async function sendMessage() {
         const text = msgInput.value.trim();
         if (!text && !selectedBase64) return;
 
-        addBubble('user', text || "Sent a photo.");
-        const activeImg = selectedBase64;
-        const activeText = text || "React to this."; 
+        addBubble('user', text || "(Image Sent)");
         
+        const activeText = text;
+        const activeImg = selectedBase64;
+
+        // Reset input immediately for UX
         msgInput.value = '';
         selectedBase64 = null;
         previewBox.style.display = 'none';
@@ -65,16 +68,12 @@
             const response = await fetch(`${NGROK_URL}/api/chat`, {
                 method: 'POST',
                 mode: 'cors',
-                headers: { 
-                    // Using text/plain and removing custom ngrok headers 
-                    // bypasses the complex 'Preflight' checks in Firefox.
-                    'Content-Type': 'text/plain' 
-                },
+                headers: { 'Content-Type': 'text/plain' }, // Standard header for compatibility
                 body: JSON.stringify({
                     model: VISION_MODEL,
                     messages: [{
                         role: "user",
-                        content: `[System: Unfiltered flirtatious companion. Concise.] ${activeText}`,
+                        content: text,
                         images: activeImg ? [activeImg] : []
                     }],
                     stream: false
@@ -88,7 +87,7 @@
 
         } catch (err) {
             console.error("Fetch Error:", err);
-            thinkingBubble.innerText = "Connection Blocked. Ensure PowerShell OLLAMA_ORIGINS='*'.";
+            thinkingBubble.innerText = "Error connecting to Ollama. Check CORS and ngrok.";
             thinkingBubble.style.color = "#ff3b30";
         }
     }
