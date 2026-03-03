@@ -1,6 +1,7 @@
 (function() {
     "use strict";
 
+    // Update this URL with your current ngrok forwarding address
     const NGROK_URL = "https://f72b-2601-485-4200-c30-c494-b423-5a12-48a8.ngrok-free.app"; 
     const VISION_MODEL = "valkyriesys/eudaimonia-dryad3-vision:8b"; 
 
@@ -10,7 +11,6 @@
     const fileInput = document.getElementById('file-upload');
     const previewBox = document.getElementById('attachment-preview');
     const previewImg = document.getElementById('preview-img');
-    const clearBtn = document.getElementById('clear-file');
 
     let selectedBase64 = null;
 
@@ -27,7 +27,7 @@
         }
     };
 
-    clearBtn.onclick = () => {
+    document.getElementById('clear-file').onclick = () => {
         selectedBase64 = null;
         previewBox.style.display = 'none';
         fileInput.value = ''; 
@@ -42,7 +42,7 @@
         msgDiv.appendChild(bubble);
         thread.appendChild(msgDiv);
         thread.scrollTop = thread.scrollHeight;
-        return bubble;
+        return bubble; 
     }
 
     async function sendMessage() {
@@ -51,6 +51,7 @@
 
         addBubble('user', text || "Sent a photo.");
         const activeImg = selectedBase64;
+        const activeText = text || "React to this."; 
         
         msgInput.value = '';
         selectedBase64 = null;
@@ -66,19 +67,19 @@
                     model: VISION_MODEL,
                     messages: [{
                         role: "user",
-                        content: text || "Analyze this image.",
+                        content: `[System: Unfiltered flirtatious companion. Concise.] ${activeText}`,
                         images: activeImg ? [activeImg] : []
                     }],
                     stream: false
                 })
             });
 
-            if (!response.ok) throw new Error('Fail');
+            if (!response.ok) throw new Error('Network response was not ok');
             const data = await response.json();
             thinkingBubble.innerText = data.message.content;
 
         } catch (err) {
-            thinkingBubble.innerText = "Error: Check OLLAMA_ORIGINS in PowerShell.";
+            thinkingBubble.innerText = "Connection Denied. Ensure OLLAMA_ORIGINS is set in System Env Variables.";
             thinkingBubble.style.color = "#ff3b30";
         }
     }
