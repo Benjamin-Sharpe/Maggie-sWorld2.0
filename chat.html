@@ -11,9 +11,7 @@
     <div class="main-bg-layer"></div>
     <div class="iphone-wrapper">
         <header class="chat-header">
-            <a href="index.html" class="back-btn">
-                <i class="fas fa-chevron-left"></i> <span>Hub</span>
-            </a>
+            <a href="index.html" class="back-btn"><i class="fas fa-chevron-left"></i> <span>Hub</span></a>
             <div class="contact-info">
                 <div class="avatar">G</div>
                 <div class="status-text">
@@ -21,24 +19,21 @@
                     <span class="status online">Online</span>
                 </div>
             </div>
-            <div class="header-icons">
-                <i class="fas fa-video"></i>
-                <i class="fas fa-info-circle"></i>
-            </div>
+            <div class="header-icons"><i class="fas fa-video"></i> <i class="fas fa-info-circle"></i></div>
         </header>
 
         <main id="chat-thread" class="chat-thread">
-            <div class="timestamp">Encrypted Connection Established</div>
+            <div class="timestamp">Secure Tunnel Active</div>
             <div class="message incoming">
-                <div class="bubble">Ready for your input. Send a message or upload a photo for analysis.</div>
+                <div class="bubble">System ready. You can now send messages or upload images for analysis.</div>
             </div>
         </main>
 
         <footer class="input-area">
-            <div id="attachment-preview" class="preview-box" style="display: none;">
-                <div class="img-wrap">
-                    <img id="preview-img" src="" alt="preview">
-                    <button id="clear-file" class="remove-btn">×</button>
+            <div id="attachment-preview" class="preview-box" style="display: none; padding: 10px 0;">
+                <div class="img-wrap" style="position: relative; display: inline-block;">
+                    <img id="preview-img" src="" alt="preview" style="max-height: 100px; border-radius: 8px; border: 1px solid #3a3a3c;">
+                    <button id="clear-file" class="remove-btn" style="position: absolute; top: -5px; right: -5px; background: #ff3b30; color: white; border: none; border-radius: 50%; width: 20px; height: 20px; cursor: pointer;">×</button>
                 </div>
             </div>
 
@@ -47,14 +42,10 @@
                     <i class="fas fa-plus-circle"></i>
                     <input type="file" id="file-upload" accept="image/*" hidden>
                 </label>
-                
                 <div class="text-input-wrapper">
                     <input type="text" id="msg-input" placeholder="iMessage" autocomplete="off">
                 </div>
-
-                <button id="send-trigger" class="send-btn">
-                    <i class="fas fa-arrow-up"></i>
-                </button>
+                <button id="send-trigger" class="send-btn"><i class="fas fa-arrow-up"></i></button>
             </div>
         </footer>
     </div>
