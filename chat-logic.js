@@ -1,5 +1,7 @@
 (function() {
-    const NGROK_URL = "https://f72b-2601-485-4200-c30-c494-b423-5a12-48a8 ngrok-free.app"; // Example: https://1234-abcd.ngrok-free.app
+    "use strict";
+
+    const NGROK_URL = "https://f72b-2601-485-4200-c30-c494-b423-5a12-48a8.ngrok-free.app"; 
     const VISION_MODEL = "valkyriesys/eudaimonia-dryad3-vision:8b"; 
 
     const thread = document.getElementById('chat-thread');
@@ -8,6 +10,7 @@
     const fileInput = document.getElementById('file-upload');
     const previewBox = document.getElementById('attachment-preview');
     const previewImg = document.getElementById('preview-img');
+    const clearBtn = document.getElementById('clear-file');
 
     let selectedBase64 = null;
 
@@ -24,24 +27,36 @@
         }
     };
 
-    document.getElementById('clear-file').onclick = () => {
+    clearBtn.onclick = () => {
         selectedBase64 = null;
         previewBox.style.display = 'none';
-        fileInput.value = '';
+        fileInput.value = ''; 
     };
+
+    function addBubble(role, text) {
+        const msgDiv = document.createElement('div');
+        msgDiv.className = `message ${role === 'user' ? 'outgoing' : 'incoming'}`;
+        const bubble = document.createElement('div');
+        bubble.className = 'bubble';
+        bubble.innerText = text;
+        msgDiv.appendChild(bubble);
+        thread.appendChild(msgDiv);
+        thread.scrollTop = thread.scrollHeight;
+        return bubble;
+    }
 
     async function sendMessage() {
         const text = msgInput.value.trim();
         if (!text && !selectedBase64) return;
 
-        appendMessage('user', text || "Sent an image.");
+        addBubble('user', text || "Sent a photo.");
         const activeImg = selectedBase64;
         
         msgInput.value = '';
         selectedBase64 = null;
         previewBox.style.display = 'none';
 
-        const aiBubble = appendMessage('ai', "...");
+        const thinkingBubble = addBubble('ai', "...");
 
         try {
             const response = await fetch(`${NGROK_URL}/api/chat`, {
@@ -49,26 +64,25 @@
                 headers: { 'Content-Type': 'text/plain' },
                 body: JSON.stringify({
                     model: VISION_MODEL,
-                    messages: [{ role: "user", content: text, images: activeImg ? [activeImg] : [] }],
+                    messages: [{
+                        role: "user",
+                        content: text || "Analyze this image.",
+                        images: activeImg ? [activeImg] : []
+                    }],
                     stream: false
                 })
             });
+
+            if (!response.ok) throw new Error('Fail');
             const data = await response.json();
-            aiBubble.innerText = data.message.content;
-        } catch (e) {
-            aiBubble.innerText = "Error: Check OLLAMA_ORIGINS in PowerShell.";
+            thinkingBubble.innerText = data.message.content;
+
+        } catch (err) {
+            thinkingBubble.innerText = "Error: Check OLLAMA_ORIGINS in PowerShell.";
+            thinkingBubble.style.color = "#ff3b30";
         }
     }
 
-    function appendMessage(role, text) {
-        const div = document.createElement('div');
-        div.className = `message ${role === 'user' ? 'outgoing' : 'incoming'}`;
-        div.innerHTML = `<div class="bubble">${text}</div>`;
-        thread.appendChild(div);
-        thread.scrollTop = thread.scrollHeight;
-        return div.querySelector('.bubble');
-    }
-
     sendBtn.onclick = sendMessage;
-    msgInput.onkeypress = (e) => { if(e.key === 'Enter') sendMessage(); };
+    msgInput.onkeypress = (e) => { if (e.key === 'Enter') sendMessage(); };
 })();
