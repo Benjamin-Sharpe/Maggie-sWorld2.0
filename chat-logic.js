@@ -1,7 +1,7 @@
 (function() {
     "use strict";
 
-    // Update this URL with your current ngrok forwarding address
+    // Your confirmed working URL
     const NGROK_URL = "https://f72b-2601-485-4200-c30-c494-b423-5a12-48a8.ngrok-free.app"; 
     const VISION_MODEL = "valkyriesys/eudaimonia-dryad3-vision:8b"; 
 
@@ -11,6 +11,7 @@
     const fileInput = document.getElementById('file-upload');
     const previewBox = document.getElementById('attachment-preview');
     const previewImg = document.getElementById('preview-img');
+    const clearBtn = document.getElementById('clear-file');
 
     let selectedBase64 = null;
 
@@ -27,10 +28,11 @@
         }
     };
 
-    document.getElementById('clear-file').onclick = () => {
+    clearBtn.onclick = () => {
         selectedBase64 = null;
         previewBox.style.display = 'none';
         fileInput.value = ''; 
+        previewImg.src = '';
     };
 
     function addBubble(role, text) {
@@ -49,9 +51,9 @@
         const text = msgInput.value.trim();
         if (!text && !selectedBase64) return;
 
-        addBubble('user', text || "Sent a photo.");
+        addBubble('user', text || "Sent an image.");
         const activeImg = selectedBase64;
-        const activeText = text || "React to this."; 
+        const activeText = text || "Analyze this image.";
         
         msgInput.value = '';
         selectedBase64 = null;
@@ -62,7 +64,10 @@
         try {
             const response = await fetch(`${NGROK_URL}/api/chat`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'text/plain' },
+                headers: { 
+                    'Content-Type': 'text/plain',
+                    'ngrok-skip-browser-warning': 'true' // THIS BYPASSES THE NGROK YES/NO SCREEN
+                },
                 body: JSON.stringify({
                     model: VISION_MODEL,
                     messages: [{
@@ -74,12 +79,11 @@
                 })
             });
 
-            if (!response.ok) throw new Error('Network response was not ok');
             const data = await response.json();
             thinkingBubble.innerText = data.message.content;
 
         } catch (err) {
-            thinkingBubble.innerText = "Connection Denied. Ensure OLLAMA_ORIGINS is set in System Env Variables.";
+            thinkingBubble.innerText = "Connection Denied. Ensure OLLAMA_ORIGINS is set and ngrok is active.";
             thinkingBubble.style.color = "#ff3b30";
         }
     }
