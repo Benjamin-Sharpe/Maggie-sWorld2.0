@@ -1,8 +1,10 @@
 (function() {
     "use strict";
 
-    // Update this URL whenever you restart ngrok
-    const NGROK_URL = ""; 
+    // PASTE YOUR NGROK URL HERE (e.g., https://abcd-123.ngrok-free.app)
+    const NGROK_URL = "YOUR_NGROK_URL_HERE"; 
+    
+    // Defaulting to the Valkyrie model you requested
     const VISION_MODEL = "valkyriesys/eudaimonia-dryad3-vision:8b"; 
 
     const thread = document.getElementById('chat-thread');
@@ -15,12 +17,13 @@
 
     let selectedBase64 = null;
 
+    // Handle Image Selection
     fileInput.onchange = (e) => {
         const file = e.target.files[0];
         if (file) {
             const reader = new FileReader();
             reader.onload = (ev) => {
-                // Extracts only the Base64 data part for the Ollama API
+                // Strip the metadata prefix (data:image/png;base64,) for Ollama
                 selectedBase64 = ev.target.result.split(',')[1];
                 previewImg.src = ev.target.result;
                 previewBox.style.display = 'block';
@@ -29,11 +32,11 @@
         }
     };
 
+    // Clear Image
     clearBtn.onclick = () => {
         selectedBase64 = null;
         previewBox.style.display = 'none';
         fileInput.value = ''; 
-        previewImg.src = '';
     };
 
     function addBubble(role, text) {
@@ -52,12 +55,10 @@
         const text = msgInput.value.trim();
         if (!text && !selectedBase64) return;
 
-        addBubble('user', text || "(Image Sent)");
+        // UI Update
+        addBubble('user', text || "Sent an image.");
+        const currentImg = selectedBase64;
         
-        const activeText = text;
-        const activeImg = selectedBase64;
-
-        // Reset input immediately for UX
         msgInput.value = '';
         selectedBase64 = null;
         previewBox.style.display = 'none';
@@ -67,27 +68,24 @@
         try {
             const response = await fetch(`${NGROK_URL}/api/chat`, {
                 method: 'POST',
-                mode: 'cors',
-                headers: { 'Content-Type': 'text/plain' }, // Standard header for compatibility
+                // Using text/plain avoids "Preflight" CORS issues with ngrok
+                headers: { 'Content-Type': 'text/plain' },
                 body: JSON.stringify({
                     model: VISION_MODEL,
                     messages: [{
                         role: "user",
-                        content: text,
-                        images: activeImg ? [activeImg] : []
+                        content: text || "What is in this image?",
+                        images: currentImg ? [currentImg] : []
                     }],
                     stream: false
                 })
             });
 
-            if (!response.ok) throw new Error('Network response was not ok');
-            
             const data = await response.json();
             thinkingBubble.innerText = data.message.content;
 
         } catch (err) {
-            console.error("Fetch Error:", err);
-            thinkingBubble.innerText = "Error connecting to Ollama. Check CORS and ngrok.";
+            thinkingBubble.innerText = "Error: Make sure OLLAMA_ORIGINS='*' is set in PowerShell.";
             thinkingBubble.style.color = "#ff3b30";
         }
     }
