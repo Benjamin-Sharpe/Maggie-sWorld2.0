@@ -1,5 +1,5 @@
 (function() {
-    const NGROK_URL = "YOUR_NGROK_URL"; // Example: https://1234-abcd.ngrok-free.app
+    const NGROK_URL = "https://f72b-2601-485-4200-c30-c494-b423-5a12-48a8 ngrok-free.app"; // Example: https://1234-abcd.ngrok-free.app
     const VISION_MODEL = "valkyriesys/eudaimonia-dryad3-vision:8b"; 
 
     const thread = document.getElementById('chat-thread');
